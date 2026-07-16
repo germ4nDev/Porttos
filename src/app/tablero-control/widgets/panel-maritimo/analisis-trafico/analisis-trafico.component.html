@@ -1,0 +1,54 @@
+<div class="qplus-widget widget-analisis-trafico">
+
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="icon-clock" style="margin-right: 6px;"></i> >{{ data?.titulo || 'ANÁLISIS DE TRÁFICO
+                PORTUARIO' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || '--' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="kpi-macro-grid" *ngIf="data?.kpisTop">
+
+            <div class="kpi-macro-card">
+                <span class="km-label">TONELADAS MOVILIZADAS</span>
+                <span class="km-valor">{{ data.kpisTop.toneladas.valor }}</span>
+                <span class="km-sub">{{ data.kpisTop.toneladas.detalle }}</span>
+            </div>
+
+            <div class="kpi-macro-card">
+                <span class="km-label">VARIACIÓN YOY</span>
+                <span class="km-valor" [ngClass]="data.kpisTop.variacion.claseTendencia">
+                    {{ data.kpisTop.variacion.valor }}
+                </span>
+                <span class="km-sub">{{ data.kpisTop.variacion.detalle }}</span>
+            </div>
+
+            <div class="kpi-macro-card">
+                <span class="km-label">PARTICIPACIÓN NACIONAL</span>
+                <span class="km-valor">{{ data.kpisTop.participacion.valor }}</span>
+                <span class="km-sub">{{ data.kpisTop.participacion.detalle }}</span>
+            </div>
+
+            <div class="kpi-macro-card">
+                <span class="km-label">FLUJO DOMINANTE</span>
+                <span class="km-valor" [ngClass]="data.kpisTop.flujo.claseTendencia">
+                    {{ data.kpisTop.flujo.valor }}
+                </span>
+                <span class="km-sub">{{ data.kpisTop.flujo.detalle }}</span>
+            </div>
+
+        </div>
+
+        <div class="chart-container-macro">
+            <canvas #trafficChart></canvas>
+        </div>
+    </div>
+</div>

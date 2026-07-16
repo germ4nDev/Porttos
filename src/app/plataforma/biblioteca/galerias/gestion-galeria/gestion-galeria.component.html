@@ -1,0 +1,226 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'GALERIA.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'GALERIA.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarGaleriaClick(validationForm)">
+                            {{ 'GALERIA.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarGaleriaClick(validationForm)">
+                            {{ 'GALERIA.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'GALERIA.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoGaleria"
+                                    placeholder="Código de la Galería"
+                                    [ngClass]="{ 'is-invalid': !codigoGaleria.valid && (codigoGaleria.dirty || codigoGaleria.touched || isSubmit) }"
+                                    #codigoGaleria="ngModel" required [(ngModel)]="FormRegistro.codigoGaleria"
+                                    readonly />
+                                <label
+                                    *ngIf="!codigoGaleria.valid && (codigoGaleria.dirty || codigoGaleria.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'GALERIA.CODEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'GALERIA.BIBLIOTECACODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoBiblioteca"
+                                    placeholder="Código de la Galería"
+                                    [ngClass]="{ 'is-invalid': !codigoBiblioteca.valid && (codigoBiblioteca.dirty || codigoBiblioteca.touched || isSubmit) }"
+                                    #codigoBiblioteca="ngModel" required [(ngModel)]="FormRegistro.codigoBiblioteca"
+                                    readonly />
+                                <label
+                                    *ngIf="!codigoBiblioteca.valid && (codigoBiblioteca.dirty || codigoBiblioteca.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'GALERIA.BIBLIOTECACODEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreGaleria">{{ 'GALERIA.NAME' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="nombreGaleria" name="nombreGaleria"
+                                    type="text" placeholder="{{ 'GALERIA.NAME' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !nombreGaleria.valid && (nombreGaleria.dirty || nombreGaleria.touched || isSubmit) }"
+                                    #nombreGaleria="ngModel" required [(ngModel)]="FormRegistro.nombreGaleria" />
+                                <label
+                                    *ngIf="!nombreGaleria.valid && (nombreGaleria.dirty || nombreGaleria.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'GALERIA.NAMEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoTipoGaleria">{{ 'GALERIA.CODIGOTIPO' |
+                                    translate
+                                    }}</label>
+                                <select class="form-control form-select form-input" id="codigoTipoGaleria"
+                                    name="codigoTipoGaleria"
+                                    [ngClass]="{ 'is-invalid': !codigoTipoGaleria.valid && (codigoTipoGaleria.dirty || codigoTipoGaleria.touched || isSubmit) }"
+                                    #codigoTipoGaleria="ngModel" required [(ngModel)]="FormRegistro.codigoTipoGaleria"
+                                    (change)="onFiltroCodigoTipoChangeClick($event)">
+                                    <option value="" selected>{{ 'GALERIA.CODIGOTIPO_HOLDER' | translate }}
+                                    </option>
+
+                                    <option *ngFor="let tipo of listaTipos" [value]="tipo.codigoTipoGaleria">
+                                        {{ tipo.nombreTipo }}
+                                    </option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoTipoGaleria.valid && (codigoTipoGaleria.dirty || codigoTipoGaleria.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    El Tipo de Galería es obligatorio
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoFormato">{{ 'GALERIA.CODIGOFORMATO' |
+                                    translate }}</label>
+                                <select class="form-control form-select form-input" id="codigoFormato"
+                                    name="codigoFormato"
+                                    [ngClass]="{ 'is-invalid': !codigoFormato.valid && (codigoFormato.dirty || codigoFormato.touched || isSubmit) }"
+                                    #codigoFormato="ngModel" required [(ngModel)]="FormRegistro.codigoFormato">
+                                    <option value="" disabled selected>{{ 'GALERIA.CODIGOFORMATO_HOLDER' | translate }}
+                                    </option>
+                                    <option *ngFor="let formato of listaFormatosFiltrado"
+                                        [value]="formato.codigoFormato">
+                                        {{ formato.nombreFormato }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="siglaIdioma">{{ 'GALERIA.CODIGOIDIOMA' |
+                                    translate }}</label>
+                                <select class="form-control form-select form-input" id="siglaIdioma" name="siglaIdioma"
+                                    [ngClass]="{ 'is-invalid': !siglaIdioma.valid && (siglaIdioma.dirty || siglaIdioma.touched || isSubmit) }"
+                                    #siglaIdioma="ngModel" required [(ngModel)]="FormRegistro.siglaIdioma">
+                                    <option value="" disabled selected>{{ 'GALERIA.CODIGOIDIOMA_HOLDER' | translate }}
+                                    </option>
+
+                                    <option *ngFor="let idio of listaIdiomas" [value]="idio.siglaIdioma">
+                                        {{ idio.nombreIdioma }}
+                                    </option>
+                                </select>
+                                <label
+                                    *ngIf="!siglaIdioma.valid && (siglaIdioma.dirty || siglaIdioma.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    El Idioma es obligatorio
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'GALERIA.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionGaleria ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)" name="descripcionGaleria"
+                                    [(ngModel)]="FormRegistro.descripcionGaleria" [ngClass]="{
+                    'is-invalid': !descripcionGaleria.valid && (descripcionGaleria.dirty || descripcionGaleria.touched || isSubmit)
+                  }" #descripcionGaleria="ngModel" required rows="5">
+                                </app-text-editor>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'GALERIA.MINI' | translate }}</label>
+                                <div class="preview-container mb-3" *ngIf="selectedFileFotoUrl">
+                                    <img [src]="selectedFileFotoUrl" class="image-preview" />
+                                </div>
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadFotoInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFotoFileSelectedClick($event)"
+                                        id="fileUploadFotoInput" class="form-control form-input d-none"
+                                        name="archivoGaleria" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'GALERIA.FOTO' | translate }}</label>
+                                <div class="preview-container mb-3" *ngIf="selectedFileUrl">
+                                    <img *ngIf="selectedFileType === 'image'" [src]="selectedFileUrl"
+                                        class="image-preview" style="max-height: 500px;" />
+                                    <app-video-player *ngIf="selectedFileType === 'video'"
+                                        [src]="selectedFileUrl"></app-video-player>
+                                    <!-- <video [src]="selectedFileUrl" controls style="max-height: 500px; max-width: 100%;"></video> -->
+                                    <div *ngIf="selectedFileType === 'document'"
+                                        class="alert alert-secondary d-flex align-items-center">
+                                        <i class="feather icon-file-text me-2" style="font-size: 24px"></i>
+                                        <span>Archivo listo para subir: <strong>{{ selectedFileName }}</strong></span>
+                                    </div>
+                                </div>
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" id="fileUploadInput"
+                                        class="form-control form-input d-none" name="archivoGaleria" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'GALERIA.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estadoGaleria" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoGaleria" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoGaleria" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoGaleria" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

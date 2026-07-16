@@ -1,0 +1,109 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+  <aside class="aside-left">
+    <div class="card">
+      <div class="nav-tabs-custom">
+        <button class="active">{{ 'PLATAFORMA.MENU' | translate }}</button>
+      </div>
+      <ng-container>
+        <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+      </ng-container>
+    </div>
+  </aside>
+
+  <div class="form-area">
+    <div class="card">
+      <div class="card-header card-header-sticky">
+        <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex align-items-center">
+            <h4 class="datatable-title" *ngIf="esNuevo">{{ 'TIPOSCRIPTS.NEW' | translate }}</h4>
+            <h4 class="datatable-title" *ngIf="!esNuevo">Actualizar Tipo ({{ tipoForm.get('codigoTipo')?.value }})</h4>
+          </div>
+          <div class="d-flex">
+            <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="volver()">
+              {{ 'PLATAFORMA.REGRESAR' | translate }}
+              <i class="feather icon-arrow-left ms-2"></i>
+            </button>
+            <button *ngIf="esNuevo" type="button" class="btn btn-primary btn-NuevoRegistro" (click)="guardar()">
+              {{ 'TIPOSCRIPTS.CREATE' | translate }}
+              <i class="feather ms-2 icon-plus"></i>
+            </button>
+            <button *ngIf="!esNuevo" type="button" class="btn btn-primary btn-NuevoRegistro" (click)="guardar()">
+              {{ 'TIPOSCRIPTS.UPDATE' | translate }}
+              <i class="feather ms-2 icon-edit"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body form-scroll-wrapper">
+        <form [formGroup]="tipoForm" class="editForm" novalidate>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">{{ 'TIPOSCRIPTS.CODIGO' | translate }} <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control form-input"
+                  formControlName="codigoTipo"
+                  placeholder="Ej: TIPO_SQL"
+                  [ngClass]="{ 'is-invalid': campoNoValido('codigoTipo') }"
+                />
+                <label *ngIf="campoNoValido('codigoTipo')" class="error jquery-validation-error small form-text invalid-feedback">
+                  El código es obligatorio.
+                </label>
+                <small class="text-muted mt-1 d-block" *ngIf="!esNuevo">El código no se puede modificar.</small>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-control-label">{{ 'TIPOSCRIPTS.NOMBRE' | translate }} <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control form-input"
+                  formControlName="nombreTipo"
+                  placeholder="Ej: Script de Base de Datos"
+                  [ngClass]="{ 'is-invalid': campoNoValido('nombreTipo') }"
+                />
+                <label *ngIf="campoNoValido('nombreTipo')" class="error jquery-validation-error small form-text invalid-feedback">
+                  El nombre es obligatorio.
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="form-label">{{ 'TIPOSCRIPTS.DESCRIPCION' | translate }}</label>
+                <textarea
+                  class="form-control form-input"
+                  formControlName="descripcionTipo"
+                  rows="3"
+                  placeholder="Escribe una breve descripción..."
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="form-label">{{ 'PLATAFORMA.STATUS' | translate }}</label>
+                <div class="radio-buttons">
+                  <label class="radio-button">
+                    <input formControlName="estadoTipo" type="radio" [value]="true" />
+                    <div class="radio-circle"></div>
+                    <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                  </label>
+                  <label class="radio-button">
+                    <input formControlName="estadoTipo" type="radio" [value]="false" />
+                    <div class="radio-circle"></div>
+                    <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

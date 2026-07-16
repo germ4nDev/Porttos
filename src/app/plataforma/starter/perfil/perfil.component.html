@@ -1,0 +1,161 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+            </div>
+
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'USUARIOS.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'USUARIOS.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarAplicacionClick(validationForm)">
+                            {{ 'USUARIOS.GESTION.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group text-center">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.FOTO' | translate }}</label>
+                                <div style="display: flex; justify-content: center;">
+                                    <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="avatar-preview">
+                                </div>
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" style="cursor: pointer;" class="text-link change-image-label" (change)="onFileSelectedClick($event)">
+                                        <i class="feather ms-2 icon-edit-2"></i>
+                                        <span>   Cambiar imagen</span>
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*" id="fileUploadInput"
+                                        class="form-control form-input d-none" name="fotoUsuario">
+                                </div>
+                            </div><br>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreUsuario">{{ 'USUARIOS.GESTION.NAME' |
+                                    translate }}</label>
+                                <input class="form-control  form-input" id="nombreUsuario" name="nombreUsuario"
+                                    type="text" placeholder="{{ 'USUARIOS.GESTION.NAMEHOLDER' | translate }}"
+                                    [ngClass]="{'is-invalid': !nombreUsuario.valid && (nombreUsuario.dirty || nombreUsuario.touched || isSubmit)}"
+                                    #nombreUsuario="ngModel" required [(ngModel)]="FormRegistro.nombreUsuario" />
+                                <label
+                                    *ngIf="!nombreUsuario.valid && (nombreUsuario.dirty || nombreUsuario.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.IDENTIFICACION' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="identificacionUsuario"
+                                    placeholder="{{ 'USUARIOS.GESTION.INDENTIFICACIONHOLDER' | translate }}"
+                                    [ngClass]="{'is-invalid': !identificacionUsuario.valid && (identificacionUsuario.dirty || identificacionUsuario.touched || isSubmit) }"
+                                    #identificacionUsuario="ngModel" required
+                                    [(ngModel)]="FormRegistro.identificacionUsuario" />
+                                <label
+                                    *ngIf="!identificacionUsuario.valid && (identificacionUsuario.dirty || identificacionUsuario.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.COREO' | translate }}</label>
+                                <input type="email" class="form-control form-input" name="correoUsuario"
+                                    placeholder="{{ 'USUARIOS.GESTION.CORREOHOLDER' | translate }}"
+                                    [ngClass]="{'is-invalid': !correoUsuario.valid && (correoUsuario.dirty || correoUsuario.touched || isSubmit) }"
+                                    #correoUsuario="ngModel" required [(ngModel)]="FormRegistro.correoUsuario" />
+                                <label
+                                    *ngIf="!correoUsuario.valid && (correoUsuario.dirty || correoUsuario.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.USERNAME' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="userNameUsuario"
+                                    placeholder="{{ 'USUARIOS.GESTION.USERNAMEHOLDER' | translate }}"
+                                    [ngClass]="{'is-invalid': !userNameUsuario.valid && (userNameUsuario.dirty || userNameUsuario.touched || isSubmit) }"
+                                    #userNameUsuario="ngModel" required [(ngModel)]="FormRegistro.userNameUsuario" />
+                                <label
+                                    *ngIf="!userNameUsuario.valid && (userNameUsuario.dirty || userNameUsuario.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.CLAVEACTUAL' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="claveActual" (ngModelChange)="validarClaveActual($event)"
+                                    placeholder="{{ 'USUARIOS.GESTION.CLAVEACTUALHOLDER' | translate }}"
+                                    #claveActual="ngModel" required [(ngModel)]="FormRegistro.claveActual" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.CLAVENEW' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="claveNew" [disabled]="isClaveActual"
+                                    placeholder="{{ 'USUARIOS.GESTION.CLAVEACTUALHOLDER' | translate }}"
+                                    #claveNew="ngModel" required [(ngModel)]="FormRegistro.claveNew" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.CLAVECONFIRM' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="claveConfirm" [disabled]="isClaveActual"
+                                    placeholder="{{ 'USUARIOS.GESTION.CLAVEACTUALHOLDER' | translate }}"
+                                    #claveConfirm="ngModel" required [(ngModel)]="FormRegistro.claveConfirm" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.GESTION.DESCRIPTION' | translate }}</label>
+                                <app-text-editor
+                                    [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionUsuario ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)"
+                                    name="descripcionUsuario"
+                                    [(ngModel)]="FormRegistro.descripcionUsuario"
+                                    [ngClass]="{'is-invalid': !descripcionUsuario.valid && (descripcionUsuario.dirty || descripcionUsuario.touched || isSubmit)}"
+                                    #descripcionUsuario="ngModel"
+                                    required
+                                    rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionUsuario.valid && (descripcionUsuario.dirty || descripcionUsuario.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

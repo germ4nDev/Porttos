@@ -1,0 +1,147 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'APLICACIONES.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'APLICACIONES.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarAplicacionClick(validationForm)">
+                            {{ 'APLICACIONES.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarAplicacionClick(validationForm)">
+                            {{ 'APLICACIONES.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'APLICACIONES.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoAplicacion"
+                                    placeholder="Código de la Aplicación"
+                                    [ngClass]="{ 'is-invalid': !codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit) }"
+                                    #codigoAplicacion="ngModel" required [(ngModel)]="FormRegistro.codigoAplicacion"
+                                    readonly />
+                                <label
+                                    *ngIf="!codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'APLICACIONES.CODEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreAplicacion">{{ 'APLICACIONES.NAME' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="nombreAplicacion" name="nombreAplicacion"
+                                    type="text" placeholder="{{ 'APLICACIONES.NAME' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !nombreAplicacion.valid && (nombreAplicacion.dirty || nombreAplicacion.touched || isSubmit) }"
+                                    #nombreAplicacion="ngModel" required [(ngModel)]="FormRegistro.nombreAplicacion" />
+                                <label
+                                    *ngIf="!nombreAplicacion.valid && (nombreAplicacion.dirty || nombreAplicacion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'APLICACIONES.NAMEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label" for="translateKey">{{ 'APLICACIONES.TRANSLATEKEY' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="translateKey" name="translateKey" type="text"
+                                    placeholder="{{ 'APLICACIONES.TRANSLATEKEY' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !translateKey.valid && (translateKey.dirty || translateKey.touched || isSubmit) }"
+                                    #translateKey="ngModel" required [(ngModel)]="FormRegistro.translateKey" />
+                                <label
+                                    *ngIf="!translateKey.valid && (translateKey.dirty || translateKey.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'APLICACIONES.NAMEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'APLICACIONES.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionAplicacion ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)"
+                                    name="descripcionAplicacion" [(ngModel)]="FormRegistro.descripcionAplicacion"
+                                    [ngClass]="{
+                    'is-invalid': !descripcionAplicacion.valid && (descripcionAplicacion.dirty || descripcionAplicacion.touched || isSubmit)
+                  }" #descripcionAplicacion="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionAplicacion.valid && (descripcionAplicacion.dirty || descripcionAplicacion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'APLICACIONES.DESCRIPCIONHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'APLICACIONES.GESTION.FOTO' | translate }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview" />
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none"
+                                        name="fotoUsuario" />
+                                    <span class="file-name" [ngClass]="{ 'has-file': fileName }">
+                                        <!-- {{ fileName || ('APLICACIONES.GESTION.FOTOHOLDER' | translate) }} -->
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'APLICACIONES.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estadoAplicacion" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoAplicacion" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoAplicacion" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoAplicacion" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

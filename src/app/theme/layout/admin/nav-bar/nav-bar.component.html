@@ -1,0 +1,13 @@
+<div class="navbar d-flex justify-content-between align-items-center px-3"
+     [ngStyle]="{'background-color': navbarColor}">
+    <!-- <button class="navbar-toggler" type="button" (click)="navCollapse()">
+      <i class="feather icon-menu"></i>
+    </button> -->
+    <div class="d-flex align-items-center gap-3 h-100">
+        <a [routerLink]="['/aplicaciones/aplicaciones']" class="b-brand d-flex align-items-center h-100">
+            <img id="main-logo" src="{{ logoEmpresa }}" alt="logo-img" class="logo" />
+        </a>
+    </div>
+
+    <app-nav-right></app-nav-right>
+</div>

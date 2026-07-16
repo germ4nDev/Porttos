@@ -1,0 +1,65 @@
+$dt-btn-view-color: #007bff !default;
+$dt-btn-edit-color: #ffc107 !default;
+$dt-btn-delete-color: #ff0000 !default;
+$dt-btn-option1-color: #3076c7 !default;
+$dt-btn-option2-color: #6f42c1 !default;
+$dt-btn-option3-color: #2b23a3 !default;
+$dt-btn-option4-color: #39b87d !default;
+$dt-btn-option5-color: #b64189 !default;
+
+.dt-option-btn {
+    --dt-dynamic-color: #6c757d;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 27px;
+    height: 27px;
+    padding: 0;
+    margin: 0 3px;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--dt-dynamic-color);
+    border: 1px solid var(--dt-dynamic-color);
+    background-color: transparent;
+
+    &:hover {
+        background-color: var(--dt-dynamic-color);
+        color: white;
+        border-color: var(--dt-dynamic-color);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.dt-option-btn {
+    &--view {
+        --dt-dynamic-color: #{$dt-btn-edit-color};
+    }
+    &--edit {
+        --dt-dynamic-color: #{$dt-btn-view-color};
+    }
+    &--delete {
+        --dt-dynamic-color: #{$dt-btn-delete-color};
+    }
+    &--option-1 {
+        --dt-dynamic-color: #{$dt-btn-option1-color};
+    }
+    &--option-2 {
+        --dt-dynamic-color: #{$dt-btn-option2-color};
+    }
+    &--option-3 {
+        --dt-dynamic-color: #{$dt-btn-option3-color};
+    }
+    &--option-4 {
+        --dt-dynamic-color: #{$dt-btn-option4-color};
+    }
+    &--option-5 {
+        --dt-dynamic-color: #{$dt-btn-option5-color};
+    }
+    &--archive {
+        --dt-dynamic-color: #6c757d;
+    }
+}

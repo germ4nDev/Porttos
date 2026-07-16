@@ -1,0 +1,36 @@
+/* Cambia el cursor a un círculo rojo con diagonal (prohibido) */
+input:disabled,
+select:disabled,
+textarea:disabled,
+.disabled-container {
+    cursor: not-allowed !important;
+    background-color: #f8f9fa;
+    opacity: 0.7;
+}
+
+.radio-button-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.btn-NuevoRegistro:disabled {
+    cursor: not-allowed !important;
+    opacity: 0.65;
+    filter: grayscale(0.4);
+    pointer-events: all !important; /* Permitir eventos de mouse para que el cursor cambie */
+}
+
+.cursor-blocked {
+    cursor: not-allowed !important;
+}
+
+.cursor-blocked * {
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+.disabled-opacity {
+    opacity: 0.6;
+    filter: grayscale(0.5);
+}

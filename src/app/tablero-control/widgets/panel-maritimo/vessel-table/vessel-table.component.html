@@ -1,0 +1,62 @@
+<div class="qplus-widget vessel-table-panel w-100 h-100 d-flex flex-column">
+
+
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3 class="panel-titulo">
+                <i class="icon-ship mr-2" *ngIf="!data.icono"></i>
+                {{ data.titulo || 'REPORTE DE MOTONAVES · 72H' }}
+            </h3>
+            <p class="subtitle">{{ data.subtitulo || 'Programación de arribos y atraques' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body flex-grow-1 d-flex flex-column min-h-0 p-3 pt-0">
+        <div class="table-responsive flex-grow-1 h-100" style="overflow-y: auto;">
+
+            <table class="qplus-table w-100">
+                <thead>
+                    <tr>
+                        <th>MOTONAVE</th>
+                        <th>NAVIERA</th>
+                        <th>TERMINAL</th>
+                        <th>ETA</th>
+                        <th>ATA / ATRAQUE</th>
+                        <th>CARGA</th>
+                        <th>ESTADO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let nave of data.motonaves">
+                        <td>{{ nave.motonave }}</td>
+                        <td>{{ nave.naviera }}</td>
+                        <td>{{ nave.terminal }}</td>
+
+                        <td>{{ nave.eta || '--' }}</td>
+                        <td>{{ nave.fechaAtraque || '--' }}</td>
+
+                        <td>{{ nave.carga }}</td>
+
+                        <td>
+                            <span class="status-pill" [ngClass]="nave.estadoClase">
+                                {{ nave.estadoTexto }}
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="!data.motonaves || data.motonaves.length === 0">
+                        <td colspan="7" class="text-center py-4 empty-row text-gray-500">
+                            Sin motonaves programadas en las próximas 72h para este puerto.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,184 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+            </div>
+
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'ACTIVIDADES.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'ACTIVIDADES.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarActividadClick(validationForm)">
+                            {{ 'ACTIVIDADES.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarActividadClick(validationForm)">
+                            {{ 'ACTIVIDADES.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'ACTIVIDADES.GESTION.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoActividad"
+                                    placeholder="{{ 'ACTIVIDADES.GESTION.PLACEHOLDERCODE' | translate }}"
+                                    [ngClass]="{'is-invalid': !codigoActividad.valid && (codigoActividad.dirty || codigoActividad.touched || isSubmit) }"
+                                    #codigoActividad="ngModel" required [(ngModel)]="FormRegistro.codigoActividad" readonly />
+                                <label
+                                    *ngIf="!codigoActividad.valid && (codigoActividad.dirty || codigoActividad.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoAplicacion">{{
+                                    'ACTIVIDADES.GESTION.APLICACION' |
+                                    translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoAplicacion"
+                                    id="codigoAplicacion"
+                                    [ngClass]="{ 'is-invalid': !codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit) }"
+                                    #codigoAplicacion="ngModel" required [(ngModel)]="FormRegistro.codigoAplicacion"
+                                    (change)="onAplicacionchangeClick($event)">
+                                    <option value="" disabled>{{ 'ACTIVIDADES.GESTION.PLACEHOLDERAPLICACION' | translate }}
+                                    </option>
+                                    <option [value]="app.codigoAplicacion" *ngFor="let app of aplicaciones">{{
+                                        app.nombreAplicacion }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoSuite">
+                                    {{ 'ACTIVIDADES.GESTION.SUITE' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoSuite"
+                                    id="codigoSuite"
+                                    [ngClass]="{ 'is-invalid': !codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit) }"
+                                    #codigoSuite="ngModel" required [(ngModel)]="FormRegistro.codigoSuite"
+                                    (change)="onSuiteChangeClick($event)">
+                                    <option value="">{{ 'ACTIVIDADES.GESTION.PLACEHOLDERSUITE' | translate }}
+                                    </option>
+                                    <option [value]="sui.codigoSuite" *ngFor="let sui of suites">
+                                        {{ sui.nombreSuite }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoModulo">
+                                    {{ 'ACTIVIDADES.GESTION.MODULO' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoModulo"
+                                    id="codigoModulo"
+                                    [ngClass]="{ 'is-invalid': !codigoModulo.valid && (codigoModulo.dirty || codigoModulo.touched || isSubmit) }"
+                                    #codigoModulo="ngModel" required [(ngModel)]="FormRegistro.codigoModulo"
+                                    (change)="onModuloChangeClick($event)">
+                                    <option value="">{{ 'ACTIVIDADES.GESTION.PLACEHOLDERMODULO' | translate }}
+                                    </option>
+                                    <option [value]="mod.codigoModulo" *ngFor="let mod of modulos">
+                                        {{ mod.nombreModulo }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoModulo.valid && (codigoModulo.dirty || codigoModulo.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label" for="actividad">{{ 'ACTIVIDADES.NAME' | translate }}</label>
+                                <input class="form-control form-input" id="actividad" name="actividad"
+                                    type="text" placeholder="{{ 'ACTIVIDADES.NAME' | translate }}"
+                                    [ngClass]="{'is-invalid': !actividad.valid && (actividad.dirty || actividad.touched || isSubmit)}"
+                                    #actividad="ngModel" required [(ngModel)]="FormRegistro.actividad" />
+                                <label
+                                    *ngIf="!actividad.valid && (actividad.dirty || actividad.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'ACTIVIDADES.NAMEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'ACTIVIDADES.DESCRIPTION' | translate }}</label>
+                                <app-text-editor
+                                    [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcion ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)"
+                                    name="descripcion"
+                                    [(ngModel)]="FormRegistro.descripcion"
+                                    [ngClass]="{'is-invalid': !descripcion.valid && (descripcion.dirty || descripcion.touched || isSubmit)}"
+                                    #descripcion="ngModel"
+                                    required
+                                    rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcion.valid && (descripcion.dirty || descripcion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'ACTIVIDADES.DESCRIPCIONHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'ACTIVIDADES.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estadoActividad" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoActividad">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoActividad" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoActividad">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

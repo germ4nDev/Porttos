@@ -1,0 +1,83 @@
+<div class="qplus-widget -logistico-panel">
+
+    <div class="panel-body">
+        <div class="map-wrapper">
+
+            <div #mapContainer class="map-container"></div>
+
+            <button class="fab-capas" (click)="mostrarCapas = !mostrarCapas" [class.activo]="mostrarCapas"
+                title="Capas del Mapa">
+                <i class="icon feather icon-layers"></i>
+            </button>
+
+            <div class="panel-capas" *ngIf="mostrarCapas" [class.dark-theme]="isDark">
+                <div class="leyenda-header">
+                    <h3>Visualización de Capas</h3>
+                    <button (click)="mostrarCapas = false"><i class="icon feather icon-x"></i></button>
+                </div>
+
+                <div class="grupo-capas" *ngFor="let grupo of menuCapas">
+                    <div class="grupo-header" (click)="grupo.abierto = !grupo.abierto">
+                        <span class="grupo-titulo">
+                            {{ grupo.grupo }}
+                        </span>
+                        <span class="icono-toggle">{{ grupo.abierto ? '▼' : '▶' }}</span>
+                    </div>
+
+                    <div class="grupo-body" *ngIf="grupo.abierto">
+                        <label class="capa-item" *ngFor="let capa of grupo.capas">
+                            <input type="checkbox" [checked]="capa.activa"
+                                (change)="toggleCapaMenu(capa.id, $event); capa.activa = !capa.activa">
+                            <span class="capa-nombre">{{ capa.nombre }}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="fab-leyenda" (click)="mostrarLeyenda = !mostrarLeyenda" [class.activo]="mostrarLeyenda"
+                title="Convenciones del Mapa">
+                <i class="icon feather icon-info"></i>
+            </button>
+
+            <div class="panel-leyenda" *ngIf="mostrarLeyenda" [class.dark-theme]="isDark">
+                <div class="leyenda-header">
+                    <h3>Convenciones del Mapa</h3>
+                    <button (click)="mostrarLeyenda = false"><i class="icon feather icon-x"></i></button>
+                </div>
+
+                <div class="leyenda-body">
+                    <!-- Sección Entidades -->
+                    <h4>Elementos Gráficos</h4>
+                    <ul class="leyenda-lista">
+                        <li *ngFor="let item of entidades">
+                            <span class="leyenda-circulo" [style.background-color]="item.color"></span>
+                            <span class="leyenda-texto">{{ item.label }}</span>
+                        </li>
+                    </ul>
+
+                    <hr>
+
+                    <!-- Sección Estados -->
+                    <h4>Estados Operativos</h4>
+                    <ul class="leyenda-lista">
+                        <li *ngFor="let estado of estados">
+                            <span class="leyenda-circulo" [style.background-color]="estado.color"></span>
+                            <span class="leyenda-texto">{{ estado.label }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="fab-mapa" (click)="toggleMapaBase()" [class.activo]="estiloBase === 'satelite'"
+                title="Alternar Vista Satelital">
+                <!-- Cambia el ícono al vuelo dependiendo de qué vista está activa -->
+                <i class="icon feather" [ngClass]="estiloBase === 'satelite' ? 'icon-map' : 'icon-globe'"></i>
+            </button>
+
+            <button class="fab-centrar" (click)="centrarMapa()" title="Centrar Mapa en Operación">
+                <i class="icon feather icon-crosshair"></i>
+            </button>
+        </div>
+    </div>
+
+</div>

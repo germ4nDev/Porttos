@@ -1,0 +1,212 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'USUARIOS.ROLES.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'USUARIOS.ROLES.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            [disabled]="!tipoRolSeleccionado"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'USUARIOS.ROLES.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'USUARIOS.ROLES.GESTION.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <label class="form-label">{{ 'USUARIOS.ROLES.GESTION.TIPOROLE' | translate }}</label>
+                            <div class="radio-buttons">
+                                <label class="radio-button" [ngClass]="{'cursor-blocked': modoEdicion}">
+                                    <input name="tipoRol" type="radio" value="plataforma"
+                                    [(ngModel)]="tipoRolSeleccionado"
+                                    [disabled]="modoEdicion">
+                                    <div class="radio-circle"></div>
+                                    <span class="radio-label">{{ 'USUARIOS.ROLES.GESTION.ROLPLATAFORMA' | translate }}</span>
+                                </label>
+                                <label class="radio-button" [ngClass]="{'cursor-blocked': modoEdicion}">
+                                    <input name="tipoRol" type="radio" value="suscriptor"
+                                    [(ngModel)]="tipoRolSeleccionado"
+                                    [disabled]="modoEdicion">
+                                    <div class="radio-circle"></div>
+                                    <span class="radio-label">{{ 'USUARIOS.ROLES.GESTION.ROLSUSCRIPTOR' | translate }}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.ROLES.GESTION.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoRole"
+                                    placeholder="{{'USUARIOS.ROLES.GESTION.CODEHOLDER' | translate }}"
+                                    [ngClass]="{'is-invalid': !codigoRole.valid && (codigoRole.dirty || codigoRole.touched || isSubmit) }"
+                                    [disabled]="!tipoRolSeleccionado"
+                                    #codigoRole="ngModel" required [(ngModel)]="FormRegistro.codigoRole" readonly />
+                                <label *ngIf="!codigoRole.valid && (codigoRole.dirty || codigoRole.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'USUARIOS.ROLES.REQUERIDOCODE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="tipoRolSeleccionado === 'suscriptor'">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoAplicacion">{{ 'USUARIOS.ROLES.GESTION.APLICACION' | translate }}</label>
+                                <select class="form-control input-md form-select" style="cursor: pointer" name="codigoAplicacion" id="codigoAplicacion"
+                                    [ngClass]="{ 'is-invalid': !codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit) }"
+                                    #codigoAplicacion="ngModel" required [(ngModel)]="FormRegistro.codigoAplicacion"
+                                    (change)="onAplicacionchangeClick($event)">
+                                    <option value="">{{ 'USUARIOS.ROLES.GESTION.APLICACIONHOLDER' | translate }}</option>
+                                    <option [value]="app.codigoAplicacion" *ngFor="let app of aplicaciones">{{ app.nombreAplicacion }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'USUARIOS.ROLES.GESTION.REQUERIDOAPLICACION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6"*ngIf="tipoRolSeleccionado === 'suscriptor'">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoSuite"> {{ 'USUARIOS.ROLES.GESTION.SUITE' |
+                                    translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer" name="codigoSuite" id="codigoSuite"
+                                    [ngClass]="{ 'is-invalid': !codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit) }" #codigoSuite="ngModel" required
+                                    [(ngModel)]="FormRegistro.codigoSuite"
+                                    (change)="onSuiteChangeClick($event)">
+                                    <option value="">{{ 'USUARIOS.ROLES.GESTION.PLACEHOLDERSUITE' | translate }} </option>
+                                    <option [value]="sui.codigoSuite" *ngFor="let sui of suites"> {{ sui.nombreSuite }}
+                                    </option>
+                                </select>
+                                <label *ngIf="!codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit)"
+                                        class="error jquery-validation-error small form-text invalid-feedback">
+                                        {{ 'USUARIOS.ROLES.GESTION.REQUERIDOSUITE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreRole">{{ 'USUARIOS.ROLES.GESTION.NAME' |
+                                    translate }}</label>
+                                <input class="form-control input-md form-input" id="nombreRole" name="nombreRole" type="text"
+                                    placeholder="{{ 'USUARIOS.ROLES.GESTION.NAMEHOLDER' | translate }}"
+                                    [disabled]="!tipoRolSeleccionado"
+                                    [ngClass]="{ 'is-invalid': !nombreRole.valid && (nombreRole.dirty || nombreRole.touched || isSubmit) }"
+                                    #nombreRole="ngModel" required [(ngModel)]="FormRegistro.nombreRole" />
+                                <label *ngIf="!nombreRole.valid && (nombreRole.dirty || nombreRole.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'USUARIOS.ROLES.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.ROLES.GESTION.DESCRIPTION' | translate }}</label>
+                                <div [ngClass]="{'cursor-blocked disabled-opacity': !tipoRolSeleccionado}">
+                                    <app-text-editor
+                                        [disabled]="!tipoRolSeleccionado"
+                                        [toolbarType]="tipoEditorTexto"
+                                        [contentHtml]="FormRegistro.descripcionRole ?? ''"
+                                        (contentHtmlChange)="actualizarDescripcionVersion($event)"
+                                        name="descripcionRole"
+                                        [(ngModel)]="FormRegistro.descripcionRole"
+                                        [ngClass]="{'is-invalid': !descripcionRole.valid && (descripcionRole.dirty || descripcionRole.touched || isSubmit)}"
+                                        #descripcionRole="ngModel"
+                                        required
+                                        rows="5">
+                                    </app-text-editor>
+                                    <label
+                                        *ngIf="!descripcionRole.valid && (descripcionRole.dirty || descripcionRole.touched || isSubmit)"
+                                        class="error jquery-validation-error small form-text invalid-feedback">
+                                        {{ 'USUARIOS.ROLES.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'USUARIOS.ROLES.GESTION.STATUS' | translate }}</label>
+                                <div class="radio-buttons" [style.pointer-events]="!tipoRolSeleccionado ? 'none' : 'auto'" [style.opacity]="!tipoRolSeleccionado ? '0.5' : '1'">
+                                    <label class="radio-button">
+                                        <input name="estadoRole" type="radio"
+                                            [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoRole">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoRole" type="radio"
+                                            [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoRole">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" *ngIf="usuarios && usuarios.length > 0">
+                            <div class="text-center flex flex-col justify-center">
+                                <br />
+                                <h4 class="titles">{{ 'USUARIOS.ROLES.GESTION.USUARIO' | translate }}</h4>
+                                <h6 class="sub-titles">{{ 'USUARIOS.ROLES.GESTION.USUARIOSROLESTEXT' | translate }}</h6>
+
+                                <button type="button" class="btn btn-primary btn-NuevoRegistro transition"
+                                    (click)="btnAsociarTodosUsuariosClick()"
+                                    [disabled]="!tipoRolSeleccionado">
+                                    {{ 'PLATAFORMA.ALLDATA' | translate }}
+                                </button>
+                                <br><br>
+                            </div>
+                        </div>
+                        <div class="col-md-12" *ngIf="usuarios && usuarios.length > 0">
+                            <div class="row">
+                                <div class="col-md-6 mb-2" *ngFor="let usuario of usuarios; let i = index">
+                                    <div class="form-check custom-check-form">
+                                        <input class="form-check-input"
+                                            type="checkbox"
+                                            [(ngModel)]="usuario.checked"
+                                            [disabled]="!tipoRolSeleccionado"
+                                            [name]="'usuarioCheck_' + i"
+                                            [id]="'usuario_' + i">
+                                        <label class="form-check-label text-white ml-2" [for]="'usuario_' + i" style="cursor: pointer;">
+                                            {{ usuario.nombreUsuario }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

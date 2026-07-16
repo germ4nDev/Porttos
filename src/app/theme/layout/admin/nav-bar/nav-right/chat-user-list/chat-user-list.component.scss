@@ -1,0 +1,32 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+
+    span {
+      font-size: 0.9rem;
+    }
+  }
+}

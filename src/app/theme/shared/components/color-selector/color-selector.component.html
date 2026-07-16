@@ -1,0 +1,24 @@
+<!-- <div class="form-group col-md-12">
+    <input type="color" [id]="id" [(ngModel)]="selectedColor" (ngModelChange)="onColorChange($event)"
+        class="form-colntrol h-10 w-10 border-none rounded-md cursor-pointer color-input-override"
+        [attr.aria-label]="'Selector de color para ' + label" style="cursor: pointer; margin-bottom: 0px;" />&nbsp;
+    <input type="text" [value]="selectedColor.toUpperCase()"
+        class="form-control form-input" />
+</div> -->
+
+<!-- Contenedor de la Fila: Flex y Alineación Vertical centrada -->
+<div class="input-group">
+    <div class="input-group-text form-input">
+        <input type="color"
+            [id]="id"
+            [(ngModel)]="selectedColor"
+            (ngModelChange)="onColorChange($event)"
+            class="h-full w-full p-0 border-none cursor-pointer color-input-override"
+            [attr.aria-label]="'Selector de color para ' + label" />
+    </div>
+    <input type="text"
+        [(ngModel)]="selectedColor"
+        [value]="selectedColor.toUpperCase()"
+        (ngModelChange)="onColorChange($event)"
+        class="input-group-text form-input input-color" />
+</div>

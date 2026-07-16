@@ -1,0 +1,17 @@
+:root {
+    --surface-bg: var(--qp-gray-100);
+    --surface-widget: var(--qp-white);
+    --text-main: var(--qp-gray-800);
+    --text-muted: #464e57;
+    --border-subtle: #cecdcd;
+    --brand-color: var(--qp-blue);
+}
+
+body.dark-theme {
+    --surface-bg: var(--qp-gray-900);
+    --surface-widget: #222222;
+    --text-main: #b4b4b4;
+    --text-muted: #9c9c9c;
+    --border-subtle: #474747;
+    --brand-color: var(--qp-blue-dark);
+}

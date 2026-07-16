@@ -1,0 +1,51 @@
+<div class="qplus-widget widget-matriz">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3 class="panel-titulo">
+                <i [class]="data?.icono" *ngIf="data?.icono" class="mr-1"></i>
+                {{ data?.titulo || '🏆 MATRIZ TERMINAL x TIPO DE CARGA' }} {{ data?.anio || '2025' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Toneladas movilizadas · revela la especialización operativa' }}
+            </p>
+        </div>
+        <div class="badge-operadores">
+            {{ data?.operadores || 5 }} OPERADORES · 5 TIPOS
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body matriz-body">
+        <div class="table-responsive flex-grow-1 h-100" style="overflow-y: auto;">
+
+            <table class="qplus-table w-100">
+                <thead>
+                    <tr>
+                        <th class="col-terminal">TERMINAL</th>
+                        <th><i class="feather icon-box cont-icon"></i> CONTENEDORES</th>
+                        <th><i class="feather icon-package sol-icon"></i> GRANEL SÓLIDO</th>
+                        <th><i class="feather icon-triangle gen-icon"></i> GENERAL</th>
+                        <th><i class="feather icon-droplet liq-icon"></i> GRANEL LÍQ.</th>
+                        <th><i class="feather icon-circle car-icon"></i> CARBÓN</th>
+                        <th class="col-total">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let f of data?.filas">
+                        <td class="col-terminal">{{ f.terminal }}</td>
+                        <td>{{ formatNum(f.cont) }}</td>
+                        <td>{{ formatNum(f.solido) }}</td>
+                        <td>{{ formatNum(f.general) }}</td>
+                        <td>{{ formatNum(f.liquido) }}</td>
+                        <td>{{ formatNum(f.carbon) }}</td>
+                        <td class="val-total">{{ formatNum(f.total) }} t</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

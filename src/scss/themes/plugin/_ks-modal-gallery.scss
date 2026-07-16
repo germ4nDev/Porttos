@@ -1,0 +1,17 @@
+ks-modal-gallery .plain-container .image {
+  width: auto !important;
+  padding: 0.25rem;
+  background-color: $white;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.ks-modal-gallery-backdrop {
+  background: #000 !important;
+  opacity: 0.85 !important;
+}
+.ks-modal-gallery-panel {
+  z-index: 90000 !important;
+}

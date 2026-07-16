@@ -1,0 +1,28 @@
+<div class="slider-container">
+
+    <div class="image-wrapper">
+        <img *ngFor="let imageUrl of images; let i = index" [ngSrc]="imageUrl.imageSlider?? ''" [fill]="true"
+            [priority]="i === 0" [attr.alt]="'imageUrl.nombreSlider ' + (i + 1)"
+            [ngClass]="{ 'active': i === currentIndex }" class="slider-image" (error)="onImageError($event, i)">
+    </div>
+
+    <button class="nav-button prev-button" (click)="prevImage()" *ngIf="images.length > 1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6" />
+        </svg>
+    </button>
+    <button class="nav-button next-button" (click)="nextImage()" *ngIf="images.length > 1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6" />
+        </svg>
+    </button>
+
+    <div class="indicators" *ngIf="images.length > 1">
+        <button *ngFor="let image of images; let i = index" [ngClass]="{ 'active': i === currentIndex }"
+            (click)="goToImage(i)" class="indicator-dot" [attr.aria-label]="'Ir a la imagen ' + (i + 1)">
+        </button>
+    </div>
+
+</div>

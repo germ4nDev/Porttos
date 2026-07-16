@@ -1,0 +1,244 @@
+/* =========================================================
+   1. CONTENEDOR PRINCIPAL Y CONTAINER QUERIES
+   ========================================================= */
+.table-container {
+    /* Convierte el contenedor en una referencia de tamaño para sus hijos */
+    container-type: inline-size;
+    container-name: widgetTable;
+    width: 100%;
+    overflow-x: auto;
+
+    /* Scrollbar estilizado (opcional, por si la tabla desborda) */
+    &::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #475569;
+        border-radius: 4px;
+    }
+}
+
+/* =========================================================
+   2. ESTRUCTURA BASE DE LA TABLA (Módulos UI)
+   ========================================================= */
+.qplus-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    /* Fundamental para respetar los anchos porcentuales */
+    font-size: 0.875rem;
+
+    /* Cabecera */
+    thead {
+        border-bottom: 1px solid #334155;
+
+        th {
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.75rem 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: left;
+            white-space: nowrap;
+        }
+    }
+
+    /* Cuerpo */
+    tbody {
+        tr {
+            border-bottom: 1px solid #1e293b;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.02);
+            }
+
+            /* Fila activa cuando hay un barco atracado */
+            &.row-active {
+                background-color: rgba(15, 23, 42, 0.4);
+            }
+        }
+
+        td {
+            padding: 0.875rem 0.5rem;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+    }
+}
+
+/* =========================================================
+   3. ESTILOS DE ELEMENTOS INTERNOS (Píldoras, Puntos)
+   ========================================================= */
+.specialty-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-align: center;
+    border: 1px solid transparent;
+
+    &.pill-ocupado {
+        color: #10b981;
+        /* Verde texto */
+        border-color: #10b981;
+        background-color: rgba(16, 185, 129, 0.1);
+        /* Fondo translúcido */
+    }
+
+    &.pill-libre {
+        color: #94a3b8;
+        /* Gris texto */
+        border-color: #475569;
+        background-color: transparent;
+    }
+}
+
+.text-light-grey {
+    color: #cbd5e1;
+}
+
+.text-muted {
+    color: #64748b;
+}
+
+/* =========================================================
+   4. VISTA COMPACTA (Por defecto - Tarjeta del Tablero)
+   ========================================================= */
+.qplus-table {
+
+    /* Ocultamos las columnas secundarias */
+    .col-especialidad,
+    .col-calado {
+        display: none !important;
+    }
+
+    /* Distribuimos el 100% del espacio entre las 4 columnas restantes */
+    .col-muelle {
+        width: 15%;
+    }
+
+    .col-barco {
+        width: 35%;
+    }
+
+    /* Máxima prioridad al nombre del buque */
+    .col-operacion {
+        width: 30%;
+    }
+
+    .col-estado {
+        width: 20%;
+    }
+}
+
+/* =========================================================
+   5. VISTA MAXIMIZADA (Modal Extendido)
+   ========================================================= */
+/* Cuando el contenedor de la tabla supera los 750px, reescribimos las reglas */
+@container widgetTable (min-width: 750px) {
+    .qplus-table {
+
+        /* Aparecen nuevamente la Especialidad y el Calado */
+        .col-especialidad,
+        .col-calado {
+            display: table-cell !important;
+        }
+
+        /* Redistribuimos el 100% del espacio entre las 6 columnas */
+        .col-muelle {
+            width: 10%;
+        }
+
+        .col-especialidad {
+            width: 20%;
+        }
+
+        .col-calado {
+            width: 12%;
+        }
+
+        .col-barco {
+            width: 25%;
+        }
+
+        .col-operacion {
+            width: 20%;
+        }
+
+        .col-estado {
+            width: 13%;
+        }
+    }
+}
+
+/* 1. EL CONTENEDOR PADRE (La grilla donde viven los recuadros) */
+.docks-grid-container {
+    /* Habilitamos el contenedor inteligente */
+    container-type: inline-size;
+    container-name: docksGrid;
+
+    display: grid;
+    gap: 1rem;
+
+    /* Por defecto (compacto): 1 sola columna */
+    grid-template-columns: 1fr;
+}
+
+/* 2. EL RECUADRO POR DEFECTO (Vista Compacta) */
+.dock-card {
+    background-color: rgba(30, 41, 59, 0.5);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    /* Apilamos los datos hacia abajo */
+    gap: 0.5rem;
+
+    /* Ocultamos los datos extra en el tablero para no saturar */
+    .dock-extra-info {
+        display: none;
+    }
+
+    .dock-main-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+/* 3. VISTA MAXIMIZADA (Modal Extendido) */
+/* Cuando el contenedor de la grilla tiene más de 750px de espacio */
+@container docksGrid (min-width: 750px) {
+
+    /* La grilla ahora puede mostrar 2 o 3 tarjetas por fila */
+    .docks-grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .dock-card {
+
+        /* Revelamos la información secundaria (Calado, Especialidad, etc.) */
+        .dock-extra-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #475569;
+        }
+    }
+}

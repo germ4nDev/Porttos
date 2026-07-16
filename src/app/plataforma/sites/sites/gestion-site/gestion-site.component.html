@@ -1,0 +1,156 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+            </div>
+
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'SITIOS.GESTION.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'SITIOS.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SITIOS.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SITIOS.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion" (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="aplicacionId">
+                                    {{ 'SITIOS.GESTION.APLICACION' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="aplicacionId" id="aplicacionId"
+                                    [ngClass]="{ 'is-invalid': !aplicacionId.valid && (aplicacionId.dirty || aplicacionId.touched || isSubmit) }"
+                                    #aplicacionId="ngModel" required [(ngModel)]="FormRegistro.aplicacionId"
+                                    (change)="onAplicacionchangeClick($event)">
+                                    <option value="" disabled>{{ 'SITIOS.GESTION.PLACEHOLDERAPLICACION' | translate }}
+                                    </option>
+                                    <option [value]="app.aplicacionId" *ngFor="let app of aplicaciones">
+                                        {{ app.nombreAplicacion }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!aplicacionId.valid && (aplicacionId.dirty || aplicacionId.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.GESTION.REQUERIDOAPLICACION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreSitio">{{ 'SITIOS.NAME' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="nombreSitio" name="nombreSitio" type="text"
+                                    placeholder="{{ 'SITIOS.GESTION.PLACEHOLDERNAME' | translate }}"
+                                    [ngClass]="{'is-invalid': !nombreSitio.valid && (nombreSitio.dirty || nombreSitio.touched || isSubmit)}"
+                                    #nombreSitio="ngModel" required [(ngModel)]="FormRegistro.nombreSitio" />
+                                <label
+                                    *ngIf="!nombreSitio.valid && (nombreSitio.dirty || nombreSitio.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SITIOS.URL' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="urlSitio"
+                                    placeholder="{{ 'SITIOS.GESTION.PLACEHOLDERURL' | translate }}"
+                                    [ngClass]="{'is-invalid': !urlSitio.valid && (urlSitio.dirty || urlSitio.touched || isSubmit) }"
+                                    #urlSitio="ngModel" required [(ngModel)]="FormRegistro.urlSitio" />
+                                <label *ngIf="!urlSitio.valid && (urlSitio.dirty || urlSitio.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.GESTION.REQUERIDOURL' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="puertoSitio">{{ 'SITIOS.SITESPORT' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="puertoSitio" name="puertoSitio" type="text"
+                                    placeholder="{{ 'SITIOS.GESTION.PLACEHOLDERPUERTO' | translate }}"
+                                    [ngClass]="{'is-invalid': !puertoSitio.valid && (puertoSitio.dirty || puertoSitio.touched || isSubmit)}"
+                                    #puertoSitio="ngModel" required [(ngModel)]="FormRegistro.puertoSitio" />
+                                <label
+                                    *ngIf="!puertoSitio.valid && (puertoSitio.dirty || puertoSitio.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.GESTION.REQUERIDOPUERTO' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SITIOS.DESCRIPTION' | translate }}</label>
+                                <app-text-editor
+                                    [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionSitio ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionSite($event)"
+                                    name="descripcionSitio"
+                                    [(ngModel)]="FormRegistro.descripcionSitio"
+                                    [ngClass]="{'is-invalid': !descripcionSitio.valid && (descripcionSitio.dirty || descripcionSitio.touched || isSubmit)}"
+                                    #descripcionSitio="ngModel"
+                                    required
+                                    rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionSitio.valid && (descripcionSitio.dirty || descripcionSitio.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SITIOS.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="option" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoSitio">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="option" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoSitio">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

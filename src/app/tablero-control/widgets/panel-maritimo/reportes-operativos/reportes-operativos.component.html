@@ -1,0 +1,65 @@
+<!-- <div class="qplus-widget reportes-operativos">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-wind"></i>{{ data.titulo || 'REPORTES OPERATIVIS' }}
+            </h3>
+            <p class="subtitle">{{ data.subtitulo || 'Reortes Operativos' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <ng-container *ngIf="data?.reportes?.length; else sinReportes">
+            <div *ngFor="let rep of data?.reportes" class="reporte-item" [ngClass]="'border-' + rep.color">
+
+                <div class="rep-header">
+                    <p class="rep-titulo">{{ rep.titulo }}</p>
+                    <small class="rep-fecha">{{ rep.fecha }}</small>
+                </div>
+
+                <p class="rep-desc">{{ rep.descripcion }}</p>
+            </div>
+        </ng-container>
+
+        <ng-template #sinReportes>
+            <div class="reporte-item text-center">
+                <p class="rep-desc">No hay novedades registradas.</p>
+            </div>
+        </ng-template>
+    </div>
+</div> -->
+
+<div class="qplus-widget reportes-operativos">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-wind"></i>{{ data.titulo || 'REPORTES OPERATIVIS' }}
+            </h3>
+            <p class="subtitle">{{ data.subtitulo || 'Reortes Operativos' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+
+        <div class="reporte-item" *ngFor="let reporte of data?.reportes" [ngClass]="'border-' + reporte.tipo_color">
+
+            <div class="reporte-content">
+                <h6 class="r-titulo">{{ reporte.titulo }}</h6>
+                <p class="r-desc">{{ reporte.descripcion }}</p>
+            </div>
+
+            <div class="reporte-meta">
+                <span class="r-fecha">{{ reporte.fecha_evento }}</span>
+            </div>
+
+        </div>
+
+    </div>
+</div>

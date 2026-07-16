@@ -1,0 +1,64 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  background-color: #052f5f;
+  padding: 0.1em 1em !important; // Usa los valores que necesitas para tu diseño
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  height: 40px;
+  object-fit: contain;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-left: 1rem;
+
+    a,
+    i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #fff;
+      font-size: 18px;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #f8f9fa;
+      }
+    }
+
+    img {
+      height: 36px;
+      width: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+}
+
+.badge {
+  font-size: 10px;
+  padding: 3px 5px;
+  border-radius: 999px;
+  position: relative;
+  top: -10px;
+  right: 10px;
+}

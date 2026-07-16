@@ -1,0 +1,6 @@
+<div class="excel-uploader-container">
+    <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls" class="form-control mb-2" #fileInput />
+    <button class="btn btn-primary w-100" [disabled]="!archivoSeleccionado" (click)="procesarYEnviar(fileInput)">
+        <i class="feather icon-upload"></i> Subir y Procesar Excel
+    </button>
+</div>

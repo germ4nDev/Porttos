@@ -1,0 +1,71 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+  <aside class="aside-left">
+    <div class="card">
+      <div class="nav-tabs-custom">
+        <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+          {{ 'PLATAFORMA.MENU' | translate }}
+        </button>
+        <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'">
+          {{ 'PLATAFORMA.FILTERS' | translate }}
+        </button>
+      </div>
+
+      <ng-container *ngIf="activeTab === 'menu'">
+        <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+      </ng-container>
+      <ng-container *ngIf="activeTab === 'filters'">
+        <div class="p-3 filtros-scroll-wrapper">
+          <DIV class="text-center">
+            <h6 class="filtros-title">{{ 'SLIDER.FILTROS.TITULO' | translate }}</h6>
+          </DIV>
+          <div class="filtro">
+            <small>{{ 'SLIDER.FILTROS.NOMBRE' | translate }}</small>
+            <input
+              type="text"
+              (keyup)="onFiltroNombreChangeClick($event)"
+              class="form-control form-input"
+              placeholder="{{ 'SLIDER.FILTROS.NOMBREHOLDER' | translate }}"
+            />
+          </div>
+          <div class="filtro">
+            <small>{{ 'SLIDER.FILTROS.ESTADO' | translate }}</small>
+            <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-input" required>
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+              <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </aside>
+
+  <div class="content-area">
+    <div class="card card-table content-scroll-wrapper">
+      <div class="card-body">
+        <app-data-table
+          [data]="registrosFiltrado"
+          [idField]="'sliderId'"
+          [tableTitle]="'SLIDER.TITLE' | translate"
+          [metadataColumns]="columnasRegistros"
+          [metadataDetailColumns]="columnasDetailRegistros"
+          [showDetail]="true"
+          [showActions]="true"
+          [showAvatar]="true"
+          [showImage]="false"
+          [showNewButton]="true"
+          [showViewButton]="false"
+          [showEditButton]="true"
+          [showDeleteButton]="true"
+          [newButtonLabel]="'SLIDER.NEW' | translate"
+          [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+          (newRecord)="OnNuevoRegistroClick()"
+          (editRecord)="OnEditarRegistroClick($event)"
+          (deleteRecord)="OnEliminarRegistroClick($event)"
+        >
+        </app-data-table>
+      </div>
+    </div>
+  </div>
+</div>

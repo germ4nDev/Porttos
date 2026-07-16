@@ -1,0 +1,41 @@
+
+.btn-NuevoRegistro {
+    background-color: #c9d0d5;
+    color: #3b4650;
+    height: 2.9em;
+    border: #034ba6 0.2em solid;
+    border-radius: 11px;
+    transition: all 0.6s ease;
+    padding: 0 1.2em; /* Ajuste el espacio horizontal */
+    min-width: 8.5em; /* Asegura un tamaño mínimo */
+    display: inline-flex; /* Cambiado a inline-flex para permitir que se ajuste al contenido */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.btn-NuevoRegistro:hover {
+    background-color: #034ba6;
+    color: #c9d0d5;
+    cursor: pointer;
+}
+
+.btn-NuevoRegistro:active {
+    transform: scale(0.95);
+}
+
+.btnEdit {
+    color: #c9d0d5;
+}
+
+.btnDelet {
+    color: #c9d0d5;
+}
+
+.card-header-sticky {
+    position: sticky;
+    top: 57px;
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,75 @@
+<!-- <div class="fixed inset-0">
+    <app-full-screen-slider [tipoSlider]="2"></app-full-screen-slider>
+</div>
+<nav class="navbar fixed-top navbar-expand-lg z-[1015]">
+    <div class="container-fluid panel-overlay">
+        <a class="navbar-brand" href="#"></a>
+        <div class="nav-right">
+            <app-language-selector></app-language-selector>
+        </div>
+    </div>
+</nav>
+<div class="relative z-[1015] w-full min-h-screen pt-16 pb-16 flex justify-center items-start">
+    <div class="container mx-auto p-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl">
+        <h2 class="card-grd-title z-[1015]">
+    {{ 'PLATAFORMA.TITULO_GRID_SUITES' | translate }} {{ nomAplicacion }}
+        </h2>
+        <div class="card-grid-apps">
+            <div class="card-grd" *ngFor="let suite of suites"
+                [style.backgroundImage]="'url(' + suite.imagenInicio + ')'" [title]="suite.nomAplicacion">
+                <div class="card-grd-content">
+                    <h1>{{ suite.nombreSuite }}</h1>
+                    <p [innerHTML]="suite.descripcionSuite"></p>
+                    <div class="card-grd-actions">
+                        <a (click)="ingresaSuiteaplicacion(suite)" class="card-grd-button">
+                            {{ 'PLATAFORMA.ENTRAR' | translate }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>Selecciona el ecosistema digital al que deseas ingresar -->
+
+<div class="qplus-list-screen">
+
+    <app-full-screen-slider [tipoSlider]="2" class="qplus-list-bg"></app-full-screen-slider>
+
+    <nav class="navbar fixed-top navbar-expand-lg">
+        <div class="container-fluid panel-overlay">
+            <a class="navbar-brand" href="#"></a>
+            <div class="nav-right">
+                <app-language-selector></app-language-selector>
+            </div>
+        </div>
+    </nav>
+
+    <div class="qplus-apps-layout">
+
+        <div class="qplus-apps-header text-center">
+            <h2 class="apps-main-title">{{ 'PLATAFORMA.TITULO_GRID_SUITES' | translate }} {{ nomAplicacion }}</h2>
+            <p class="apps-subtitle">{{ 'PLATAFORMA.SUBTITULO_GRID_SUITES' | translate }} {{ nomAplicacion }}</p>
+        </div>
+
+        <div class="qplus-apps-grid">
+            <div class="qplus-app-item-card" *ngFor="let suite of suites"
+                [style.backgroundImage]="'url(' + suite.imagenInicio + ')'">
+
+                <div class="app-card-overlay">
+                    <div class="app-card-info">
+                        <h3 class="app-name">{{ suite.nombreSuite }}</h3>
+                        <p class="app-description" [innerHTML]="suite.descripcionSuite"></p>
+                    </div>
+
+                    <div class="app-card-actions"><br>
+                        <button (click)="ingresaSuiteaplicacion(suite)" class="qplus-enter-btn">
+                            {{ 'PLATAFORMA.ENTRAR' | translate }} <i class="feather icon-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

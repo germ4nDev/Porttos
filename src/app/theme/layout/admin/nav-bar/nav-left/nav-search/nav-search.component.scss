@@ -1,0 +1,32 @@
+    //   .search-bar {
+    //     position: absolute;
+    //     top: 50px;
+    //     left: 0;
+    //     right: 0;
+    //     padding: 0.5rem;
+    //     z-index: 9999;
+    //   }
+    //   .pop-search {
+    //     cursor: pointer;
+    //   }
+
+    :host {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+    color: #000;
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+}

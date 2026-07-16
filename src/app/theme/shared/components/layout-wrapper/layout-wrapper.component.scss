@@ -1,0 +1,16 @@
+.app-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+.sidebar-wrapper {
+  width: 240px;
+  background: #1e293b;
+  color: white;
+  min-height: 100vh;
+}
+.content-wrapper {
+  flex-grow: 1;
+  padding: 1rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}

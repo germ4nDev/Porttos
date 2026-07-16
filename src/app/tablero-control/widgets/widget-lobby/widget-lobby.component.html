@@ -1,0 +1,37 @@
+<div class="qplus-backdrop-blur" *ngIf="visible" (click)="cerrarModal()">
+    <!-- Prevenimos que el clic dentro del modal lo cierre -->
+    <div class="qplus-modal-lg modal-lobby" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <div>
+                <h2 class="title">Catálogo de Widgets</h2>
+                <p class="subtitle">Personaliza tu Torre de Control añadiendo nuevas métricas.</p>
+            </div>
+            <button class="btn-close" (click)="cerrarModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 🟢 Grid responsivo para los widgets -->
+            <div class="lobby-grid">
+
+                <div class="widget-card" *ngFor="let widget of catalogo$ | async">
+                    <div class="card-img-container">
+                        <img [src]="widget.imagen" [alt]="widget.nombre" loading="lazy">
+                        <div class="overlay-hover">
+                            <button class="btn-add-widget" (click)="agregarWidget(widget)">
+                                + Añadir al Tablero
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-info">
+                        <span class="badge">{{ widget.categoria || 'Métrica' }}</span>
+                        <h4 class="widget-title">{{ widget.nombre }}</h4>
+                        <p class="widget-desc">{{ widget.descripcion }}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

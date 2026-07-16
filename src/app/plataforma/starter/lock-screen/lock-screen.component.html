@@ -1,0 +1,23 @@
+<div class="auth-wrapper align-items-stretch aut-bg-img">
+    <app-full-screen-slider [tipoSlider]="1"></app-full-screen-slider>
+    <nav class="navbar fixed-top navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"></a>
+            <div class="nav-right">
+                <app-language-selector></app-language-selector>
+            </div>
+        </div>
+    </nav>
+    <div class="flex-grow-1 panel-overlay">
+        <div class="h-100 d-md-flex align-items-center auth-side-img row">
+            <div class="col-sm-10 auth-content w-auto panel-overlay" style="cursor: pointer;">
+                <div class="fab-container-bottom">
+                    <span class="fab-label">{{ 'PLATAFORMA.LOCKSREENTITLE' | translate }}</span>
+                    <button class="fab-center-button btn-unlock" (click)="unlokScreen()">
+                        <i class="feather icon-unlock"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

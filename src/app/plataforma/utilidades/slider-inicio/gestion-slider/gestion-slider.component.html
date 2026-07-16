@@ -1,0 +1,120 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+            </div>
+
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'PLATAFORMA.SLIDERS.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'PLATAFORMA.SLIDERS.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'PLATAFORMA.SLIDERS.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'PLATAFORMA.SLIDERS.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreAplicacion">{{ 'PLATAFORMA.SLIDERS.NAME' | translate }}</label>
+                                <input class="form-control form-input" id="nombreSlider" name="nombreSlider"
+                                    type="text" placeholder="{{ 'PLATAFORMA.SLIDERS.NAME' | translate }}"
+                                    [ngClass]="{'is-invalid': !nombreSlider.valid && (nombreSlider.dirty || nombreSlider.touched || isSubmit)}"
+                                    #nombreSlider="ngModel" required [(ngModel)]="FormRegistro.nombreSlider" />
+                                <label
+                                    *ngIf="!nombreSlider.valid && (nombreSlider.dirty || nombreSlider.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.SLIDERS.NAMEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'PLATAFORMA.SLIDERS.DESCRIPTION' | translate }}</label>
+                                <app-text-editor
+                                    [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionSlider ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)"
+                                    name="descripcionSlider" [(ngModel)]="FormRegistro.descripcionSlider"
+                                    [ngClass]="{'is-invalid': !descripcionSlider.valid && (descripcionSlider.dirty || descripcionSlider.touched || isSubmit)}"
+                                    #descripcionSlider="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionSlider.valid && (descripcionSlider.dirty || descripcionSlider.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.SLIDERS.DESCRIPCIONHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'PLATAFORMA.SLIDERS.GESTION.FOTO' | translate }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview">
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none" name="urlSlider">
+                                    <span class="file-name" [ngClass]="{'has-file': fileName}">
+                                        {{ fileName || ('PLATAFORMA.SLIDERS.GESTION.FOTOHOLDER' | translate) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'PLATAFORMA.SLIDERS.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="option" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoSlider">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+
+                                    <label class="radio-button">
+                                        <input name="option" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoSlider">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,10 @@
+<div class="md-modal" [ngClass]="modalClass" id="{{ modalID }}">
+  <div class="md-content" [ngClass]="contentClass" [ngClass]="themeMode === 'dark' ? 'bg-dark' : ''">
+    <ng-content></ng-content>
+  </div>
+</div>
+@if (backDrop) {
+  <div class="md-overlay"></div>
+} @else {
+  <div class="md-overlay" (click)="close(modalID)"></div>
+}

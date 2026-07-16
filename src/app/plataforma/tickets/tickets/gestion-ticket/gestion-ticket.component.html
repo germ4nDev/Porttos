@@ -1,0 +1,300 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'TICKETS.TICKETS.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'TICKETS.TICKETS.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TICKETS.TICKETS.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TICKETS.TICKETS.GESTION.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.TICKETS.GESTION.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoTicket"
+                                    placeholder="{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERCODE' | translate }}"
+                                    [ngClass]="{'is-invalid': !codigoTicket.valid && (codigoTicket.dirty || codigoTicket.touched || isSubmit) }"
+                                    #codigoTicket="ngModel" required [(ngModel)]="FormRegistro.codigoTicket" readonly />
+                                <label
+                                    *ngIf="!codigoTicket.valid && (codigoTicket.dirty || codigoTicket.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOCODE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoAplicacion">{{
+                                    'TICKETS.TICKETS.GESTION.APLICACION' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoAplicacion"
+                                    id="codigoAplicacion"
+                                    [ngClass]="{ 'is-invalid': !codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit) }"
+                                    #codigoAplicacion="ngModel" required [(ngModel)]="FormRegistro.codigoAplicacion"
+                                    (change)="onAplicacionchangeClick($event)">
+                                    <option value="" disabled>{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERAPLICACION' | translate }}</option>
+                                    <option [value]="app.codigoAplicacion" *ngFor="let app of aplicaciones">{{app.nombreAplicacion }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOAPLICACION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoSuite">
+                                    {{ 'TICKETS.TICKETS.GESTION.SUITE' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoSuite"
+                                    id="codigoSuite"
+                                    [ngClass]="{ 'is-invalid': !codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit) }"
+                                    #codigoSuite="ngModel" required [(ngModel)]="FormRegistro.codigoSuite"
+                                    (change)="onSuiteChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERSUITE' | translate }}
+                                    </option>
+                                    <option [value]="sui.codigoSuite" *ngFor="let sui of suites">
+                                        {{ sui.nombreSuite }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOSUITE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoModulo">
+                                    {{ 'TICKETS.TICKETS.GESTION.MODULO' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoModulo"
+                                    id="codigoModulo"
+                                    [ngClass]="{ 'is-invalid': !codigoModulo.valid && (codigoModulo.dirty || codigoModulo.touched || isSubmit) }"
+                                    #codigoModulo="ngModel" required [(ngModel)]="FormRegistro.codigoModulo"
+                                    (change)="onModuloChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERMODULO' | translate }}
+                                    </option>
+                                    <option [value]="mod.codigoModulo" *ngFor="let mod of modulos">
+                                        {{ mod.nombreModulo }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoModulo.valid && (codigoModulo.dirty || codigoModulo.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOMODULO' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreTicket">{{ 'TICKETS.TICKETS.GESTION.NAME' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="nombreTicket" name="nombreTicket" type="text"
+                                    placeholder="{{ 'TICKETS.TICKETS.GESTION.NAMEHOLDER' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !nombreTicket.valid && (nombreTicket.dirty || nombreTicket.touched || isSubmit) }"
+                                    #nombreTicket="ngModel" required [(ngModel)]="FormRegistro.nombreTicket" />
+                                <label
+                                    *ngIf="!nombreTicket.valid && (nombreTicket.dirty || nombreTicket.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.TICKETS.GESTION.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionTicket ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)" name="descripcionTicket"
+                                    [(ngModel)]="FormRegistro.descripcionTicket"
+                                    [ngClass]="{'is-invalid': !descripcionTicket.valid && (descripcionTicket.dirty || descripcionTicket.touched || isSubmit)}"
+                                    #descripcionTicket="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionTicket.valid && (descripcionTicket.dirty || descripcionTicket.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12"><br>
+                            <div class="text-center">
+                                <h4 class="datatable-title">{{ 'TICKETS.TICKETS.GESTION.ASIGNACION' | translate }}</h4>
+                            </div><br>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="fecha">
+                                    {{ 'TICKETS.TICKETS.GESTION.FECHAASIGNACION' | translate }}
+                                </label>
+                                <div class="input-group">
+                                    <input class="form-control form-input" placeholder="yyyy-mm-dd" name="fecha"
+                                        id="fecha" [(ngModel)]="FormRegistro.fecha" ngbDatepicker #d="ngbDatepicker"
+                                        (dateSelect)="onDateChange()" required />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
+                                            type="button">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoClase">
+                                    {{ 'TICKETS.TICKETS.GESTION.CLASETICKET' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoClase"
+                                    id="codigoClase"
+                                    [ngClass]="{ 'is-invalid': !codigoClase.valid && (codigoClase.dirty || codigoClase.touched || isSubmit) }"
+                                    #codigoClase="ngModel" required [(ngModel)]="FormRegistro.codigoClase"
+                                    (change)="onModuloChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERCLASETICKET' | translate }}</option>
+                                    <option [value]="cla.codigoClase" *ngFor="let cla of clasesTicket">
+                                        {{ cla.claseTicket }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoClase.valid && (codigoClase.dirty || codigoClase.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOCLASETICKET' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoUsuarioAsignado">
+                                    {{ 'TICKETS.TICKETS.GESTION.NOMUSUARIOASIGNADO' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;"
+                                    name="codigoUsuarioAsignado" id="codigoUsuarioAsignado"
+                                    [ngClass]="{ 'is-invalid': !codigoUsuarioAsignado.valid && (codigoUsuarioAsignado.dirty || codigoUsuarioAsignado.touched || isSubmit) }"
+                                    #codigoUsuarioAsignado="ngModel" required
+                                    [(ngModel)]="FormRegistro.codigoUsuarioAsignado"
+                                    (change)="onModuloChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERUSUARIOASIGNADO' | translate }}
+                                    </option>
+                                    <option [value]="usu.codigoUsuario" *ngFor="let usu of usuarios">
+                                        {{ usu.nombreUsuario }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoUsuarioAsignado.valid && (codigoUsuarioAsignado.dirty || codigoUsuarioAsignado.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOUSUARIOASIGNADO' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="prioridad">
+                                    {{ 'TICKETS.TICKETS.GESTION.PRIORIDAD' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="prioridad"
+                                    id="prioridad"
+                                    [ngClass]="{ 'is-invalid': !prioridad.valid && (prioridad.dirty || prioridad.touched || isSubmit) }"
+                                    #prioridad="ngModel" required [(ngModel)]="FormRegistro.prioridad"
+                                    (change)="onPrioridadChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERPRIORIDAD' | translate }}</option>
+                                    <option [value]="pri.prioridad" *ngFor="let pri of prioridades">
+                                        {{ pri.prioridad }}</option>
+                                </select>
+                                <label *ngIf="!prioridad.valid && (prioridad.dirty || prioridad.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOUPRIORIDAD' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="estadoTicket">{{ 'TICKETS.TICKETS.GESTION.STATUS' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="estadoTicket"
+                                    id="estadoTicket"
+                                    [ngClass]="{ 'is-invalid': !estadoTicket.valid && (estadoTicket.dirty || estadoTicket.touched || isSubmit) }"
+                                    #estadoTicket="ngModel" required [(ngModel)]="FormRegistro.estadoTicket"
+                                    (change)="onModuloChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.TICKETS.GESTION.PLACEHOLDERESTADOTICKET' | translate }}
+                                    </option>
+                                    <option [value]="esta.siglaEstado" *ngFor="let esta of estadosTicket">
+                                        {{ esta.nombreEstado }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!estadoTicket.valid && (estadoTicket.dirty || estadoTicket.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDOUESTADOTICKET' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.TICKETS.GESTION.DEFINICION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.definicionRequerimiento ?? ''"
+                                    (contentHtmlChange)="actualizarDefinicinRequerimiento($event)"
+                                    name="definicionRequerimiento" [(ngModel)]="FormRegistro.definicionRequerimiento"
+                                    [ngClass]="{'is-invalid': !definicionRequerimiento.valid && (definicionRequerimiento.dirty || definicionRequerimiento.touched || isSubmit)}"
+                                    #definicionRequerimiento="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!definicionRequerimiento.valid && (definicionRequerimiento.dirty || definicionRequerimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.TICKETS.GESTION.REQUERIDODEFINICION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12"><br>
+                            <div class="text-center">
+                                <h4 class="datatable-title">{{ 'TICKETS.TICKETS.GESTION.ELEMENTOSTICKET' | translate }}</h4>
+                            </div><br>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.TICKETS.GESTION.CAPTURA' | translate }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview">
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none"
+                                        name="capturaTicket">
+                                    <span class="file-name" [ngClass]="{'has-file': fileName}">
+                                        {{ fileName || ('TICKETS.TICKETS.GESTION.CAPTURAHOLDER' | translate) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

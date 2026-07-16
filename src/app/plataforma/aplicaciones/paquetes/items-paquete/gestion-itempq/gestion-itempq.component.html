@@ -1,0 +1,216 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'MODULOS.GESTION.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'MODULOS.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'MODULOS.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'MODULOS.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoItem">{{ 'ITEMSPQ.GESTION.CODE' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="codigoItem" name="codigoItem" type="text"
+                                    placeholder="{{ 'ITEMSPQ.GESTION.PLACEHOLDERCODE' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !codigoItem.valid && (codigoItem.dirty || codigoItem.touched || isSubmit) }"
+                                    #codigoItem="ngModel" required readonly [(ngModel)]="FormRegistro.codigoItem" />
+                                <label *ngIf="!codigoItem.valid && (codigoItem.dirty || codigoItem.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'ITEMSPQ.GESTION.REQUERIDOCODE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoTipo"> {{ 'MODULOS.GESTION.TIPOVALOR' |
+                                    translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer" name="codigoTipo"
+                                    id="codigoTipo" (change)="onTipoValorChangeClick($event)"
+                                    [ngClass]="{ 'is-invalid': !codigoTipo.valid && (codigoTipo.dirty || codigoTipo.touched || isSubmit) }"
+                                    #codigoTipo="ngModel" required [(ngModel)]="codigoTipo">
+                                    <option value="0">{{ 'MODULOS.GESTION.PLACEHOLDERTIPOVALOR' | translate }} </option>
+                                    <option [value]="tipo.codigoTipo" *ngFor="let tipo of tiposItems"> {{
+                                        tipo.nombreTipo }}</option>
+                                </select>
+                                <label *ngIf="!codigoTipo.valid && (codigoTipo.dirty || codigoTipo.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDOTIPOVALOR' | translate }}
+                                </label>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoItem"> {{ 'MODULOS.GESTION.LISTAPRECIOS' |
+                                    translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer" name="codigoItem"
+                                    id="codigoItem" (change)="onValorChangeClick($event)"
+                                    [ngClass]="{ 'is-invalid': !codigoItem.valid && (codigoItem.dirty || codigoItem.touched || isSubmit) }"
+                                    #codigoItem="ngModel" required [(ngModel)]="FormRegistro.codigoItem">
+                                    <option value="">{{ 'MODULOS.GESTION.PLACEHOLDERLISTAPRECIOS' | translate }}
+                                    </option>
+                                    <option [value]="valor.codigoItem" *ngFor="let valor of listaPrecios"> {{
+                                        valor.nombreItem }}</option>
+                                </select>
+                                <label *ngIf="!codigoItem.valid && (codigoItem.dirty || codigoItem.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDOLISTAPRECIOS' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreItem">{{ 'MODULOS.NAME' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="nombreItem" name="nombreItem" type="text"
+                                    placeholder="{{ 'MODULOS.GESTION.PLACEHOLDERNAME' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !nombreItem.valid && (nombreItem.dirty || nombreItem.touched || isSubmit) }"
+                                    #nombreItem="ngModel" required [(ngModel)]="FormRegistro.nombreItem" />
+                                <label *ngIf="!nombreItem.valid && (nombreItem.dirty || nombreItem.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="valorUnitario">{{ 'MODULOS.VALORUNITARIO' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="valorUnitario" name="valorUnitario"
+                                    type="number"
+                                    placeholder="{{ 'MODULOS.GESTION.PLACEHOLDERVALORUNITARIO' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !valorUnitario.valid && (valorUnitario.dirty || valorUnitario.touched || isSubmit) }"
+                                    #valorUnitario="ngModel" required readonly
+                                    [(ngModel)]="FormRegistro.valorUnitario" />
+                                <label
+                                    *ngIf="!valorUnitario.valid && (valorUnitario.dirty || valorUnitario.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDOVALORUNITARIO' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="cantidad">{{ 'MODULOS.CANTIDAD' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="cantidad" name="cantidad" type="number"
+                                    placeholder="{{ 'MODULOS.GESTION.PLACEHOLDERCANTIDAD' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !cantidad.valid && (cantidad.dirty || cantidad.touched || isSubmit) }"
+                                    #cantidad="ngModel" required [(ngModel)]="FormRegistro.cantidad"
+                                    (input)="onCantidadChangeClick($event)" />
+                                <label *ngIf="!cantidad.valid && (cantidad.dirty || cantidad.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDOCANTIDAD' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="valoresAdicionales">{{
+                                    'MODULOS.VALORESADICIONALES' | translate }}</label>
+                                <input class="form-control form-input" id="valoresAdicionales" name="valoresAdicionales"
+                                    type="number"
+                                    placeholder="{{ 'MODULOS.GESTION.PLACEHOLDERVALORESADICIONALES' | translate }}"
+                                    [ngClass]="{
+                    'is-invalid': !valoresAdicionales.valid && (valoresAdicionales.dirty || valoresAdicionales.touched || isSubmit)
+                  }" #valoresAdicionales="ngModel" required (input)="onValoresAdicionalesChangeClick($event)"
+                                    [(ngModel)]="FormRegistro.valoresAdicionales" />
+                                <label
+                                    *ngIf="!valoresAdicionales.valid && (valoresAdicionales.dirty || valoresAdicionales.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDOVALORESADICIONALES' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="valorTotal">{{ 'MODULOS.VALORTOTAL' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="valorTotal" name="valorTotal" type="number"
+                                    placeholder="{{ 'MODULOS.GESTION.PLACEHOLDERVALORTOTAL' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !valorTotal.valid && (valorTotal.dirty || valorTotal.touched || isSubmit) }"
+                                    #valorTotal="ngModel" required readonly [(ngModel)]="FormRegistro.valorTotal" />
+                                <label *ngIf="!valorTotal.valid && (valorTotal.dirty || valorTotal.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDOVALORTOTAL' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'MODULOS.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionItem ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)" name="descripcionItem"
+                                    [(ngModel)]="FormRegistro.descripcionItem"
+                                    [ngClass]="{ 'is-invalid': !descripcionItem.valid && (descripcionItem.dirty || descripcionItem.touched || isSubmit) }"
+                                    #descripcionItem="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionItem.valid && (descripcionItem.dirty || descripcionItem.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'MODULOS.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'MODULOS.GESTION.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estadoItem" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoItem" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoItem" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoItem" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

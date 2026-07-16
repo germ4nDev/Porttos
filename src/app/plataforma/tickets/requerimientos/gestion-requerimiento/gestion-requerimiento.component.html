@@ -1,0 +1,144 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'TICKETS.REQUERIMIENTOS.NEW' | translate }}
+                        </h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'TICKETS.REQUERIMIENTOS.UPDATE' | translate
+                            }}
+                        </h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TICKETS.REQUERIMIENTOS.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TICKETS.REQUERIMIENTOS.GESTION.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.REQUERIMIENTOS.GESTION.CODE' | translate
+                                    }}</label>
+                                <input type="text" class="form-control form-input" name="codigoRequerimiento"
+                                    placeholder="{{ 'TICKETS.REQUERIMIENTOS.GESTION.PLACEHOLDERCODE' | translate }}"
+                                    [ngClass]="{'is-invalid': !codigoRequerimiento.valid && (codigoRequerimiento.dirty || codigoRequerimiento.touched || isSubmit) }"
+                                    #codigoRequerimiento="ngModel" required
+                                    [(ngModel)]="FormRegistro.codigoRequerimiento" readonly />
+                                <label
+                                    *ngIf="!codigoRequerimiento.valid && (codigoRequerimiento.dirty || codigoRequerimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.REQUERIMIENTOS.GESTION.REQUERIDCODE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoModulo"> {{ 'TICKETS.REQUERIMIENTOS.GESTION.TICKET' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer" name="codigoTicket"
+                                    id="codigoTicket"
+                                    [ngClass]="{ 'is-invalid': !codigoTicket.valid && (codigoTicket.dirty || codigoTicket.touched || isSubmit) }"
+                                    #codigoTicket="ngModel" required [(ngModel)]="FormRegistro.codigoTicket"
+                                    (change)="onTicketChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.REQUERIMIENTOS.GESTION.PLACEHOLDERTICKET' | translate }} </option>
+                                    <option [value]="codigo.codigoTicket" *ngFor="let codigo of ticket"> {{
+                                        codigo.nombreTicket }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoTicket.valid && (codigoTicket.dirty || codigoTicket.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.REQUERIMIENTOS.GESTION.REQUERIDOTICKET' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreRequerimiento">{{
+                                    'TICKETS.REQUERIMIENTOS.GESTION.NAME' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="nombreRequerimiento"
+                                    name="nombreRequerimiento" type="text"
+                                    placeholder="{{ 'TICKETS.REQUERIMIENTOS.GESTION.PLACEHOLDERNAME' | translate }}"
+                                    [ngClass]="{'is-invalid': !nombreRequerimiento.valid && (nombreRequerimiento.dirty || nombreRequerimiento.touched || isSubmit)}"
+                                    #nombreRequerimiento="ngModel" required
+                                    [(ngModel)]="FormRegistro.nombreRequerimiento" />
+                                <label
+                                    *ngIf="!nombreRequerimiento.valid && (nombreRequerimiento.dirty || nombreRequerimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.REQUERIMIENTOS.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.REQUERIMIENTOS.GESTION.DESCRIPTION' | translate
+                                    }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionRequerimiento ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)"
+                                    name="descripcionRequerimiento" [(ngModel)]="FormRegistro.descripcionRequerimiento"
+                                    [ngClass]="{'is-invalid': !descripcionRequerimiento.valid && (descripcionRequerimiento.dirty || descripcionRequerimiento.touched || isSubmit)}"
+                                    #descripcionRequerimiento="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionRequerimiento.valid && (descripcionRequerimiento.dirty || descripcionRequerimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.REQUERIMIENTOS.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.REQUERIMIENTOS.GESTION.STATUS' | translate
+                                    }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estadoRequerimiento" type="radio" [value]="1"
+                                            [(ngModel)]="FormRegistro.estadoRequerimiento">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoRequerimiento" type="radio" [value]="0"
+                                            [(ngModel)]="FormRegistro.estadoRequerimiento">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

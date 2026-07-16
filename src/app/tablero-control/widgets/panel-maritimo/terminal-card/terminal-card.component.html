@@ -1,0 +1,58 @@
+<div class="qplus-widget terminal-card-panel">
+
+    <div class="panel-header">
+        <div class="terminal-identity">
+            <h3>
+                <span class="status-indicator" [ngClass]="data?.estado"></span>
+                {{ data?.nombre || title }}
+            </h3>
+            <p class="subtitle">{{ data?.tipoOperacion || 'MULTIPROPÓSITO' }}</p>
+        </div>
+    </div>
+
+    <div class="terminal-body-layout">
+
+        <div class="metrics-subrow">
+            <div class="metric-mini-box">
+                <small class="metric-label">BUQUES</small>
+                <p class="value txt-default">{{ data?.buquesActivos || 0 }}</p>
+            </div>
+            <div class="metric-mini-box">
+                <small class="metric-label">PATIOS</small>
+                <p class="value txt-patios">{{ data?.porcentajePatios || '0%' }}</p>
+            </div>
+            <div class="metric-mini-box">
+                <small class="metric-label">GATES</small>
+                <p class="value txt-gates">{{ data?.camionesGate || 0 }}/h</p>
+            </div>
+        </div>
+
+        <div class="docks-subrow">
+            <div class="docks-title">
+                <i class="feather icon-anchor"></i> ESTADO DE SITUACIÓN EN SITIO
+            </div>
+            <div class="docks-timeline">
+                <div *ngFor="let muelle of data?.muelles" class="dock-segment"
+                    [ngClass]="{'occupied': muelle.ocupado, 'free': !muelle.ocupado}">
+
+                    <span class="dock-label">{{ muelle.codigo }}</span>
+
+                    <small class="dock-vessel" [title]="muelle.motonave">
+                        {{ muelle.ocupado ? muelle.motonave : 'Libre' }}
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="efficiency-subrow" *ngIf="data?.kpiRendimiento">
+            <div class="efficiency-labels">
+                <span class="label">Productividad Global</span>
+                <span class="value">{{ data?.kpiRendimiento }}%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" [style.width.%]="data?.kpiRendimiento"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

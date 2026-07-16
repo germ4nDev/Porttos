@@ -1,0 +1,302 @@
+.tc-dashboard-container {
+    background-color: var(--tablero-background) !important;
+    height: calc(100vh - 140px);
+    /* O el alto que estés manejando */
+    overflow: hidden !important;
+    /* 🔥 Pinta el fondo del mismo color oscuro de tu dashboard */
+}
+
+/* Opcional: Asegúrate de que el body global no tenga márgenes en tu styles.scss principal */
+body,
+html {
+    background-color: var(--tablero-background) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.gridster {
+    background-color: var(--tablero-background) !important;
+    height: 100% !important;
+    margin-bottom: 0px !important;
+    /* Obliga a Gridster a respetar el límite del contenedor */
+}
+
+.tc-nav-tabs {
+    background-color: var(--tablero-background) !important;
+}
+
+.main-wrapper {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+
+
+.layout-wrapper {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: auto;
+}
+
+.content-area-map {
+    min-height: 0;
+    overflow-y: hidden;
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
+}
+
+.content-area,
+.content-area-pq {
+    min-height: 0;
+    overflow-y: hidden;
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
+}
+
+.content-area {
+    height: calc(100vh - 77px);
+}
+
+/* Bloqueamos el contenedor padre al tamaño exacto de la ventana */
+.tc-dashboard-container {
+    background-color: var(--widget-background) !important;
+    height: calc(100vh - var(--navbar-height));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 12px 12px 12px;
+    box-sizing: border-box;
+    scrollbar-color: color-mix(in srgb, var(--card-background, #ffffff) 50%, transparent) transparent;
+
+    &::-webkit-scrollbar {
+        width: 1px;
+        height: 1px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        /* Un color neutro sutil para el scroll */
+        background-color: var(--widget-bg);
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        /* Un poco más brillante al pasar el mouse */
+        background-color: var(--card-background);
+    }
+}
+
+/* ==========================================================================
+   3. NAVEGACIÓN POR PESTAÑAS (Modern Chips)
+   ========================================================================== */
+.tc-nav-tabs {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: var(--app-dashboard-gap, 1.2rem);
+    margin-bottom: var(--app-dashboard-gap, 1.2rem);
+    background-color: var(--widget-background) !important;
+
+    .tc-tab-btn {
+        display: inline-flex;
+        flex: 1 1 0px;
+        justify-content: center;
+        min-width: 160px;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        background-color: var(--widget-bg, rgba(255, 255, 255, 0.02));
+        border: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+        border-radius: 10px;
+        color: var(--text-color, #ffffff);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        flex-shrink: 0;
+
+        .icon {
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            border-color: color-mix(in srgb, var(--app-navbar-color, #0ea5e9) 50%, var(--border-color));
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        &.active {
+            background-color: var(--app-navbar-color, #0ea5e9);
+            border-color: var(--app-navbar-color, #0ea5e9);
+            color: var(--app-texto-color, #ffffff);
+            box-shadow: 0 4px 15px color-mix(in srgb, var(--app-navbar-color, #0ea5e9) 40%, transparent);
+
+            .icon {
+                transform: scale(1.15);
+            }
+        }
+    }
+}
+
+/* 2. Gridster se estira forzosamente al 100% del área disponible */
+.qplus-gridster-board {
+    flex-grow: 1;
+    height: 100% !important;
+    /* 🚨 FORZAMOS EL ANCHO TOTAL */
+    height: calc(100vh - 170px);
+    /* Ajusta según lo que mida tu header/pestañas */
+    background-color: var(--card-background) !important;
+    padding: 0 !important;
+    overflow-x: hidden;
+    /* Previene scroll horizontal fantasma */
+}
+
+/* 2. El gridster-item asume el rol de la tarjeta principal (.qplus-widget) */
+.gridster {
+    background-color: var(--widget-background);
+    padding: 0;
+}
+
+gridster-item {
+    // background-color: var(--card-background);
+    background-color: transparent !important;
+    /* El color de fondo oficial de tu tema oscuro */
+    border-radius: 10px;
+    border: none;
+    /* El borde curvo oficial */
+    padding: 0;
+    box-shadow: 0 1px 10px rgba(78, 78, 78, 0.25);
+    /* Quitamos el padding si quieres que el widget toque los bordes */
+
+    .gridster-item-inner {
+        padding: 8px;
+        /* O le das el padding exacto que necesitas */
+    }
+}
+
+
+.tablero-bloqueado gridster-item {
+    cursor: default !important;
+
+    &:hover {
+        /* Apagamos la sombra y el borde de hover cuando está bloqueado */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-color: var(--border-color, rgba(255, 255, 255, 0.05));
+    }
+}
+
+/* La capa oscura que cubre toda la pantalla y difumina el fondo */
+.qplus-backdrop-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    /* Oscurece un poco */
+    backdrop-filter: blur(8px);
+    /* 🚨 EL EFECTO DIFUSO */
+    z-index: 9999;
+    /* Por encima de todo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+/* El panel gigante donde vive el widget */
+.qplus-modal-lg {
+    width: 90%;
+    height: 85vh;
+    /* 🚨 Altura atada a la pantalla */
+    background: var(--card-background, #1e293b);
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    /* Clave para que el botón de cerrar funcione */
+    padding: 0px;
+
+    /* Configuración Flexbox del padre */
+    display: flex;
+    flex-direction: column;
+
+    /* ❌ NO USAR OVERFLOW HIDDEN AQUÍ, O CORTARÁS EL BOTÓN */
+}
+
+/* 🚨 LA CURA DEL SCROLL: Forzamos al widget que se inyecta adentro a que se comporte como un bloque flex estricto */
+.qplus-modal-lg>* {
+    flex: 1 1 0%;
+    min-height: 0;
+    width: 100%;
+}
+
+.btn-cerrar-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.cargador-flotante {
+    position: absolute;
+    top: 60px;
+    /* Debajo de los tabs */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background: rgba(15, 23, 42, 0.7);
+    /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(4px);
+    /* Efecto cristal */
+    z-index: 50;
+    /* Por encima de Gridster */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+
+    .cargador-contenido {
+        text-align: center;
+
+        .spinner-qplus {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(6, 182, 212, 0.3);
+            border-top-color: #06b6d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+    }
+}
+
+.qplus-fantasma {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

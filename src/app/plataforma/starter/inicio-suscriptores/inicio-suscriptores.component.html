@@ -1,0 +1,33 @@
+<div class="fixed inset-0">
+    <app-full-screen-slider [tipoSlider]="2"></app-full-screen-slider>
+</div>
+<nav class="navbar fixed-top navbar-expand-lg z-[1015]">
+    <div class="container-fluid panel-overlay">
+        <a class="navbar-brand" href="#"></a>
+        <div class="nav-right">
+            <app-language-selector></app-language-selector>
+        </div>
+    </div>
+</nav>
+<div class="relative z-[1015] w-full min-h-screen pt-16 pb-16 flex justify-center items-start">
+    <div class="container mx-auto p-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl">
+        <h2 class="card-grd-title z-[1015]">
+            {{ 'PLATAFORMA.TITULO_GRID_SUSCRIPTORES' | translate }}
+        </h2>
+        <div class="card-grid-apps">
+            <div class="card-grd" *ngFor="let susc of suscriptores"
+                [style.backgroundImage]="'url(' + susc.logoSuscriptor + ')'" [title]="susc.logoSuscriptor">
+                <div class="card-grd-content">
+                    <h1>{{ susc.nombreSuscriptor }}</h1>
+                    <p [innerHTML]="susc.descripcionSuscriptor"></p>
+                    <div class="card-grd-actions">
+                        <a (click)="ingresarPlataforma(susc)" class="card-grd-button">
+                            {{ 'PLATAFORMA.ENTRAR' | translate }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

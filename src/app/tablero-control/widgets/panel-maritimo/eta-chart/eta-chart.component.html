@@ -1,0 +1,48 @@
+<div class="qplus-widget widget-etaata">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-clock mr-1" *ngIf="!data?.icono"></i>
+                {{ data?.titulo || 'REPORTE ETA VS ATA' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Programación de arribos y atraques' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
+    </div>
+</div>
+
+
+<!-- <div class="qplus-widget kpi-card-panel w-100 h-100 d-flex flex-column">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3 class="qplus-widget-title">
+                <i class="feather icon-clock mr-1" *ngIf="!data?.icono"></i>
+                <i [class]="data?.icono" *ngIf="data?.icono" class="mr-1"></i>
+                {{ data?.titulo || 'REPORTE ETA VS ATA' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Programación de arribos y atraques' }}</p>
+        </div>
+
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body flex-grow-1" style="min-height: 250px; position: relative;">
+        <div *ngIf="cargando" class="d-flex justify-content-center align-items-center w-100 h-100"
+            style="position: absolute; top:0; left:0; z-index: 10;">
+            <span style="color: #64748b; font-size: 0.8rem;">Cargando curva...</span>
+        </div>
+
+        <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
+    </div>
+</div> -->

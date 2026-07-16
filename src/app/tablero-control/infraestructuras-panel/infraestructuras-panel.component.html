@@ -1,0 +1,83 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+                <!-- <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+                    {{ 'PLATAFORMA.FILTERS' | translate }}
+                </button> -->
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+                <!-- <div class="p-3 filtros-scroll-wrapper">
+                    <h6 class="filtros-title">{{ 'INFRAESTRUCTURAS.FILTROS.TITULO' | translate }}</h6>
+                    <div class="filtro">
+                        <small>{{ 'INFRAESTRUCTURAS.FILTROS.FILTROCODIGO' | translate }}</small>
+                        <select (change)="onFiltroCodigoChangeClick($event)" class="form-control form-select">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option [value]="app.codigoAplicacion" *ngFor="let app of aplicaciones">
+                                {{ app.codigoAplicacion }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'INFRAESTRUCTURAS.FILTROS.FILTRONOMBRE' | translate }}</small>
+                        <select (change)="onFiltroNombreChangeClick($event)" class="form-control form-select">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option [value]="app.nombreAplicacion" *ngFor="let app of aplicaciones">
+                                {{ app.nombreAplicacion }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'INFRAESTRUCTURAS.FILTROS.FILTRODECRIPCION' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroDescripcionChangeClick($event)"
+                            class="form-control form-input"
+                            placeholder="{{ 'INFRAESTRUCTURAS.FILTROS.DESCRIPCIONCHOLDER' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'INFRAESTRUCTURAS.FILTROS.FILTROESTADO' | translate }}</small>
+                        <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+                            <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+                        </select>
+                    </div>
+                </div> -->
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <ng-container *ngIf="infraestructurasFiltradas$ | async as dataFiltrada; else loading">
+                    <app-data-table [data]="dataFiltrada" [idField]="'id_infraestructura'"
+                        [tableTitle]="'INFRAESTRUCTURAS.TITLE' | translate" [metadataColumns]="columnasAplicaciopnes"
+                        [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="true"
+                        [showNewButton]="true" [showViewButton]="false" [showEditButton]="true"
+                        [showDeleteButton]="true" [showSearchBox]="false"
+                        [newButtonLabel]="'INFRAESTRUCTURAS.NEW' | translate"
+                        [exportLabel]="'PLATAFORMA.EXCEL' | translate" (newRecord)="OnNuevaAplicaicionClick()"
+                        (editRecord)="OnEditarAplicaicionClick($event)"
+                        (deleteRecord)="OnEliminarAplicaicionClick($event)">
+                    </app-data-table>
+                </ng-container>
+                <ng-template #loading>
+                    <app-data-loader [isLoading]="true" message="Cargando aplicaciones ..."> </app-data-loader>
+                </ng-template>
+
+                <!-- <h3>Importar Usuarios Masivos</h3>
+                <app-excel-uploader [apiUrl]="urlSubidaUsuarios" [columnsMap]="mapeoColumnasExcel"
+                    [extraData]="datosAdicionales">
+                </app-excel-uploader> -->
+            </div>
+        </div>
+    </div>
+</div>

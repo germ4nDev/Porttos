@@ -1,0 +1,52 @@
+<div class="tc-header-layout">
+    <div class="tc-title-section">
+        <h1 class="tc-title">{{ titulo }}</h1>
+        <p class="tc-subtitle">{{ subtitulo }}</p>
+    </div>
+
+    <div class="tc-controls-section">
+        <ul class="tc-toolbar-nav">
+
+            <li class="nav-item select-item">
+                <div class="tc-nodo-box">
+                    <!-- <label>{{ 'TORRE_CONTROL.NODO_OPERATIVO' | translate }}</label> -->
+                    <select class="tc-dropdown" [(ngModel)]="nodoSeleccionado" (change)="onCambioNodo($event)">
+                        <!-- <option value="">{{ 'TORRE_CONTROL.NODO_OPERATIVO' | translate }}</option> -->
+                        <option *ngFor="let nodo of listaCiudadesPortuarias" [value]="nodo.id_puerto">
+                            {{ nodo.id_puerto }}
+                        </option>
+                    </select>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="toolbar-btn" [hidden]="isOptionBloqueo" (click)="onBloqueoClick()"
+                    title="Bloqueo/Desbloqueo">
+                    <i class="feather" [ngClass]="isBloqueado ? 'icon-lock' : 'icon-unlock'"></i>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="toolbar-btn" (click)="goBack()" title="Menú Principal">
+                    <i class="feather icon-home"></i>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="toolbar-btn" (click)="abrirCatalogo.emit()"
+                    title="Catalogo Widgets">
+                    <i class="feather icon-layout"></i>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <app-language-selector></app-language-selector>
+            </li>
+
+            <li class="nav-item profile-wrapper">
+                <app-profile-drp></app-profile-drp>
+            </li>
+
+        </ul>
+    </div>
+</div>

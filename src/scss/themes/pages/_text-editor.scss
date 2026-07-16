@@ -1,0 +1,20 @@
+quill-editor {
+  width: 100%;
+}
+
+.ql-toolbar {
+  background-color: rgb(245, 245, 245);
+  border-color: rgb(189, 189, 189);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.ql-container {
+  border-color: rgb(189, 189, 189) !important;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+
+  .ql-editor {
+    min-height: 250px;
+  }
+}

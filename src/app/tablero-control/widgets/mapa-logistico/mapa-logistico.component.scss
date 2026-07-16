@@ -1,0 +1,948 @@
+// @import 'maplibre-gl/dist/maplibre-gl.css';
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.qplus-widget.-logistico-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ==========================================================================
+   3. CONTENEDOR DEL CANVAS (La Jaula de la Gráfica)
+   ========================================================================== */
+.panel-body {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+    position: relative;
+}
+
+.map-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.map-container {
+    width: 100% !important;
+    height: calc(100vh - 170px) !important;
+    overflow: hidden !important;
+    filter: contrast(1.1) saturate(1.2) brightness(1.05);
+    position: absolute;
+    top: 0;
+    left: 0;
+    outline: none;
+}
+
+::ng-deep .maplibregl-ctrl-group {
+    background-color: color-mix(in srgb, var(--widget-bg), transparent 40%) !important;
+    border: 1px solid color-mix(in srgb, var(--widget-bg), transparent 40%) !important;
+    color: var(--text-subtitle-color) !important;
+}
+
+::ng-deep .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+::ng-deep .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon {
+    background-image: none !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px !important;
+    font-family: 'Segoe UI', sans-serif !important;
+    font-weight: 500 !important;
+    color: var(--text-subtitle-color) !important;
+    line-height: 1 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+}
+
+::ng-deep .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon::before {
+    content: '+';
+}
+
+::ng-deep .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon::before {
+    content: '−';
+}
+
+::ng-deep .maplibregl-ctrl-group button:hover {
+    background-color: #334155 !important;
+
+    .maplibregl-ctrl-icon {
+        color: #60a5fa !important;
+    }
+}
+
+.maplibregl-ctrl-group {
+    background-color: color-mix(in srgb, var(--widget-bg), transparent 40%) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.maplibregl-ctrl-group button {
+    width: 30px !important;
+    height: 30px !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.maplibregl-ctrl-icon {
+    filter: invert(1) brightness(2) !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+    background-color: color-mix(in srgb, var(--widget-bg), transparent 40%) !important;
+}
+
+.panel-capas-flotante {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10;
+    width: 220px;
+    background-color: color-mix(in srgb, var(--widget-bg), transparent 40%);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    color: var(--text-subtitle-color);
+    font-family: 'Inter', system-ui, sans-serif;
+    max-height: 90%;
+    overflow-y: auto;
+    backdrop-filter: blur(4px);
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 3px;
+    }
+}
+
+.panel-header {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: color-mix(in srgb, var(--widget-bg), transparent 40%);
+    border-radius: 8px 8px 0 0;
+
+    h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+}
+
+.grupo-capas {
+    border-bottom: 1px solid var(--border-color);
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.grupo-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--widget-bg), transparent 40%);
+    }
+
+    .grupo-titulo {
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-color);
+    }
+
+    .icono-toggle {
+        font-size: 10px;
+        color: var(--text-color);
+    }
+}
+
+.grupo-body {
+    padding: 5px 15px 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.capa-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: var(--text-color);
+    }
+
+    input[type="checkbox"] {
+        accent-color: var(--app-navbar-color);
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+    }
+}
+
+.custom-map-popup {
+
+    &.infra {
+        border-top: 5px solid #8b5cf6;
+    }
+
+    &.maritime {
+        border-top: 5px solid #60a5fa;
+    }
+
+    &.terrestre {
+        border-top: 5px solid #60a5fa;
+    }
+
+    &.clima {
+        border-top: 5px solid #60a5fa;
+    }
+
+    &.riesgos {
+        border-top: 5px solid #60a5fa;
+    }
+
+    .popup-title {
+        font-family: sans-serif;
+        color: #333;
+    }
+}
+
+/* =========================================
+   ESTILOS GLOBALES PARA EL POPUP DE MAPLIBRE
+   ========================================= */
+::ng-deep {
+
+    .qplus-popup .custom-map-popup {
+        padding: 4px;
+    }
+
+    .qplus-popup .custom-map-popup h3 {
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        margin-top: 0 !important;
+        margin-bottom: 6px !important;
+        line-height: 1.2 !important;
+    }
+
+    .qplus-popup .custom-map-popup p {
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+    }
+
+    .qplus-popup.popup-light .maplibregl-popup-content {
+        background-color: #ffffff !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        border-radius: 8px !important;
+    }
+
+    .qplus-popup.popup-light .custom-map-popup h3 {
+        color: #1e293b !important;
+    }
+
+    .qplus-popup.popup-light .custom-map-popup p {
+        color: #64748b !important;
+    }
+
+    .qplus-popup.popup-light .maplibregl-popup-close-button {
+        color: #64748b !important;
+    }
+
+    .qplus-popup.popup-light.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+        border-top-color: #ffffff !important;
+    }
+
+    .qplus-popup.popup-light.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+        border-bottom-color: #ffffff !important;
+    }
+
+    .qplus-popup.popup-light.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+        border-right-color: #ffffff !important;
+    }
+
+    .qplus-popup.popup-light.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+        border-left-color: #ffffff !important;
+    }
+
+    /* 3. TEMA OSCURO */
+    .qplus-popup.popup-dark .maplibregl-popup-content {
+        background-color: #1e293b !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+        border-radius: 8px !important;
+    }
+
+    .qplus-popup.popup-dark .custom-map-popup h3 {
+        color: #ffffff !important;
+    }
+
+    .qplus-popup.popup-dark .custom-map-popup p {
+        color: #cbd5e1 !important;
+    }
+
+    .qplus-popup.popup-dark .maplibregl-popup-close-button {
+        color: #94a3b8 !important;
+    }
+
+    .qplus-popup.popup-dark .maplibregl-popup-close-button:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+    }
+
+    .qplus-popup.popup-dark.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+        border-top-color: #1e293b !important;
+    }
+
+    .qplus-popup.popup-dark.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+        border-bottom-color: #1e293b !important;
+    }
+
+    .qplus-popup.popup-dark.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+        border-right-color: #1e293b !important;
+    }
+
+    .qplus-popup.popup-dark.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+        border-left-color: #1e293b !important;
+    }
+}
+
+.fab-capas {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color);
+    border: none;
+    border-radius: 28px;
+    padding: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); // Sombra profunda de FAB
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); // Animación fluida
+
+    i {
+        font-size: 24px;
+    }
+
+    &:hover {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        transform: translateY(-2px); // Se levanta ligeramente al pasar el mouse
+    }
+
+    &.activo {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(0);
+    }
+}
+
+.fab-leyenda {
+    position: absolute;
+    top: 20px;
+    left: 70px;
+    z-index: 1000;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color);
+    border: none;
+    border-radius: 28px;
+    padding: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    i {
+        font-size: 24px;
+    }
+
+    &:hover {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        transform: translateY(-2px);
+    }
+
+    &.activo {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(0);
+    }
+}
+
+.fab-mapa {
+    position: absolute;
+    top: 20px;
+    left: 120px;
+    z-index: 1000;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color);
+    border: none;
+    border-radius: 28px;
+    padding: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    i {
+        font-size: 24px;
+    }
+
+    &:hover {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        transform: translateY(-2px);
+    }
+
+    &.activo {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(0);
+    }
+}
+
+.fab-centrar {
+    position: absolute;
+    top: 110px;
+    right: 7px;
+    z-index: 1000;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color);
+    border: none;
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    i {
+        font-size: 24px;
+    }
+
+    &:hover {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        transform: translateY(-2px);
+    }
+
+    &.activo {
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(0);
+    }
+}
+
+.panel-capas {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    z-index: 1000;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    width: 260px;
+    border: 1px solid #e2e8f0;
+    animation: slideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: bottom right;
+
+    .leyenda-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+        border-bottom: 1px solid #e2e8f0;
+
+        h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            transition: background 0.2s;
+
+            &:hover {
+                background: #f1f5f9;
+                color: #0f172a;
+            }
+
+            i {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .leyenda-body {
+        padding: 16px 18px;
+
+        h4 {
+            margin: 0 0 12px 0;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px dashed #e2e8f0;
+            margin: 16px 0;
+        }
+
+        .leyenda-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
+                font-size: 13px;
+                color: #334155;
+                font-weight: 500;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .leyenda-circulo {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    border: 2px solid white;
+                    box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.08); // Borde exterior para contraste
+                    flex-shrink: 0;
+                }
+            }
+        }
+    }
+
+    // Tema Oscuro
+    &.dark-theme {
+        background: #1e293b;
+        border-color: #334155;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+
+        .leyenda-header {
+            border-color: #334155;
+
+            h3 {
+                color: #f8fafc;
+            }
+
+            button:hover {
+                background: #334155;
+                color: #f8fafc;
+            }
+        }
+
+        .leyenda-body {
+            h4 {
+                color: #94a3b8;
+            }
+
+            hr {
+                border-color: #334155;
+            }
+
+            .leyenda-lista li {
+                color: #e2e8f0;
+            }
+
+            .leyenda-circulo {
+                border-color: #1e293b;
+                box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+}
+
+.panel-leyenda {
+    position: absolute;
+    top: 80px; // Nace debajo del FAB (que mide 48px + 20px de margen superior + espacio)
+    left: 50px;
+    z-index: 1000;
+    background: white;
+    border-radius: 12px; // Bordes más suaves
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    width: 260px;
+    border: 1px solid #e2e8f0;
+    animation: slideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: bottom right;
+
+    .leyenda-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+        border-bottom: 1px solid #e2e8f0;
+
+        h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            transition: background 0.2s;
+
+            &:hover {
+                background: #f1f5f9;
+                color: #0f172a;
+            }
+
+            i {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .leyenda-body {
+        padding: 16px 18px;
+
+        h4 {
+            margin: 0 0 12px 0;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px dashed #e2e8f0;
+            margin: 16px 0;
+        }
+
+        .leyenda-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
+                font-size: 13px;
+                color: #334155;
+                font-weight: 500;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .leyenda-circulo {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    border: 2px solid white;
+                    box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.08); // Borde exterior para contraste
+                    flex-shrink: 0;
+                }
+            }
+        }
+    }
+
+    // Tema Oscuro
+    &.dark-theme {
+        background: #1e293b;
+        border-color: #334155;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+
+        .leyenda-header {
+            border-color: #334155;
+
+            h3 {
+                color: #f8fafc;
+            }
+
+            button:hover {
+                background: #334155;
+                color: #f8fafc;
+            }
+        }
+
+        .leyenda-body {
+            h4 {
+                color: #94a3b8;
+            }
+
+            hr {
+                border-color: #334155;
+            }
+
+            .leyenda-lista li {
+                color: #e2e8f0;
+            }
+
+            .leyenda-circulo {
+                border-color: #1e293b;
+                box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+}
+
+// Animación de entrada más natural
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+// Sobreescritura estructural del Popup de MapLibre
+::ng-deep .qplus-popup {
+    z-index: 1000;
+
+    // Contenedor principal de MapLibre
+    .maplibregl-popup-content {
+        background-color: var(--widget-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0; // ¡Clave! Quitamos el padding de MapLibre para controlar los bordes
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        color: var(--text-color);
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        width: max-content;
+        min-width: 260px;
+        max-width: 320px;
+    }
+
+    // Flecha apuntando al punto
+    .maplibregl-popup-tip {
+        border-top-color: var(--border-color);
+        border-bottom-color: var(--border-color);
+    }
+
+    // El botón 'X' de cerrar
+    .maplibregl-popup-close-button {
+        color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        font-size: 18px;
+        padding: 4px 8px;
+        right: 2px;
+        top: 2px;
+        border-radius: 0 8px 0 0;
+        z-index: 10;
+
+        &:hover {
+            background-color: transparent;
+            color: var(--app-texto-color);
+        }
+    }
+
+    // ------------------------------------------------
+    // CLASES CENTRALIZADAS QPLUS PARA EL CONTENIDO
+    // ------------------------------------------------
+    .qplus-popup-header {
+        background-color: color-mix(in srgb, var(--widget-bg), transparent 40%);
+        padding: 12px 35px 12px 14px; // 35px a la derecha para que no choque con la 'X'
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 8px 8px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+        h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-color);
+            text-transform: uppercase;
+        }
+    }
+
+    .qplus-popup-body {
+        padding: 14px;
+        font-size: 12px;
+        line-height: 1.5;
+
+        .qplus-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+
+            .qplus-label {
+                color: var(--text-color);
+                font-weight: 500;
+            }
+
+            .qplus-value {
+                color: var(--text-color);
+                font-weight: 600;
+                text-align: right;
+            }
+        }
+
+        .qplus-col {
+            margin-bottom: 8px;
+
+            .qplus-label {
+                color: var(--text-color);
+                font-weight: 500;
+                display: block;
+                margin-bottom: 2px;
+            }
+
+            .qplus-value {
+                color: var(--text-color);
+                font-weight: 500;
+                display: block;
+            }
+        }
+
+        .qplus-divider {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            ;
+        }
+
+        .qplus-alert-box {
+            margin-top: 12px;
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #ef4444;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px dashed rgba(239, 68, 68, 0.4);
+            font-weight: 600;
+            font-size: 11px;
+            text-align: center;
+        }
+    }
+
+    // Estilos para los Badges (Estados)
+    .qplus-badge {
+        font-size: 11px;
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 3px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+
+        &.success {
+            color: #22c55e;
+        }
+
+        &.warning {
+            color: #f59e0b;
+        }
+
+        &.danger {
+            color: #ef4444;
+        }
+
+        &.info {
+            color: #38bdf8;
+        }
+    }
+}

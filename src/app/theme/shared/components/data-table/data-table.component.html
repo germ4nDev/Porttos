@@ -1,0 +1,328 @@
+<div class="datatable-wrapper">
+    <h5 *ngIf="tableTitle" class="datatable-title text-center">{{ tableTitle }}</h5>
+    <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex align-items-center">
+            <span>{{ 'PLATAFORMA.DATATABLE.SHOW' | translate }}</span>
+            <select class="form-select mx-2" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+                <option [ngValue]="100">100</option>
+            </select>
+            <span>{{ 'PLATAFORMA.DATATABLE.ENTRIES' | translate }}</span>
+        </div>
+        <div class="d-flex">
+            <button class="btn btn-primary btn-NuevoRegistro btn-animacion" (click)="onExcelExport()">
+                {{ exportLabel | translate }}
+                <i class="feather ms-2 icon-download"></i>
+            </button>
+            <button *ngIf="showBackButton" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                (click)="onBackClick()">
+                {{ backButtonLabel | translate }}
+                <i class="feather icon-arrow-left"></i>
+            </button>
+            <button *ngIf="showNewButton" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                (click)="onNewRecord()">
+                {{ newButtonLabel | translate }}
+                <i class="feather ms-2 icon-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="content-g67">
+        <div class="tableFixHead">
+            <table id="datatable-component" class="row-border hover table nowrap w-100">
+                <thead *ngIf="paginatedData.length > 0">
+                    <tr>
+                        <th *ngIf="showDetail" class="detail-col"></th>
+                        <th *ngFor="let column of finalColumns" (click)="onSort(column.name)"
+                            [style.cursor]="column.isSortable === false ? 'default' : 'pointer'" class="text-nowrap">
+                            {{ column.header | translate }}
+                            <ng-container *ngIf="sortByColumn === column.name && column.isSortable !== false">
+                                <i class="fas fa-arrow-up ms-1" *ngIf="sortDirection === 'asc'"></i>
+                                <i class="fas fa-arrow-down ms-1" *ngIf="sortDirection === 'desc'"></i>
+                            </ng-container>
+                        </th>
+                        <th *ngIf="showActions" class="text-center">{{ 'PLATAFORMA.DATATABLE.ACTIONS' | translate }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="paginatedData.length === 0">
+                        <td [attr.colspan]="finalColumns.length + (showActions ? 1 : 0) + (showDetail ? 1 : 0)"
+                            class="text-center py-4"><br /><br />
+                            {{ 'PLATAFORMA.DATATABLE.NODATA' | translate }}
+                        </td>
+                    </tr>
+                    <ng-container *ngFor="let row of paginatedData; let i = index">
+                        <tr>
+                            <td style="width: 10px" *ngIf="showDetail">
+                                <i class="{{ registroId === row[idField] ? 'fas fa-chevron-down' : 'fas fa-chevron-right' }}"
+                                    (click)="toggleDetails(row)" style="cursor: pointer"></i>
+                            </td>
+                            <td *ngFor="let column of finalColumns">
+                                <ng-container *ngIf="column" [ngSwitch]="column.type">
+                                    <ng-container *ngSwitchCase="'avatar'">
+                                        <img [src]="row[column.name]" [alt]="'Avatar'" class="avatar-table" />
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'image'">
+                                        <img [src]="row[column.name]" [alt]="'Image'" class="image-table" />
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'capture'">
+                                        <img [src]="row[column.name]" [alt]="'Capture'" class="capture-table" />
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'number'">
+                                        <span style="display: block; text-align: right">
+                                            {{ row[column.name] | number: '1.2-2' }}
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'price'">
+                                        <span style="display: block; text-align: right"> ${{ row[column.name] | number:
+                                            '1.2-2' }} </span>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'date'">
+                                        {{ row[column.name] | date: 'mediumDate' }}
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'array_text'">
+                                        <ng-container *ngIf="isArray(row[column.name])">
+                                            {{ row[column.name].join(', ') }}
+                                        </ng-container>
+                                        <ng-container *ngIf="!isArray(row[column.name])">
+                                            {{ row[column.name] }}
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'array_tags'">
+                                        <div *ngIf="isArray(row[column.name])" class="flex flex-wrap gap-1">
+                                            <span *ngFor="let tag of row[column.name]"
+                                                class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-200 dark:text-blue-800">
+                                                {{ tag }}
+                                            </span>
+                                        </div>
+                                        <ng-container *ngIf="!isArray(row[column.name])">
+                                            {{ row[column.name] }}
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'color_chip'" style="align-content: center">
+                                        <span style="display: block; text-align: center">
+                                            <div class="color-chip" [style.backgroundColor]="row[column.name]"
+                                                [title]="row[column.name]"> </div>
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'text'">
+                                        <span [innerHTML]="row[column.name]"></span>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'estado'">
+                                        <span style="display: block; text-align: center">
+                                            {{ row[column.name] }}
+                                        </span>
+                                    </ng-container>
+
+                                    <ng-container *ngSwitchDefault>
+                                        <span [innerHTML]="row[column.name]"></span>
+                                    </ng-container>
+                                </ng-container>
+                            </td>
+                            <td style="text-align: center; white-space: nowrap" *ngIf="showActions">
+                                <button id="#btnView" *ngIf="showViewButton" class="dt-option-btn dt-option-btn--view"
+                                    (click)="onView(row)" title="{{ 'PLATAFORMA.DATATABLE.VIEW' | translate }}">V
+                                </button>
+                                <button id="btnEdit" *ngIf="showEditButton" class="dt-option-btn dt-option-btn--edit"
+                                    (click)="onEdit(row)" title="{{ 'PLATAFORMA.DATATABLE.EDIT' | translate }}">M
+                                </button>
+                                <button id="btnDel" *ngIf="showDeleteButton" class="dt-option-btn dt-option-btn--delete"
+                                    (click)="onDelete(row)" title="{{ 'PLATAFORMA.DATATABLE.DELETE' | translate }}">E
+                                </button>
+                                <button id="btnOp1" *ngIf="showOption1Button"
+                                    class="dt-option-btn dt-option-btn--option-1"
+                                    style="--dt-dynamic-color: {{ colorOpcion1 }}" (click)="onOption1(row)"
+                                    title="{{ tooltipOption1 }}">
+                                    {{ letraOpcion1 }}
+                                </button>
+                                <button id="btnOp2" *ngIf="showOption2Button"
+                                    class="dt-option-btn dt-option-btn--option-2"
+                                    style="--dt-dynamic-color: {{ colorOpcion2 }}" (click)="onOption2(row)"
+                                    title="{{ tooltipOption2 }}">
+                                    {{ letraOpcion2 }}
+                                </button>
+                                <button id="btnOp3" *ngIf="showOption3Button"
+                                    class="dt-option-btn dt-option-btn--option-3"
+                                    style="--dt-dynamic-color: {{ colorOpcion3 }}" (click)="onOption3(row)"
+                                    title="{{ tooltipOption3 }}">
+                                    {{ letraOpcion3 }}
+                                </button>
+                                <button id="btnOp4" *ngIf="showOption4Button"
+                                    class="dt-option-btn dt-option-btn--option-3"
+                                    style="--dt-dynamic-color: {{ colorOpcion4 }}" (click)="onOption4(row)"
+                                    title="{{ tooltipOption4 }}">
+                                    {{ letraOpcion4 }}
+                                </button>
+                                <button id="btnOp5" *ngIf="showOption5Button"
+                                    class="dt-option-btn dt-option-btn--option-3"
+                                    style="--dt-dynamic-color: {{ colorOpcion5 }}" (click)="onOption5(row)"
+                                    title="{{ tooltipOption5 }}">
+                                    {{ letraOpcion5 }}
+                                </button>
+                            </td>
+                        </tr>
+                        <tr style="padding: 100px" *ngIf="registroId === row[idField]">
+                            <td [attr.colspan]="metadataColumns.length + (showDetail ? 1 : 0) + (showActions ? 2 : 1)">
+                                <div class="row col-md-12">
+                                    <div class="row col-md-11" style="margin-left: 35px">
+                                        <div class="row data-table-detail-row"
+                                            *ngFor="let detailColumn of metadataDetailColumns">
+                                            <div class="col-md-3 text-strat"> {{ detailColumn.header | translate |
+                                                uppercase }}: </div>
+                                            <div class="col-md-9 text-start">
+                                                <ng-container [ngSwitch]="detailColumn.type">
+                                                    <ng-container *ngSwitchCase="'avatar'">
+                                                        <img [src]="row[detailColumn.name]" [alt]="'Avatar'"
+                                                            class="avatar-table" />
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'image'">
+                                                        <img [src]="row[detailColumn.name]" [alt]="'Image'"
+                                                            class="image-table" />
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'capture'">
+                                                        <ng-container [ngSwitch]="row.tipo">
+                                                            <img *ngSwitchCase="'capture'" [src]="row.capture"
+                                                                [alt]="'Capture'" class="capture-table" />
+                                                            <div *ngSwitchCase="'video'" class="video-table">
+                                                                <app-video-player
+                                                                    [src]="row.capture"></app-video-player>
+                                                            </div>
+                                                            <div *ngSwitchDefault>
+                                                                <a [href]="row[detailColumn.capture]" target="_blank"
+                                                                    style="color: cyan"> Ver archivo </a>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'number'">
+                                                        <span style="display: block; text-align: right">
+                                                            {{ row[detailColumn.name] | number: '1.2-2' }}
+                                                        </span>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'price'">
+                                                        <span style="display: block; text-align: left"> ${{
+                                                            row[detailColumn.name] | number: '1.2-2' }} </span>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'date'">
+                                                        {{ row[detailColumn.name] | date: 'mediumDate' }}
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'array_text'">
+                                                        <ng-container *ngIf="isArray(row[detailColumn.name])">
+                                                            {{ row[detailColumn.name].join(', ') }}
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!isArray(row[detailColumn.name])">
+                                                            {{ row[detailColumn.name] }}
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'array_tags'">
+                                                        <div *ngIf="isArray(row[detailColumn.name])"
+                                                            class="flex flex-wrap gap-1">
+                                                            <span *ngFor="let tag of row[detailColumn.name]"
+                                                                class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-200 dark:text-blue-800">
+                                                                {{ tag }}
+                                                            </span>
+                                                        </div>
+                                                        <ng-container *ngIf="!isArray(row[detailColumn.name])">
+                                                            {{ row[detailColumn.name] }}
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'color_chip'">
+                                                        <div class="color-chip"
+                                                            [style.backgroundColor]="row[detailColumn.name]"
+                                                            [title]="row[detailColumn.name]">
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'estado'">
+                                                        <span style="display: block; text-align: center">
+                                                            <span>row[detailColumn.name]</span>
+                                                        </span>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'text'">
+                                                        <span [innerHTML]="row[detailColumn.name]"></span>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="'json-tabla'">
+                                                        <ng-container
+                                                            *ngIf="row[detailColumn.name] && row[detailColumn.name].length > 0; else noJsonData">
+                                                            <div
+                                                                class="table-responsive table-scroll-wrapper mt-2 mb-3">
+                                                                <table class="row-border hover table nowrap w-100 mb-0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th
+                                                                                *ngFor="let kv of row[detailColumn.name][0] | keyvalue: preserveOrder">
+                                                                                {{ $any(kv.key) | uppercase }}
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr
+                                                                            *ngFor="let dataRow of row[detailColumn.name]">
+                                                                            <td
+                                                                                *ngFor="let kv of row[detailColumn.name][0] | keyvalue: preserveOrder">
+                                                                                {{ $any(dataRow)[$any(kv.key)] }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-template #noJsonData>
+                                                            <div class="text-muted mt-2">No hay registros detallados
+                                                                disponibles. </div>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchDefault>
+                                                        <span [innerHTML]="row[detailColumn.name]"></span>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div><br /><br />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                <tfoot *ngIf="showSearchBox">
+                    <tr>
+                        <td *ngIf="showDetail"></td>
+                        <td *ngFor="let column of finalColumns; let i = index">
+                            <ng-container
+                                *ngIf="column.type === 'text' || column.type === 'number' || column.type === 'price'">
+                                <input type="text" class="form-control form-control-sm form-input"
+                                    [placeholder]="column.header | translate" (keyup)="onFilter(column.name, $event)" />
+                            </ng-container>
+                        </td>
+                        <td *ngIf="showActions"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div><br />
+    <div class="dt-footer d-flex justify-content-between align-items-center"
+        style="border-color: transparent !important">
+        <div>
+            {{ 'PLATAFORMA.DATATABLE.SHOWING' | translate }} {{ (currentPage - 1) * itemsPerPage + 1 }}
+            {{ 'PLATAFORMA.DATATABLE.TO' | translate }} {{ (currentPage - 1) * itemsPerPage + paginatedData.length }}
+            {{ 'PLATAFORMA.DATATABLE.OF' | translate }} {{ filteredData.length }} {{ 'PLATAFORMA.DATATABLE.ENTRIES' |
+            translate }}
+        </div>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a style="cursor: pointer" class="page-link page-link-b" (click)="onPageChange(currentPage - 1)">
+                        {{ 'PLATAFORMA.DATATABLE.PREVIOUS' | translate }}</a>
+                </li>
+                <li class="page-item" *ngFor="let page of getPages()" [class.active]="currentPage === page">
+                    <a style="cursor: pointer; border-color: transparent !important; margin: 1px !important"
+                        class="page-link page-link-a" (click)="onPageChange(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages || totalPages === 0">
+                    <a style="cursor: pointer" class="page-link page-link-b" (click)="onPageChange(currentPage + 1)">
+                        {{ 'PLATAFORMA.DATATABLE.NEXT' | translate }}</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

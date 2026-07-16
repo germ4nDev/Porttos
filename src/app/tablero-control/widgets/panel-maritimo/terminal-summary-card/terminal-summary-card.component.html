@@ -1,0 +1,109 @@
+<div class="qplus-widget terminal-card-panel w-100 h-100 d-flex flex-column">
+
+    <ng-container *ngIf="cargandoIA">
+        <div class="sk-skeleton-container d-flex flex-column gap-2">
+            <div class="skeleton-box sk-title"></div>
+            <div class="skeleton-box sk-value"></div>
+            <div class="skeleton-box sk-trend"></div>
+
+            <div class="skeleton-box sk-text-line"></div>
+
+            <div class="sk-divider"></div>
+
+            <div class="skeleton-box sk-title"></div>
+            <div class="skeleton-box sk-value"></div>
+            <div class="skeleton-box sk-trend"></div>
+            <div class="skeleton-box sk-title"></div>
+            <div class="skeleton-box sk-value"></div>
+            <div class="skeleton-box sk-trend"></div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!cargandoIA">
+
+        <div class="panel-header">
+            <div class="header-titles">
+                <h3 class="panel-title">{{ data?.nombre || data?.nombreTerminal || 'TERMINAL' }}</h3>
+                <p class="subtitle">{{ data?.descripcion || data?.subtitle || 'Descripción del terminal' }}</p>
+            </div>
+
+            <div class="header-actions-container">
+                <div class="count-badge badge-danger" *ngIf="data?.badgeCount">{{ data?.badgeCount }}</div>
+
+                <span class="status-badge" [ngClass]="data?.status === 'warning' ? 'badge-warning' : 'badge-success'">
+                    {{ data?.status === 'warning' ? 'CONGESTIONADO' : 'OPERATIVO' }}
+                </span>
+
+                <button class="btn-toggle-view" (click)="toggleVista()" title="Alternar vista">
+                    <i *ngIf="mostrarTabla" class="feather icon-bar-chart-2" data-feather="bar-chart-2"></i>
+                    <i *ngIf="!mostrarTabla" class="feather icon-list" data-feather="list"></i>
+                </button>
+
+                <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                    <i class="feather icon-maximize" data-feather="maximize"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="panel-body terminal-body-layout" [class.table-mode]="mostrarTabla">
+
+            <ng-container *ngIf="!mostrarTabla">
+                <br>
+
+                <div class="docks-container-wrapper w-100">
+                    <div class="docks-grid" [ngClass]="(data?.docks?.length || 0) > 4 ? 'grid-panal' : 'grid-bloques'">
+
+                        <div *ngFor="let muelle of data?.docks" class="dock-box"
+                            [ngClass]="muelle?.class || 'default-dock'"
+                            [title]="(muelle?.label || muelle?.id) + (muelle?.barcoAtracado ? ' - ' + muelle.barcoAtracado : ' - Disponible')">
+                            <span class="dock-id fw-bold">{{ muelle?.label || muelle?.nombre || muelle?.id }}</span>
+
+                            <div class="dock-extended-info">
+                                <span class="dock-ship" [ngClass]="muelle?.barcoAtracado ? 'text-white' : 'text-muted'">
+                                    <i class="feather"
+                                        [ngClass]="muelle?.barcoAtracado ? 'icon-anchor' : 'icon-check-circle'"></i>
+                                    {{ muelle?.barcoAtracado ? (muelle.barcoAtracado | uppercase) : 'DISPONIBLE' }}
+                                </span>
+
+                                <div class="dock-meta mt-1">
+                                    <span class="meta-text text-truncate" style="font-size: 0.75rem; color: #94a3b8;">
+                                        {{ muelle?.operation || muelle?.especialidad }}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <br>
+                <p class="legend-text" *ngIf="data?.legend">{{ data?.legend }}</p>
+
+
+            </ng-container>
+
+            <ng-container *ngIf="mostrarTabla">
+                <app-terminal-docks-detail *ngIf="mostrarTabla && data?.tableData" [data]="data.tableData"
+                    [vistaCompacta]="esVistaCompacta">
+                </app-terminal-docks-detail>
+            </ng-container>
+
+        </div>
+
+        <div class="panel-footer kpis-bottom-row">
+            <div class="kpi-item">
+                <span class="kpi-val">{{ data?.kpis?.ocupacion || '0%' }}</span>
+                <span class="kpi-lbl">OCUPACIÓN</span>
+            </div>
+            <div class="kpi-item">
+                <span class="kpi-val">{{ data?.kpis?.motonaves || '0' }}</span>
+                <span class="kpi-lbl">MOTONAVES</span>
+            </div>
+            <div class="kpi-item">
+                <span class="kpi-val">{{ data?.kpis?.metricValue || '0' }}</span>
+                <span class="kpi-lbl">{{ data?.kpis?.metricLabel || 'TM HOY' }}</span>
+            </div>
+        </div>
+    </ng-container>
+
+</div>

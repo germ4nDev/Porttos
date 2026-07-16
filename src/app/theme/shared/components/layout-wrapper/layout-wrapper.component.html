@@ -1,0 +1,13 @@
+<div class="app-wrapper">
+  <app-nav-bar></app-nav-bar>
+  <aside class="sidebar-wrapper">
+    <app-nav-content [navigationItems]="navigationItems"></app-nav-content>
+  </aside>
+  <div class="content-wrapper">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+
+<!-- <app-layout-wrapper [navigationItems]="menuItems">
+</app-layout-wrapper> -->

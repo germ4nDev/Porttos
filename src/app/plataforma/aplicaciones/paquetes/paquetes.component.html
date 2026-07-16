@@ -1,0 +1,52 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+          {{ 'PLATAFORMA.MENU' | translate }}
+        </button>
+                <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+          {{ 'PLATAFORMA.FILTERS' | translate }}
+        </button>
+            </div>
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+                <div class="p-3 filtros-scroll-wrapper">
+                    <h6 class="filtros-title">{{ 'PAQUETES.FILTROS.TITULO' | translate }}</h6>
+                    <div class="filtro">
+                        <small>{{ 'PAQUETES.FILTROS.FILTRONOMBRE' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroNombreChangeClick($event)" class="form-control form-input" placeholder="{{ 'PAQUETES.FILTROS.NOMBRECHOLDER' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'PAQUETES.FILTROS.FILTRODECRIPCION' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroDescripcionChangeClick($event)" class="form-control form-input" placeholder="{{ 'PAQUETES.FILTROS.DESCRIPCIONCHOLDER' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'PAQUETES.FILTROS.FILTROESTADO' | translate }}</small>
+                        <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+              <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+            </select>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </aside>
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <ng-container *ngIf="paquetesFiltrados$ | async as dataFiltrada">
+                    <app-data-table [data]="dataFiltrada" [idField]="'codigoPaquete'" [tableTitle]="'PAQUETES.TITLE' | translate" [metadataColumns]="columnasPaquetes" [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="true" [showNewButton]="true"
+                        [showViewButton]="false" [showEditButton]="true" [showDeleteButton]="true" [showSearchBox]="false" [showOption1Button]="true" [colorOpcion1]="colorOpcion1" [tooltipOption1]="'PAQUETES.MODULOS' | translate" [letraOpcion1]="letraOpcion1"
+                        [showOption2Button]="true" [colorOpcion2]="colorOpcion2" [tooltipOption2]="'PAQUETES.ITEMS' | translate" [letraOpcion2]="letraOpcion2" [newButtonLabel]="'PAQUETES.NEW' | translate" [exportLabel]="'PLATAFORMA.EXCEL' | translate" (newRecord)="OnNuevoRegistroClick()"
+                        (editRecord)="OnEditarRegistroClick($event)" (deleteRecord)="OnEliminarRegistroClick($event)" (option1Record)="OnOption1Click($event)" (option2Record)="OnOption2Click($event)">
+                    </app-data-table>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

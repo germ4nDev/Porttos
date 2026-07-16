@@ -1,0 +1,86 @@
+/* chart-toneladas.component.scss, terminal-summary.scss, etc. */
+@use 'src/app/theme/shared/styles/components' as qplus;
+@include qplus.widget-header;
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* 🚨 Deja que el padre (master-widget-grid) decida la altura. */
+}
+
+.qplus-widget.resumen-semanal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+
+    /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.arribo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    /* Quitamos la línea divisoria al último elemento */
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .arribo-info {
+        display: flex;
+        flex-direction: column;
+
+        .arribo-nombre {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .arribo-terminal {
+            color: var(--text-subtitle-color);
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            // letter-spacing: 0.5px;
+        }
+    }
+
+    .arribo-fecha {
+        .badge-eta {
+            /* Fondo azul translúcido */
+            color: var(--text-subtitle-color);
+            /* Texto azul claro */
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    // .chart-wrapper {
+    //     min-height: 200px;
+    //     padding: 0px;
+    //     /* Importante: dale espacio al canvas */
+    //     width: 100%;
+    // }
+}

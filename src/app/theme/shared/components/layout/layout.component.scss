@@ -1,0 +1,449 @@
+// /* Layout general */
+// .layout-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+// }
+
+// /* Estilo del navbar */
+// .navbar-container {
+//   position: sticky;
+//   top: 0;
+//   z-index: 1030;
+//   width: 100%;
+//   background-color: var(--header-bg, #004085);
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// }
+
+// /* Contenedor principal */
+// .main-content-wrapper {
+//   display: flex;
+//   flex: 1;
+//   overflow: hidden;
+//   height: calc(100vh - 56px);
+// }
+
+// /* Tabs laterales */
+// .aside-left {
+//   width: 260px;
+//   background-color: #fff;
+//   border-right: 1px solid #ddd;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .nav-tabs-custom {
+//   display: flex;
+//   border-bottom: 1px solid #ddd;
+// }
+
+// .nav-tabs-custom button {
+//   flex: 1;
+//   padding: 10px;
+//   border: none;
+//   background: transparent;
+//   cursor: pointer;
+//   font-weight: 600;
+// }
+
+// .nav-tabs-custom button.active {
+//   background-color: #f1f1f1;
+//   border-bottom: 2px solid #007bff;
+//   color: #007bff;
+// }
+
+// /* Ocultar los tabs si no están activos */
+// .tab-pane {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding: 10px;
+//   display: none;
+// }
+
+// .tab-pane.ng-star-inserted {
+//   display: block;
+// }
+
+// /* Área principal */
+// .content-area {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding: 20px;
+//   background-color: #f9f9f9;
+// }
+
+// /* Ajustes para router outlet dentro del área principal */
+// .content-area > * {
+//   display: block;
+//   min-height: 100%;
+// }
+
+// /* Botón de configuración flotante */
+// .config-toggle-btn {
+//   position: fixed;
+//   bottom: 20px;
+//   right: 20px;
+//   z-index: 1050;
+//   background-color: #007bff;
+//   color: white;
+//   border: none;
+//   padding: 10px 15px;
+//   border-radius: 50%;
+//   font-size: 18px;
+//   cursor: pointer;
+//   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// }
+
+// .configuration-panel {
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   z-index: 1040;
+//   width: 300px;
+//   height: 100vh;
+//   background: white;
+//   border-left: 1px solid #ddd;
+//   box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+//   overflow-y: auto;
+// }
+
+// .content-area {
+//   flex: 1;
+//   min-height: 0;
+//   overflow-y: auto;
+//   padding: 20px;
+//   background-color: #f9f9f9;
+//   height: 100%;
+// }
+
+// table.dataTable {
+//   width: 100% !important;
+// }
+
+/* Layout general */
+// .layout-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+// }
+
+// /* Estilo del navbar */
+// .navbar-container {
+//   position: sticky;
+//   top: 0;
+//   z-index: 1030;
+//   width: 100%;
+//   background-color: var(--header-bg, #004085);
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// }
+
+// /* Contenedor principal */
+// .main-content-wrapper {
+//   display: flex;
+//   flex: 1;
+//   overflow: hidden;
+//   height: calc(100vh - 56px);
+// }
+
+// /* Tabs laterales */
+// .aside-left {
+//   width: 260px;
+//   background-color: #fff;
+//   border-right: 1px solid #ddd;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .nav-tabs-custom {
+//   display: flex;
+//   border-bottom: 1px solid #ddd;
+// }
+
+// .nav-tabs-custom button {
+//   flex: 1;
+//   padding: 10px;
+//   border: none;
+//   background: transparent;
+//   cursor: pointer;
+//   font-weight: 600;
+// }
+
+// .nav-tabs-custom button.active {
+//   background-color: #f1f1f1;
+//   border-bottom: 2px solid #007bff;
+//   color: #007bff;
+// }
+
+// /* Ocultar los tabs si no están activos */
+// .tab-pane {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding: 10px;
+//   display: none;
+// }
+
+// .tab-pane.ng-star-inserted {
+//   display: block;
+// }
+
+// /* Área principal */
+// .content-area {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding: 20px;
+//   background-color: #f9f9f9;
+// }
+
+// /* Ajustes para router outlet dentro del área principal */
+// .content-area > * {
+//   flex: 1;
+//   min-height: 0;
+//   overflow-y: auto;
+//   padding: 20px;
+//   background-color: #f9f9f9;
+//   height: 100%;
+
+////////////////////////////////////////////////////
+
+// /* Layout general */
+// .layout-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+// }
+
+// /* Estilo del navbar */
+// .navbar-container {
+//   position: sticky;
+//   top: 0;
+//   z-index: 1030;
+//   width: 100%;
+//   background-color: var(--header-bg, #004085);
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// }
+
+// /* Contenedor principal */
+// .main-content-wrapper {
+//   display: flex;
+//   flex: 1;
+//   overflow: hidden;
+//   height: calc(100vh - 56px);
+// }
+
+// /* Tabs laterales */
+// .aside-left {
+//   width: 260px;
+//   background-color: #fff;
+//   border-right: 1px solid #ddd;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .nav-tabs-custom {
+//   display: flex;
+//   border-bottom: 1px solid #ddd;
+// }
+
+// .nav-tabs-custom button {
+//   flex: 1;
+//   padding: 10px;
+//   border: none;
+//   background: transparent;
+//   cursor: pointer;
+//   font-weight: 600;
+// }
+
+// .nav-tabs-custom button.active {
+//   background-color: #f1f1f1;
+//   border-bottom: 2px solid #007bff;
+//   color: #007bff;
+// }
+
+// /* Ocultar los tabs si no están activos */
+// .tab-pane {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding: 10px;
+//   display: none;
+// }
+
+// .tab-pane.ng-star-inserted {
+//   display: block;
+// }
+
+// /* Área principal */
+// .content-area {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding: 20px;
+//   background-color: #f9f9f9;
+// }
+
+// /* Ajustes para router outlet dentro del área principal */
+// .content-area > * {
+//   flex: 1;
+//   min-height: 0;
+//   overflow-y: auto;
+//   padding: 18px;
+//   background-color: #f9f9f9;
+//   height: 100%;
+// }
+
+// /* Botón de configuración flotante */
+// .config-toggle-btn {
+//   position: fixed;
+//   bottom: 20px;
+//   right: 20px;
+//   z-index: 1050;
+//   background-color: #007bff;
+//   color: white;
+//   border: none;
+//   padding: 10px 15px;
+//   border-radius: 50%;
+//   font-size: 18px;
+//   cursor: pointer;
+//   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// }
+
+// .configuration-panel {
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   z-index: 1040;
+//   width: 300px;
+//   height: 100vh;
+//   background: white;
+//   border-left: 1px solid #ddd;
+//   box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+//   overflow-y: auto;
+// }
+
+
+///////////////////////////////////////
+///
+///
+/// /* Tema claro por defecto */
+:root {
+  --header-bg: #004085;
+  --aside-bg: #ffffff;
+  --aside-border: #ddd;
+  --aside-tab-bg: #f1f1f1;
+  --aside-tab-active: #007bff;
+  --content-bg: #f9f9f9;
+  --text-color: #212529;
+}
+
+/* Tema oscuro */
+body.dark-theme {
+  --header-bg: #1f2d3d;
+  --aside-bg: #2c3e50;
+  --aside-border: #3e4e5e;
+  --aside-tab-bg: #34495e;
+  --aside-tab-active: #1abc9c;
+  --content-bg: #1c1c1c;
+  --text-color: #f8f9fa;
+}
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: var(--text-color);
+}
+
+.navbar-container {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  width: 100%;
+  background-color: var(--header-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-content-wrapper {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 56px);
+}
+
+.aside-left {
+  width: 260px;
+  background-color: var(--aside-bg);
+  border-right: 1px solid var(--aside-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-tabs-custom {
+  display: flex;
+  border-bottom: 1px solid var(--aside-border);
+}
+
+.nav-tabs-custom button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.nav-tabs-custom button.active {
+  background-color: var(--aside-tab-bg);
+  border-bottom: 2px solid var(--aside-tab-active);
+  color: var(--aside-tab-active);
+}
+
+.tab-pane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: none;
+}
+
+.tab-pane.ng-star-inserted {
+  display: block;
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: var(--content-bg);
+}
+
+.content-area > * {
+  display: block;
+  min-height: 100%;
+}
+
+.config-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1050;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.configuration-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1040;
+  width: 300px;
+  height: 100vh;
+  background: white;
+  border-left: 1px solid #ddd;
+  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+

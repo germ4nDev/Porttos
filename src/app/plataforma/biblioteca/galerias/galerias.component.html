@@ -1,0 +1,95 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+  <aside class="aside-left">
+    <div class="card">
+      <div class="nav-tabs-custom">
+        <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+          {{ 'PLATAFORMA.MENU' | translate }}
+        </button>
+        <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+          {{ 'PLATAFORMA.FILTERS' | translate }}
+        </button>
+      </div>
+
+      <ng-container *ngIf="activeTab === 'menu'">
+        <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+      </ng-container>
+
+      <ng-container *ngIf="activeTab === 'filters'">
+        <div class="p-3 filtros-scroll-wrapper">
+          <h6 class="filtros-title">{{ 'GALERIA.FILTROS.TITULO' | translate }}</h6>
+
+          <div class="filtro">
+            <small>{{ 'GALERIA.FILTROS.FILTROCODIGO' | translate }}</small>
+            <select (change)="onFiltroCodigoChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option [value]="gal.codigoGaleria" *ngFor="let gal of galerias">
+                {{ gal.codigoGaleria }}
+              </option>
+            </select>
+          </div>
+
+          <div class="filtro">
+            <small>{{ 'GALERIA.FILTROS.FILTRONOMBRE' | translate }}</small>
+            <select (change)="onFiltroNombreChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option [value]="gal.nombreGaleria" *ngFor="let gal of galerias">
+                {{ gal.nombreGaleria }}
+              </option>
+            </select>
+          </div>
+
+          <div class="filtro">
+            <small>{{ 'GALERIA.FILTROS.FILTRODECRIPCION' | translate }}</small>
+            <input
+              type="text"
+              (keyup)="onFiltroDescripcionChangeClick($event)"
+              class="form-control form-input"
+              placeholder="{{ 'GALERIA.FILTROS.DESCRIPCIONCHOLDER' | translate }}"
+            />
+          </div>
+
+          <div class="filtro">
+            <small>{{ 'GALERIA.FILTROS.FILTROESTADO' | translate }}</small>
+            <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+              <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </aside>
+
+  <div class="content-area">
+    <div class="card card-table content-scroll-wrapper">
+      <div class="card-body">
+        <ng-container *ngIf="galeriaFiltrada$ | async as dataFiltrada">
+          <app-data-table
+            [data]="dataFiltrada"
+            [idField]="'codigoGaleria'"
+            [tableTitle]="'GALERIA.TITLE' | translate"
+            [metadataColumns]="columnasGaleria"
+            [metadataDetailColumns]="columnasDetailRegistros"
+            [showDetail]="true"
+            [showActions]="true"
+            [showNewButton]="true"
+            [showViewButton]="false"
+            [showEditButton]="true"
+            [showDeleteButton]="true"
+            [showBackButton]="true"
+            [showSearchBox]="false"
+            [newButtonLabel]="'GALERIA.NEW' | translate"
+            [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+            (newRecord)="OnNuevaGaleriaClick()"
+            (editRecord)="OnEditarGaleriaClick($event)"
+            (deleteRecord)="OnEliminarGaleriaClick($event)"
+            (backRecord)="OnRegresarBibliotecaClick()"
+          >
+          </app-data-table>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

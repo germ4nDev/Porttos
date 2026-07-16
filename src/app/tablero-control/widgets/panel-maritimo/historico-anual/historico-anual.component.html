@@ -1,0 +1,19 @@
+<div class="qplus-widget widget-historico">
+
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="icon-clock" style="margin-right: 6px;"></i> >{{ data?.titulo || '📊 HISTÓRICO ANUAL' }} {{
+                data?.rango || '2018-2025' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Toneladas movilizadas · tendencia de largo plazo' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+    <div class="panel-body chart-container">
+        <canvas #lineChart></canvas>
+    </div>
+</div>

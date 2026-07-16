@@ -1,0 +1,11 @@
+<div class="col-12 col-md-10">
+    <div class="shadow-sm rounded overflow-hidden">
+        <div *ngIf="src && src !== 'undefined'" class="video-container" style="width: 100%;">
+            <video #target class="video-js vjs-fluid vjs-big-play-centered"></video>
+        </div>
+
+        <div *ngIf="!src || src === 'undefined'">
+            <p style="color: white; padding: 20px;">Esperando URL del video...</p>
+        </div>
+    </div>
+</div>

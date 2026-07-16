@@ -1,0 +1,50 @@
+<!-- <ng-container [ngSwitch]="type">
+
+    <app-kpi-card *ngSwitchCase="'KPI_CAMIONES'" [data]="data">
+    </app-kpi-card>
+
+    <app-kpi-card *ngSwitchCase="'KPI_CONTENEDORES'" [data]="data">
+    </app-kpi-card>
+
+    <app-terminal-card *ngSwitchDefault [data]="data">
+        [data]="data">
+    </app-terminal-card>
+
+    <app-vessel-table *ngSwitchCase="'TABLE_REPORTE_MOTONAVES'" [data]="data">
+    </app-vessel-table>
+
+    <app-eta-chart *ngSwitchCase="'CHART_ETA_ATA'" [data]="data">
+    </app-eta-chart>
+
+</ng-container> -->
+
+<!-- <ng-container [ngSwitch]="type">
+
+    <app-kpi-card *ngSwitchCase="'KPI_CAMIONES'" [data]="data"></app-kpi-card>
+    <app-kpi-card *ngSwitchCase="'KPI_CONTENEDORES'" [data]="data"></app-kpi-card>
+    <app-kpi-card *ngSwitchCase="'KPI_GRANEL'" [data]="data"></app-kpi-card>
+    <app-kpi-card *ngSwitchCase="'KPI_CARGA_SUELTA'" [data]="data"></app-kpi-card>
+    <app-kpi-card *ngSwitchCase="'KPI_RORO'" [data]="data"></app-kpi-card>
+    <app-kpi-card *ngSwitchCase="'KPI_BODEGAS'" [data]="data"></app-kpi-card>
+
+    <app-terminal-card *ngSwitchCase="'RESUMEN_SPRBUN'" [data]="data"></app-terminal-card>
+    <app-terminal-card *ngSwitchCase="'RESUMEN_TCBUEN'" [data]="data"></app-terminal-card>
+    <app-terminal-card *ngSwitchCase="'RESUMEN_SPIA'" [data]="data"></app-terminal-card>
+    <app-terminal-card *ngSwitchCase="'RESUMEN_COMPAS_CAS'" [data]="data"></app-terminal-card>
+    <app-terminal-card *ngSwitchCase="'RESUMEN_COMPAS_AGU'" [data]="data"></app-terminal-card>
+    <app-terminal-card *ngSwitchCase="'RESUMEN_GRUPO_PORT'" [data]="data"></app-terminal-card>
+
+    <app-vessel-table *ngSwitchCase="'TABLE_REPORTE_MOTONAVES'" [data]="data"></app-vessel-table>
+    <app-eta-chart *ngSwitchCase="'CHART_ETA_ATA'" [data]="data"></app-eta-chart>
+
+    <div *ngSwitchDefault
+        class="widget-no-mapeado flex items-center justify-center h-full w-full border border-dashed border-gray-500 text-gray-400 p-4">
+        <p class="text-center">Falta crear componente para:<br><b>{{ type }}</b></p>
+    </div>
+
+</ng-container> -->
+
+<ng-container *ngIf="componenteVisual">
+    <ng-container *ngComponentOutlet="componenteVisual; inputs: { data: data, widgetId: type }">
+    </ng-container>
+</ng-container>

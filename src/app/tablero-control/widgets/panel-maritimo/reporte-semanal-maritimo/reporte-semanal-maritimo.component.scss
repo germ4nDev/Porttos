@@ -1,0 +1,101 @@
+/* chart-toneladas.component.scss, terminal-summary.scss, etc. */
+@use 'src/app/theme/shared/styles/components' as qplus;
+@include qplus.widget-header;
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* 🚨 Deja que el padre (master-widget-grid) decida la altura. */
+}
+
+.qplus-widget.resumen-maritimo-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+    padding: 16px !important;
+
+    /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.widget-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-color);
+    text-transform: uppercase;
+    margin: 0 0 1.2rem 0;
+}
+
+.panel-body {
+    flex: 1;
+}
+
+/* 🚨 LA MAGIA DEL GRID 2x2 */
+.resumen-maritimo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 18px !important;
+    /* 2 Columnas iguales */
+    gap: 12px;
+    /* Espacio entre tarjetas */
+    height: 100%;
+}
+
+.resumen-maritimo-card {
+    background: var(--widget-bg-lg);
+    /* Fondo súper sutil */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .c-titulo {
+        font-size: 1rem;
+        color: var(--text-color);
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .c-valor {
+        font-size: 1.8rem;
+        color: var(--text-color);
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+
+    .c-sub {
+        font-size: 1rem;
+        color: var(--text-subtitle-color);
+    }
+}
+
+/* Clases de colores dinámicos inyectadas por el Backend */
+.color-blue {
+    color: #38bdf8;
+}
+
+.color-green {
+    color: #34d399;
+}
+
+.color-orange {
+    color: #fbbf24;
+}

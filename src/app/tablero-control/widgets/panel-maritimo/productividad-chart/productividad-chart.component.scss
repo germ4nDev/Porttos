@@ -1,0 +1,198 @@
+// /* Aseguramos que el componente ocupe todo el espacio de su contenedor padre (Gridster) */
+// /* chart-toneladas.component.scss, terminal-summary.scss, etc. */
+// @use 'src/app/theme/shared/styles/components' as qplus;
+// @include qplus.widget-header;
+
+// :host {
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+// }
+
+// .qplus-widget.productividad-chart {
+//     display: flex;
+//     flex-direction: column;
+//     height: 100%;
+//     max-height: 100%;
+//     width: 100%;
+//     padding: 16px;
+//     background-color: var(--widget-bg);
+//     border: 1px solid var(--border-color) !important;
+//     border-radius: 10px;
+
+//     /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+//     overflow: hidden;
+
+//     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+//     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+//     &:hover {
+//         transform: translateY(-2px);
+//         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+//     }
+// }
+
+// .kpi-card-panel {
+//     background-color: var(--widget-bg, rgba(30, 41, 59, 0.7));
+//     border-radius: 8px;
+//     padding: 1rem;
+//     /* Dejamos que el dashboard principal maneje las sombras */
+//     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+//     &:hover {
+//         transform: translateY(-2px);
+//         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+//     }
+// }
+
+// .panel-header {
+//     .qplus-widget-title {
+//         font-size: 0.9rem;
+//         font-weight: 700;
+//         color: #e2e8f0;
+//         text-transform: uppercase;
+//         margin: 0;
+//         letter-spacing: 0.05em;
+//     }
+// }
+
+// .panel-body {
+//     position: relative;
+//     /* ECharts necesita que su contenedor padre tenga dimensiones definidas */
+//     width: 100%;
+//     height: 100%;
+// }
+
+@use 'src/app/theme/shared/styles/components' as qplus;
+@include qplus.widget-header;
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    container-type: inline-size;
+    /* Mide el ancho del componente */
+    container-name: tarjeta-terminal;
+}
+
+.qplus-widget.productividad-chart {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    padding: 16px;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+
+    /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .custom-legend {
+        z-index: 2;
+
+        .legend-item {
+            .legend-ring {
+                display: inline-block;
+                border-radius: 50%;
+                border-style: solid;
+                background-color: var(--widget-bg, #1e293b);
+                transition: all 0.3s ease;
+                /* Animación suave al cambiar de tamaño */
+            }
+
+            .legend-text {
+                color: #cbd5e1;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                transition: font-size 0.3s ease;
+            }
+        }
+    }
+
+    /* 📱 VISTA COMPACTA (Gridster - Dashboard) */
+    &.modo-compacto {
+        .custom-legend {
+            margin-top: 4px;
+            margin-bottom: 6px;
+
+            .legend-item {
+                .legend-ring {
+                    width: 10px;
+                    /* Aros pequeñitos */
+                    height: 10px;
+                    border-width: 2.5px;
+                }
+
+                .legend-text {
+                    font-size: 0.6rem;
+                    /* Texto mini */
+                }
+            }
+        }
+    }
+
+    /* 🖥️ VISTA EXPANDIDA (Modal de Enfoque) */
+    &.modo-expandido {
+        .custom-legend {
+            margin-top: 10px;
+            margin-bottom: 12px;
+
+            .legend-item {
+                .legend-ring {
+                    width: 16px;
+                    /* Aros gruesos tipo Figma */
+                    height: 16px;
+                    border-width: 4px;
+                }
+
+                .legend-text {
+                    font-size: 0.75rem;
+                }
+            }
+        }
+    }
+}
+
+/* ==========================================================================
+   3. CONTENEDOR DEL CANVAS (La Jaula de la Gráfica)
+   ========================================================================== */
+.panel-body {
+    flex: 1;
+    /* Toma todo el espacio disponible hasta el tope de 450px */
+
+    /* 🚨 LA MAGIA: Obliga al contenedor Flex a permitir que el canvas
+       se encoja y respete el height: 450px del padre */
+    min-height: 0;
+    min-width: 0;
+
+    width: 100%;
+    // padding: 0 1.2rem 1.2rem 1.2rem;
+    position: relative;
+
+    /* Garantizamos que Angular/Chart.js pinte el canvas al 100%
+       del tamaño que nosotros (el CSS) le permitimos, no el que él quiera */
+    canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+.chart-container {
+    position: relative;
+    /* Súper importante para Chart.js */
+    width: 100%;
+    flex: 1;
+    /* Toma todo el alto disponible debajo del título */
+    min-height: 0;
+    /* Vital en flexbox para que no se desborde como en la Captura 3 */
+}

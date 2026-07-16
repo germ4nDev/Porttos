@@ -1,0 +1,181 @@
+@use 'src/app/theme/shared/styles/components' as qplus;
+
+/* ==========================================================================
+   1. CONFIGURACIÓN DEL HOST (El escudo protector)
+   ========================================================================== */
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+/* ==========================================================================
+   2. TARJETA PRINCIPAL
+   ========================================================================== */
+.qplus-widget.terminal-card-panel {
+    flex: 1;
+    /* Obliga a la tarjeta a llenar el :host */
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    /* Mantiene los bordes redondeados limpios */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border-color: var(--app-navbar-color, rgba(13, 148, 136, 0.5));
+    }
+}
+
+@include qplus.widget-header;
+
+/* ==========================================================================
+   4. CUERPO DE LA TARJETA
+   ========================================================================== */
+.terminal-body-layout {
+    padding: var(--app-dashboard-gap, 1.2rem);
+    flex: 1;
+    /* Toma el espacio restante de la tarjeta */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* Separación uniforme entre Métricas, Muelles y Eficiencia */
+}
+
+/* --- A. Fila de Métricas (Buques, Patios, Gates) --- */
+.metrics-subrow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 columnas iguales */
+    gap: 12px;
+
+    .metric-mini-box {
+        background-color: color-mix(in srgb, var(--card-background) 94%, var(--text-color));
+        padding: 12px 8px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid transparent;
+
+        .metric-label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-subtitle-color);
+            margin-bottom: 6px;
+        }
+
+        .value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin: 0;
+
+            /* Colores específicos para cada métrica */
+            &.txt-default {
+                color: var(--app-navbar-color);
+            }
+
+            &.txt-patios {
+                color: #f59e0b;
+            }
+
+            &.txt-gates {
+                color: #10b981;
+            }
+        }
+    }
+}
+
+/* --- B. Fila de Muelles (Línea de tiempo) --- */
+.docks-subrow {
+    .docks-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-subtitle-color);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .docks-timeline {
+        display: flex;
+        gap: 8px;
+
+        .dock-segment {
+            flex: 1;
+            /* Todos los muelles miden lo mismo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 4px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-background);
+
+            /* Estados dinámicos del muelle */
+            &.occupied {
+                background-color: color-mix(in srgb, #ef4444 10%, var(--card-background));
+                border-color: color-mix(in srgb, #ef4444 30%, transparent);
+                color: #ef4444;
+            }
+
+            &.free {
+                background-color: color-mix(in srgb, #10b981 10%, var(--card-background));
+                border-color: color-mix(in srgb, #10b981 30%, transparent);
+                color: #10b981;
+            }
+
+            .dock-label {
+                font-size: 0.75rem;
+                font-weight: 800;
+            }
+
+            .dock-vessel {
+                font-size: 0.65rem;
+                margin-top: 4px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+                opacity: 0.9;
+            }
+        }
+    }
+}
+
+/* --- C. Fila de Eficiencia (Barra de progreso al final) --- */
+.efficiency-subrow {
+    margin-top: auto;
+    /* Empuja la barra hacia el fondo si la tarjeta crece mucho */
+
+    .efficiency-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 8px;
+    }
+
+    .progress-bar-container {
+        height: 6px;
+        background-color: var(--border-color);
+        border-radius: 10px;
+        overflow: hidden;
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--app-navbar-color);
+            border-radius: 10px;
+            transition: width 0.5s ease-out;
+        }
+    }
+}

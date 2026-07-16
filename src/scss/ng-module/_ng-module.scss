@@ -1,0 +1,32 @@
+// project css
+@import 'ngx-chips';
+@import 'ng2-archwizard';
+@import 'range-slidar';
+
+// bar-rating
+@import '../../../node_modules/ngx-bar-rating/themes/br-default-theme.scss';
+@import '../../../node_modules/ngx-bar-rating/themes/br-horizontal-theme';
+@import '../../../node_modules/ngx-bar-rating/themes/br-vertical-theme';
+@import '../../../node_modules/ngx-bar-rating/themes/br-stars-theme';
+@import '../../../node_modules/ngx-bar-rating/themes/br-movie-theme';
+@import '../../../node_modules/ngx-bar-rating/themes/br-square-theme';
+
+// extra module SCSS
+@import '../../../node_modules/ngx-toastr/toastr';
+
+// angular material
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+// advance-notification
+@import '../../../node_modules/angular-notifier/styles';
+
+// angular Archwizard
+@import '../../../node_modules/angular-archwizard/styles/archwizard';
+
+// ng-select
+@import '~@ng-select/ng-select/themes/default.theme.css';
+
+// quill
+
+@import 'node_modules/quill/dist/quill.bubble.css';
+@import 'node_modules/quill/dist/quill.snow.css';

@@ -1,0 +1,36 @@
+    /* Sobrescribe el estilo nativo para que el color-input se vea limpio */
+    .color-picker-container {
+        width: 100%;
+        max-width: 300px;
+        /* Limita el ancho para un mejor diseño en formulario */
+    }
+
+    .color-input-override {
+        /* Estilos para limpiar el 'input[type="color"]' */
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        /* Elimina el borde nativo para que se use el borde del contenedor padre */
+        background: none;
+        border: none;
+    }
+
+    /* Asegura que el selector nativo dentro del input no ocupe más espacio */
+    .color-input-override::-webkit-color-swatch-wrapper {
+        padding: 0;
+    }
+
+    .color-input-override::-webkit-color-swatch {
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    .color-input-override::-moz-color-swatch {
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    .input-color {
+        width: calc(100% - 80px);
+        text-align: left;
+    }

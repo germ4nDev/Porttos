@@ -1,0 +1,30 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+                <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+                    {{ 'PLATAFORMA.FILTERS' | translate }}
+                </button>
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <!-- <app-mapa-logistico></app-mapa-logistico> -->
+        <!-- <app-mapa-logistico [geoJsonData]="navesGeoJson" [geoJsonInfraestructura]="infraGeoJson"
+            [geoJsonTerrestre]="terrestreGeoJson" [geoJsonAlertas]="alertasGeoJson" [geoJsonClima]="climaGeoJson"
+            [geoJsonAccidentes]="accidentesGeoJson">
+        </app-mapa-logistico> -->
+    </div>
+</div>

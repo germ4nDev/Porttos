@@ -1,0 +1,97 @@
+.slider-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    /* Fija el slider sobre todo el contenido */
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 1000;
+    /* Asegura que esté por encima de otros elementos */
+    background-color: #000;
+    /* Fondo negro para mejor contraste/experiencia */
+}
+
+/* 2. Envoltorio de las imágenes: Facilita las transiciones */
+.image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 3. Estilo de cada imagen */
+.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Asegura que la imagen cubra todo el espacio sin distorsión */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    /* Transición suave de opacidad */
+    pointer-events: none;
+    /* Previene interacciones cuando no está visible */
+}
+
+.slider-image.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 4. Botones de Navegación */
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    /* Fondo semitransparente */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1010;
+    border-radius: 50%;
+    /* Botones circulares */
+    transition: background 0.2s;
+}
+
+.nav-button:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.prev-button {
+    left: 20px;
+}
+
+.next-button {
+    right: 20px;
+}
+
+/* 5. Indicadores (Puntos en la parte inferior) */
+.indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 1010;
+}
+
+.indicator-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    padding: 0;
+}
+
+.indicator-dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+}

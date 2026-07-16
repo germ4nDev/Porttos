@@ -1,0 +1,41 @@
+<div class="layout-wrapper">
+  <!-- Navbar -->
+  <div class="navbar-container">
+    <app-nav-bar></app-nav-bar>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content-wrapper">
+    <!-- Aside izquierdo -->
+    <aside class="aside-left">
+      <!-- Tabs -->
+      <div class="nav-tabs-custom">
+        <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+          {{ 'LAYOUT.MENU' | translate }}
+        </button>
+        <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+          {{ 'LAYOUT.FILTERS' | translate }}
+        </button>
+      </div>
+
+      <!-- Contenido de los tabs -->
+      <ng-container *ngIf="activeTab === 'menu'">
+        <app-nav-content [navigationItems]="menuItems"></app-nav-content>
+      </ng-container>
+      <ng-container *ngIf="activeTab === 'filters'">
+        <ng-content select="[filters]"></ng-content>
+      </ng-container>
+    </aside>
+
+    <!-- Área central -->
+    <main class="content-area">
+      <ng-content select="[main]"></ng-content>
+    </main>
+  </div>
+
+  <!-- Botón y panel de configuración -->
+  <button class="config-toggle-btn" (click)="toggleConfigPanel()">⚙️</button>
+  <div class="configuration-panel" *ngIf="showConfig">
+    <app-configuration></app-configuration>
+  </div>
+</div>

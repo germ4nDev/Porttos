@@ -1,0 +1,26 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">{{ 'PLATAFORMA.MENU' |
+                    translate }}</button>
+            </div>
+            <ng-container *ngIf="activeTab === 'menu'"><app-nav-content *ngIf="menuItems$ | async as menuItems"
+                    [navigationItems]="menuItems"></app-nav-content></ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <h1 class="page-title text-center">{{ 'PLATAFORMA.TEXTO_HOME' | translate }}</h1>
+                <div class="card-grd-actions">
+                        <a (click)="ingresarQplusWeb()" class="card-grd-button">
+                            {{ 'PLATAFORMA.ENTRAR' | translate }}
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

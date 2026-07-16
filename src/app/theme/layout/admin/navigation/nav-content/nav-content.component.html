@@ -1,0 +1,52 @@
+<!-- <div class="nav-scroll-wrapper">
+  <div class="navbar-content">
+    <div *ngIf="menuItems$ | async as navigationItems">
+      <ul class="nav pcoded-inner-navbar" (clickOutside)="fireOutClick()">
+        <ng-container *ngFor="let item of navigationItems">
+          @if (item.type === 'group') {
+            <app-nav-group [item]="item"></app-nav-group>
+            <ng-container *ngFor="let child of item.children">
+              <app-nav-collapse *ngIf="child.type === 'collapse'" [item]="child"></app-nav-collapse>
+              <app-nav-item *ngIf="child.type === 'item'" [item]="child"></app-nav-item>
+            </ng-container>
+          }
+          @if (item.type === 'collapse') {
+            <app-nav-collapse [item]="item"></app-nav-collapse>
+          }
+          @if (item.type === 'item') {
+            <app-nav-item [item]="item"></app-nav-item>
+          }
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</div> -->
+
+<div class="sidebar-flex-container">
+    <div class="nav-scroll-wrapper">
+        <div class="navbar-content">
+            <div *ngIf="menuItems$ | async as navigationItems">
+                <ul class="nav pcoded-inner-navbar" (clickOutside)="fireOutClick()">
+                    <ng-container *ngFor="let item of navigationItems">
+                        @if (item.type === 'group') {
+                        <app-nav-group [item]="item"></app-nav-group>
+                        <ng-container *ngFor="let child of item.children">
+                            <app-nav-collapse *ngIf="child.type === 'collapse'" [item]="child"></app-nav-collapse>
+                            <app-nav-item *ngIf="child.type === 'item'" [item]="child"></app-nav-item>
+                        </ng-container>
+                        }
+                        @if (item.type === 'collapse') {
+                        <app-nav-collapse [item]="item"></app-nav-collapse>
+                        }
+                        @if (item.type === 'item') {
+                        <app-nav-item [item]="item"></app-nav-item>
+                        }
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="ia-assistant-wrapper">
+        <app-ia-chat-flotante></app-ia-chat-flotante>
+    </div> -->
+</div>

@@ -1,0 +1,329 @@
+<!-- <app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button class="active">{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="esNuevo">{{ 'SCRIPTS.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="!esNuevo">{{ 'SCRIPTS.UPDATE' | translate }} ({{
+                            scriptForm.get('codigoScript')?.value }})</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="volver()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="esNuevo" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="guardar()">
+                            {{ 'SCRIPTS.CREATE' | translate }}
+                            <i class="feather ms-2 icon-plus"></i>
+                        </button>
+                        <button *ngIf="!esNuevo" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="guardar()">
+                            {{ 'SCRIPTS.UPDATE' | translate }}
+                            <i class="feather ms-2 icon-edit"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body form-scroll-wrapper">
+                <form [formGroup]="scriptForm" class="editForm" novalidate>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SCRIPTS.CODIGO' | translate }}</label>
+                                <input type="text" class="form-control form-input" formControlName="codigoScript"
+                                    placeholder="Código del Script"
+                                    [ngClass]="{ 'is-invalid': campoNoValido('codigoScript') }" readonly />
+                                <label *ngIf="campoNoValido('codigoScript')"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    Debe ingresar un código para el script.
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">{{ 'SCRIPTS.NOMBRE' | translate }} <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-input" formControlName="nombreScript"
+                                    placeholder="Nombre descriptivo"
+                                    [ngClass]="{ 'is-invalid': campoNoValido('nombreScript') }" />
+                                <label *ngIf="campoNoValido('nombreScript')"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    El nombre es obligatorio.
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">{{ 'SCRIPTS.APLICACION' | translate }} <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-control form-select form-input" formControlName="codigoAplicacion"
+                                    [ngClass]="{ 'is-invalid': campoNoValido('codigoAplicacion') }">
+                                    <option value="" disabled selected>Seleccione una aplicación...</option>
+
+                                    <option *ngFor="let app of aplicaciones" [value]="app.codigoAplicacion">
+                                        {{ app.nombreAplicacion }}
+                                    </option>
+                                </select>
+                                <label *ngIf="campoNoValido('codigoAplicacion')"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    Debe seleccionar una aplicación.
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">{{ 'SCRIPTS.TIPO' | translate }} <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-control form-select form-input" formControlName="codigoTipoScript"
+                                    [ngClass]="{ 'is-invalid': campoNoValido('codigoTipoScript') }">
+                                    <option value="" disabled selected>Seleccione un tipo...</option>
+                                    <option *ngFor="let tipo of tiposScripts" [value]="tipo.codigoTipoScript">
+                                        {{ tipo.nombreTipo }}
+                                    </option>
+                                </select>
+                                <label *ngIf="campoNoValido('codigoTipoScript')"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    Debe seleccionar un tipo de script.
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SCRIPTS.DESCRIPCION' | translate }}</label>
+                                <textarea class="form-control form-input" formControlName="descripcionScript" rows="3"
+                                    placeholder="Escribe una breve descripción..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SCRIPTS.GESTION.FOTO' | translate }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview">
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none" name="fotoUsuario">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'PLATAFORMA.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input formControlName="estadoScript" type="radio" [value]="true" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input formControlName="estadoScript" type="radio" [value]="false" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+            </div>
+
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'SCRIPTS.GESTION.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'SCRIPTS.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SCRIPTS.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SCRIPTS.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SCRIPTS.GESTION.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoScript"
+                                    placeholder="{{ 'SCRIPTS.GESTION.PLACEHOLDERCODE' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !codigoScript.valid && (codigoScript.dirty || codigoScript.touched || isSubmit) }"
+                                    #codigoScript="ngModel" required [(ngModel)]="FormRegistro.codigoScript" readonly />
+                                <label
+                                    *ngIf="!codigoScript.valid && (codigoScript.dirty || codigoScript.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUITE.CODEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoAplicacion"> {{
+                                    'SCRIPTS.GESTION.APLICACION' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer" name="codigoAplicacion"
+                                    id="codigoAplicacion"
+                                    [ngClass]="{ 'is-invalid': !codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit) }"
+                                    #codigoAplicacion="ngModel" required [(ngModel)]="FormRegistro.codigoAplicacion"
+                                    (change)="onAplicacionChangeClick($event)">
+                                    <option value="" disabled>{{ 'SCRIPTS.GESTION.PLACEHOLDERAPLICACION' | translate }}
+                                    </option>
+                                    <option [value]="app.codigoAplicacion" *ngFor="let app of aplicaciones"> {{
+                                        app.nombreAplicacion }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SCRIPTS.GESTION.REQUERIDOAPLICACION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoTipoScript"> {{
+                                    'SCRIPTS.GESTION.TIPOSCRIPT' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer" name="codigoTipoScript"
+                                    id="codigoTipoScript"
+                                    [ngClass]="{ 'is-invalid': !codigoTipoScript.valid && (codigoTipoScript.dirty || codigoTipoScript.touched || isSubmit) }"
+                                    #codigoTipoScript="ngModel" required [(ngModel)]="FormRegistro.codigoTipoScript"
+                                    (change)="onTipoScriptChangeClick($event)">
+                                    <option value="" disabled>{{ 'SCRIPTS.GESTION.PLACEHOLDERTIPOSCRIPT' | translate }}
+                                    </option>
+                                    <option [value]="tipo.codigoTipoScript" *ngFor="let tipo of tiposScripts"> {{
+                                        tipo.nombreTipo }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoTipoScript.valid && (codigoTipoScript.dirty || codigoTipoScript.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SCRIPTS.GESTION.REQUERIDOIPOSCRIPT' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreScript">{{ 'SCRIPTS.NAME' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="nombreScript" name="nombreScript" type="text"
+                                    placeholder="{{ 'SCRIPTS.GESTION.PLACEHOLDERNAME' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !nombreScript.valid && (nombreScript.dirty || nombreScript.touched || isSubmit) }"
+                                    #nombreScript="ngModel" required [(ngModel)]="FormRegistro.nombreScript" />
+                                <label
+                                    *ngIf="!nombreScript.valid && (nombreScript.dirty || nombreScript.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SCRIPTS.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SCRIPTS.GESTION.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionScript ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)" name="descripcionScript"
+                                    [(ngModel)]="FormRegistro.descripcionScript" [ngClass]="{
+                    'is-invalid': !descripcionScript.valid && (descripcionScript.dirty || descripcionScript.touched || isSubmit)
+                  }" #descripcionScript="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionScript.valid && (descripcionScript.dirty || descripcionScript.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SCRIPTS.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SCRIPTS.GESTION.RUTAARCHIVO' | translate }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview" />
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none"
+                                        name="fotoUsuario" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SCRIPTS.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estadoScript" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoScript" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoScript" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoScript" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

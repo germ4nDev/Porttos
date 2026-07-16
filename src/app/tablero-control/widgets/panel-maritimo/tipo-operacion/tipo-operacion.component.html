@@ -1,0 +1,19 @@
+<div class="qplus-widget widget-toneladas">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-clock mr-1" *ngIf="!data?.icono"></i>
+                {{ data?.titulo || 'TIPO DE OPERACIÓN' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Programación de arribos y atraques' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas #opsChart></canvas>
+    </div>
+</div>

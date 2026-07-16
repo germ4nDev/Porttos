@@ -1,0 +1,223 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'WIDGETS.NEW' | translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'WIDGETS.UPDATE' | translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnCearWidgetClick(validationForm)">
+                            {{ 'WIDGETS.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarWidgetClick(validationForm)">
+                            {{ 'WIDGETS.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- codigo_widget: string;
+    nombre: string; ---
+    descripcion: string; ----
+    categoria: string; ----
+    componente_angular: string; ====
+    cols_defecto: string; ====
+    rows_defecto: string; ====
+    thumbnail_url: string;
+    captura: string;
+    nomEstado: string;
+    activo: boolean;
+    usuario_cargue: string;
+    fecha_cargue: string;  -->
+
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'WIDGETS.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigo_widget"
+                                    placeholder="Código de la Aplicación"
+                                    [ngClass]="{ 'is-invalid': !codigo_widget.valid && (codigo_widget.dirty || codigo_widget.touched || isSubmit) }"
+                                    #codigo_widget="ngModel" required [(ngModel)]="FormRegistro.codigo_widget" />
+                                <label
+                                    *ngIf="!codigo_widget.valid && (codigo_widget.dirty || codigo_widget.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'WIDGETS.CODEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombre">{{ 'WIDGETS.NAME' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="nombre" name="nombre" type="text"
+                                    placeholder="{{ 'WIDGETS.NAME' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !nombre.valid && (nombre.dirty || nombre.touched || isSubmit) }"
+                                    #nombre="ngModel" required [(ngModel)]="FormRegistro.nombre" />
+                                <label *ngIf="!nombre.valid && (nombre.dirty || nombre.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'WIDGETS.NAMEHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="categoria">{{ 'WIDGETS.CATERORY' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="categoria" name="categoria" type="text"
+                                    placeholder="{{ 'WIDGETS.NAME' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !categoria.valid && (categoria.dirty || categoria.touched || isSubmit) }"
+                                    #categoria="ngModel" required [(ngModel)]="FormRegistro.categoria" />
+                                <label *ngIf="!categoria.valid && (categoria.dirty || categoria.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'WIDGETS.CATEGORYHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="pestana"> {{ 'WIDGETS.PESTANA'
+                                    | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer" name="pestana"
+                                    id="pestana"
+                                    [ngClass]="{ 'is-invalid': !pestana.valid && (pestana.dirty || pestana.touched || isSubmit) }"
+                                    #pestana="ngModel" required [(ngModel)]="FormRegistro.pestana">
+                                    <option value="">{{ 'SUITES.GESTION.PLACEHOLDERAPLICACION' | translate }}
+                                    </option>
+                                    <option [value]="app.id" *ngFor="let app of listaPestanas"> {{
+                                        app.nombre }}</option>
+                                </select>
+                                <label *ngIf="!pestana.valid && (pestana.dirty || pestana.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUITES.GESTION.REQUERIDOAPLICACION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="componente_angular">{{ 'WIDGETS.COMPONENT' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="componente_angular" name="componente_angular"
+                                    type="text" placeholder="{{ 'WIDGETS.TRANSLATEKEY' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !componente_angular.valid && (componente_angular.dirty || componente_angular.touched || isSubmit) }"
+                                    #componente_angular="ngModel" required
+                                    [(ngModel)]="FormRegistro.componente_angular" />
+                                <label
+                                    *ngIf="!componente_angular.valid && (componente_angular.dirty || componente_angular.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'WIDGETS.COMPONENTHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="cols_defecto">{{ 'WIDGETS.COLS' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="cols_defecto" name="cols_defecto"
+                                    type="number" placeholder="{{ 'WIDGETS.TRANSLATEKEY' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !cols_defecto.valid && (cols_defecto.dirty || cols_defecto.touched || isSubmit) }"
+                                    #cols_defecto="ngModel" required [(ngModel)]="FormRegistro.cols_defecto" />
+                                <label
+                                    *ngIf="!cols_defecto.valid && (cols_defecto.dirty || cols_defecto.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'WIDGETS.COLSHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="rows_defecto">{{ 'WIDGETS.ROWS' |
+                                    translate }}</label>
+                                <input class="form-control form-input" id="rows_defecto" name="rows_defecto"
+                                    type="number" placeholder="{{ 'WIDGETS.TRANSLATEKEY' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !rows_defecto.valid && (rows_defecto.dirty || rows_defecto.touched || isSubmit) }"
+                                    #rows_defecto="ngModel" required [(ngModel)]="FormRegistro.rows_defecto" />
+                                <label
+                                    *ngIf="!rows_defecto.valid && (rows_defecto.dirty || rows_defecto.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'WIDGETS.ROWSHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'WIDGETS.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcion ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)" name="descripcion"
+                                    [(ngModel)]="FormRegistro.descripcion" [ngClass]="{
+                    'is-invalid': !descripcion.valid && (descripcion.dirty || descripcion.touched || isSubmit)
+                  }" #descripcion="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcion.valid && (descripcion.dirty || descripcion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'WIDGETS.DESCRIPCIONHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'WIDGETS.GESTION.FOTO' | translate }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview" />
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none"
+                                        name="thumbnail_url" />
+                                    <span class="file-name" [ngClass]="{ 'has-file': fileName }">
+                                        <!-- {{ fileName || ('WIDGETS.GESTION.FOTOHOLDER' | translate) }} -->
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'WIDGETS.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="activo" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.activo" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="activo" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.activo" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

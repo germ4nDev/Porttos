@@ -1,0 +1,149 @@
+/* ==========================================================================
+   LOGIN COMPONENT (Layout y Glassmorphism Dinámico)
+   ========================================================================== */
+
+/* 1. CONTENEDOR PRINCIPAL (Centra la tarjeta en la pantalla) */
+.qplus-auth-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--background-color, #0b0c0e);
+}
+
+/* 2. FONDO ANIMADO (Se posiciona detrás de todo) */
+.qplus-auth-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    ::ng-deep div,
+    ::ng-deep iframe,
+    ::ng-deep video,
+    ::ng-deep .carousel,
+    ::ng-deep .slider-container {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* 3. LA TARJETA DE LOGIN (Vidrio Dinámico) */
+.qplus-auth-card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    min-height: 350px;
+    padding: 30px;
+    border-radius: 12px;
+    z-index: 10;
+
+    /* Vidrio Dinámico: Mezcla tu variable de fondo con transparencia */
+    background-color: color-mix(in srgb, var(--card-background) 85%, transparent) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+
+    /* Filtro de Desenfoque */
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+
+    .auth-title {
+        background-color: transparent !important;
+        background: none !important;
+        color: var(--text-color) !important;
+        text-shadow: none !important;
+
+        /* El arma secreta: Destruye el fondo de cualquier cosa que nazca DENTRO del título */
+        ::ng-deep * {
+            background-color: transparent !important;
+            background: none !important;
+            color: inherit !important;
+        }
+    }
+
+    /* Refuerzo general para textos normales */
+    p,
+    label,
+    .cr,
+    span,
+    mark {
+        color: var(--text-color) !important;
+        background-color: transparent !important;
+        background: none !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+    }
+
+    .text-muted {
+        color: var(--text-subtitle-color) !important;
+    }
+
+    .link-label {
+        color: var(--app-navbar-color) !important;
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    /* Inputs integrados a tus variables */
+    .form-control,
+    .form-input,
+    .input-group-text {
+        background-color: var(--card-background) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--border-color) !important;
+
+        /* Autofill de Chrome */
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px var(--card-background) inset !important;
+            -webkit-text-fill-color: var(--text-color) !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    }
+
+    .feather {
+        color: var(--text-subtitle-color) !important;
+    }
+
+    /* Botón principal respetando la marca */
+    .qplus-auth-btn {
+        height: 2.9em;
+        border-radius: 8px;
+        font-weight: 600;
+        background-color: var(--app-navbar-color);
+        color: var(--app-texto-color);
+        border: none;
+        transition: all 0.3s ease-in-out;
+
+        span {
+            color: var(--app-texto-color);
+        }
+
+        &:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--app-navbar-color) 40%, transparent);
+        }
+
+        &:disabled {
+            background-color: var(--app-btn-inactive);
+            color: var(--app-btn-secondary-texto);
+            cursor: not-allowed;
+            box-shadow: none;
+
+            span {
+                color: var(--app-btn-secondary-texto);
+            }
+        }
+    }
+}

@@ -1,0 +1,97 @@
+@import 'angular-datatables';
+@import 'sweatalert';
+@import 'lightbox';
+@import 'notification';
+@import 'pnotify';
+@import 'bar-rating';
+@import 'rangeslider';
+@import 'daterange';
+@import 'tags-input';
+@import 'maxlength';
+@import 'wizard';
+@import 'select2';
+@import 'data-tables';
+@import 'ks-modal-gallery';
+@import 'modal';
+@import 'tree-view';
+
+// Charts
+@import 'highcharts';
+@import 'peitychart';
+
+// advance-component date-picker
+dp-date-picker {
+  display: block !important;
+
+  &.dp-material .dp-picker-input {
+    width: 100% !important;
+  }
+}
+
+dp-day-calendar .dp-weekdays {
+  font-size: 13px !important;
+}
+
+// form advance
+.ng2-tag-input__text-input {
+  padding: 5px !important;
+}
+
+// user-profile
+app-us-contact,
+app-users-card {
+  hr {
+    margin: auto !important;
+  }
+}
+
+// form-select
+.ng-select .ng-clear-wrapper {
+  width: 16px;
+  height: 17px;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  top: 6px;
+}
+
+// table plugin overwrite
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  color: $primary !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 5px;
+}
+
+table.dataTable {
+  width: 100% !important;
+}
+
+.active-width {
+  width: 585px !important;
+}
+
+.seo-chart {
+  margin-top: 60px;
+}
+
+.gradient-rtl {
+  .ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+    right: auto !important;
+  }
+}
+
+.overflow {
+  .ng-native-scrollbar-hider.ng-scroll-viewport {
+    overflow-x: auto !important;
+  }
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+  z-index: 1080;
+}
+
+#customerChart2 .apexcharts-tooltip {
+  color: #000000 !important;
+}

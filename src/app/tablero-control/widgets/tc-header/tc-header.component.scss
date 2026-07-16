@@ -1,0 +1,157 @@
+/* ==========================================================================
+   CABECERA PRINCIPAL (COMPONENTE AISLADO)
+   ========================================================================== */
+:host {
+    display: block;
+    width: 100%;
+}
+
+.tc-header-layout {
+    display: grid;
+    /* Estructura estricta: 10 partes para el título, 2 partes para el dropdown */
+    grid-template-columns: 10fr 2fr;
+    align-items: center;
+
+    gap: var(--app-dashboard-gap, 1.2rem);
+    padding: var(--app-dashboard-gap, 1.2rem);
+    margin-bottom: var(--app-dashboard-gap, 1.2rem);
+
+    background-color: var(--app-navbar-color, #1a4a81);
+    color: var(--app-texto-color, #ffffff);
+    border-radius: 8px 8px 0 0;
+
+    .tc-title-section {
+        overflow: hidden;
+    }
+
+    .tc-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+        color: inherit;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .tc-subtitle {
+        font-size: 0.95rem;
+        margin: 0;
+        opacity: 0.85;
+    }
+
+    .tc-controls-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        /* Todo alineado a la derecha */
+        gap: 12px;
+
+        .tc-nodo-box {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            label {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.9);
+                margin-bottom: 4px;
+            }
+
+            .tc-dropdown {
+                background-color: var(--card-background);
+                color: var(--text-color);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                width: 400px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    /* Responsividad */
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bloquearPantalla {
+    background-color: var(--app-btn-inactive) !important;
+    color: var(--app-btn-secondary-texto) !important;
+    border-color: var(--app-btn-border) !important;
+    border-radius: 10px !important;
+    transition: all 0.6s ease !important;
+    padding: 6px 20px !important;
+    white-space: nowrap !important;
+    margin: 0 0 0.5rem 0.5rem;
+}
+
+/* ==========================================================================
+   NUEVA TOOLBAR (ESTRUCTURA DE NAVBAR CON LISTAS)
+   ========================================================================== */
+.tc-toolbar-nav {
+    display: flex;
+    flex-direction: row !important;
+    /* Fuerza a que sea horizontal */
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    /* Espacio entre los 3 elementos */
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+    /* Aniquila los puntos del <li> */
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+
+        .toolbar-btn {
+            color: #ffffff !important;
+            /* Mata el azul por defecto de los links */
+            font-size: 1.5rem;
+            /* Tamaño para que coincida con la bandera */
+            display: flex;
+            align-items: center;
+            text-decoration: none !important;
+            /* Mata el subrayado */
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.8;
+            /* Un poco transparente hasta que pasas el mouse */
+
+            &:hover {
+                opacity: 1;
+                transform: scale(1.1);
+                /* Efecto zoom al pasar el mouse */
+            }
+
+            i {
+                margin: 0;
+                /* Asegura que el icono no traiga márgenes raros */
+            }
+        }
+    }
+
+    .profile-wrapper {
+        ::ng-deep .drp-user {
+            margin: 0;
+
+            img.wid-40 {
+                width: 35px;
+                height: 35px;
+                border: 2px solid rgba(255, 255, 255, 0.5);
+            }
+        }
+    }
+}
+
+.tc-dropdown {
+    background-color: var(--widget-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+    border-radius: 10px !important;
+    padding: 8px;
+}

@@ -1,0 +1,27 @@
+<div class="qplus-widget">
+
+    <div class="panel-header">
+
+        <div class="header-titles">
+            <h3>{{ data?.titulo || title || 'NUEVO WIDGET' }}</h3>
+            <p class="subtitle" *ngIf="data?.subtitulo || subtitle">
+                {{ data?.subtitulo || subtitle }}
+            </p>
+        </div>
+
+        <div class="header-actions-container">
+
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="panel-body">
+
+        <p style="color: #94a3b8; text-align: center; margin-top: 2rem;">Contenido del widget...</p>
+
+    </div>
+
+</div>

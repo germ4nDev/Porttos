@@ -1,0 +1,97 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+  <aside class="aside-left">
+    <div class="card">
+      <div class="nav-tabs-custom">
+        <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+          {{ 'PLATAFORMA.MENU' | translate }}
+        </button>
+        <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+          {{ 'PLATAFORMA.FILTERS' | translate }}
+        </button>
+      </div>
+
+      <ng-container *ngIf="activeTab === 'menu'">
+        <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+      </ng-container>
+      <ng-container *ngIf="activeTab === 'filters'">
+        <div class="p-3 filtros-scroll-wrapper">
+          <h6 class="filtros-title">{{ 'SUITES.FILTROS.TITULO' | translate }}</h6>
+          <div class="filtro">
+            <small>{{ 'MODULOS.FILTROS.FILTROCODIGOAPLICACION' | translate }}</small>
+            <select (change)="onFiltroCodigoAplicacionChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option [value]="reg.codigoAplicacion" *ngFor="let reg of aplicaciones">
+                {{ reg.nombreAplicacion }}
+              </option>
+            </select>
+          </div>
+          <div class="filtro">
+            <small>{{ 'SUITES.FILTROS.FILTROSUITE' | translate }}</small>
+            <select (change)="onFiltroCodigoChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option [value]="reg.codigoSuite" *ngFor="let reg of registros">
+                {{ reg.codigoSuite }}
+              </option>
+            </select>
+          </div>
+          <div class="filtro">
+            <small>{{ 'SUITES.FILTROS.FILTRONOMBRE' | translate }}</small>
+            <select (change)="onFiltroNombreChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option [value]="app.nombreSuite" *ngFor="let app of registros">
+                {{ app.nombreSuite }}
+              </option>
+            </select>
+          </div>
+          <div class="filtro">
+            <small>{{ 'SUITES.FILTROS.FILTRODECRIPCION' | translate }}</small>
+            <input
+              type="text"
+              (keyup)="onFiltroDescripcionChangeClick($event)"
+              class="form-control form-input"
+              placeholder="{{ 'SUITES.FILTROS.DESCRIPCIONCHOLDER' | translate }}"
+            />
+          </div>
+          <div class="filtro">
+            <small>{{ 'SUITES.FILTROS.FILTROESTADO' | translate }}</small>
+            <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+              <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </aside>
+
+  <div class="content-area">
+    <div class="card card-table content-scroll-wrapper">
+      <div class="card-body">
+        <ng-container *ngIf="suitesFiltrados$ | async as dataFiltrada">
+          <app-data-table
+            [data]="dataFiltrada"
+            [idField]="'codigoSuite'"
+            [tableTitle]="'SUITES.TITLE' | translate"
+            [metadataColumns]="columnasRegistros"
+            [metadataDetailColumns]="columnasDetailRegistros"
+            [showDetail]="true"
+            [showActions]="true"
+            [showNewButton]="true"
+            [showViewButton]="false"
+            [showEditButton]="true"
+            [showDeleteButton]="true"
+            [showSearchBox]="false"
+            [newButtonLabel]="'SUITES.NEW' | translate"
+            [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+            (newRecord)="OnNuevoRegistroClick()"
+            (editRecord)="OnEditarRegistroClick($event)"
+            (deleteRecord)="OnEliminarRegistroClick($event)"
+          >
+          </app-data-table>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

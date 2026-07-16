@@ -1,0 +1,19 @@
+<div class="theme-selector-container">
+  <h5>Selector de Tema</h5>
+  <div class="form-check form-switch mb-3">
+    <input class="form-check-input" type="checkbox" role="switch" id="darkThemeSwitch" [(ngModel)]="isDarkTheme" (change)="toggleTheme()">
+    <label class="form-check-label" for="darkThemeSwitch">Modo Oscuro</label>
+  </div>
+
+  <h6>Color del Navbar</h6>
+  <div class="color-palette">
+    <div
+      *ngFor="let color of colorPalette"
+      class="color-box"
+      [style.background-color]="color"
+      [class.selected]="color === navbarColor"
+      (click)="navbarColor = color; onNavbarColorChange()"
+      [title]="color">
+    </div>
+  </div>
+</div>

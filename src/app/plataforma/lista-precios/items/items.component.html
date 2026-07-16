@@ -1,0 +1,69 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+                <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+                    {{ 'PLATAFORMA.FILTERS' | translate }}
+                </button>
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <!-- <app-nav-content *ngIf="menuItems$ | async as menuItems" [navigationItems]="menuItems"></app-nav-content> -->
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+                <div class="p-3 filtros-scroll-wrapper">
+                    <h6 class="filtros-title">{{ 'PRECIOS.FILTROS.TITULO' | translate }}</h6>
+                    <div class="filtro">
+                        <small>{{ 'PRECIOS.FILTROS.FILTROTIPOVALOR' | translate }}</small>
+                        <select (change)="onFiltroTipoValorChangeClick($event)" class="form-control form-select">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option [value]="reg.codigoTipoItem" *ngFor="let reg of tiposValor">
+                                {{ reg.nombreTipo }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'PRECIOS.FILTROS.FILTRONOMBRE' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroNombreChangeClick($event)" class="form-control form-input"
+                            placeholder="{{ 'PRECIOS.FILTROS.NOMBRECHOLDER' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'PRECIOS.FILTROS.FILTRODECRIPCION' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroDescripcionChangeClick($event)"
+                            class="form-control form-input"
+                            placeholder="{{ 'PRECIOS.FILTROS.DESCRIPCIONCHOLDER' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'PRECIOS.FILTROS.FILTROESTADO' | translate }}</small>
+                        <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select"
+                            style="cursor: pointer">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+                            <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+                        </select>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <app-data-table [data]="registrosFiltrado" [idField]="'valorUnitarioId'"
+                    [tableTitle]="'PRECIOS.TITLE' | translate" [newButtonLabel]="'PRECIOS.GESTION.NEW' | translate"
+                    [exportLabel]="'PLATAFORMA.EXCEL' | translate" [metadataColumns]="columnasRegistros"
+                    [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="true"
+                    [showNewButton]="true" [showViewButton]="false" [showEditButton]="true" [showDeleteButton]="true"
+                    (newRecord)="OnNuevoRegistroClick()" (editRecord)="OnEditarRegistroClick($event)"
+                    (deleteRecord)="OnEliminarRegistroClick($event)">
+                </app-data-table>
+            </div>
+        </div>
+    </div>
+</div>

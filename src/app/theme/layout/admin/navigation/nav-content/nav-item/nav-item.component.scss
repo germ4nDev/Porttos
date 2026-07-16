@@ -1,0 +1,36 @@
+    .pcoded-submenu {
+      display: none;
+      padding-left: 1rem;
+      list-style: none;
+      direction: ltr; /* fuerza la dirección correcta */
+    }
+
+    .pcoded-hasmenu.pcoded-trigger > .pcoded-submenu {
+      display: block;
+    }
+
+    .nav-link {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; /* Asegura que el icono y texto estén alineados a la izquierda */
+      text-align: left;
+      width: 100%;
+    }
+
+    .pcoded-micon {
+      margin-right: 8px;
+    }
+
+    .pcoded-mtext {
+      flex-grow: 1;
+    }
+
+    .pcoded-badge {
+      margin-left: auto;
+    }
+
+    li.nav-item {
+      width: 100%;
+    }
+

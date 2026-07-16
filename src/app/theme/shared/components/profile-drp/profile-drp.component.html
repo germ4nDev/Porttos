@@ -1,0 +1,61 @@
+<div class="dropdown drp-user" ngbDropdown placement="auto" [autoClose]="'outside'" #profileDrop="ngbDropdown">
+    <a href="javascript:void(0)" ngbDropdownToggle>
+        <img src="{{ avatarUsuario }}" class="img-radius wid-40" alt="User-Profile-Image" />
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-end profile-notification drop-menu" ngbDropdownMenu>
+        <div class="pro-head">
+            <img src="{{ avatarUsuario }}" class="img-radius avatar-panel" alt="User-Profile-Image" />
+            <a href="javascript:void(0)" class="dud-logout" title="Logout" (click)="logout(); profileDrop.close()">
+                <i class="feather icon-log-out"></i>
+            </a>
+        </div>
+
+        <ul class="pro-body">
+            <div class="text-center">
+                <p style="font-size: large">{{ nombreUsuario }}</p>
+            </div>
+
+            <li>
+                <a href="javascript:void(0)" class="dropdown-item" (click)="perfilUsuario(); profileDrop.close()">
+                    <i class="feather icon-user"></i> {{ 'PLATAFORMA.NAVBAR.PROFILE' | translate }}
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="dropdown-item" (click)="profileDrop.close()">
+                    <i class="feather icon-mail"></i> {{ 'PLATAFORMA.NAVBAR.MESSAGES' | translate }}
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="dropdown-item" (click)="lockscreen(); profileDrop.close()">
+                    <i class="feather icon-lock"></i> {{ 'PLATAFORMA.NAVBAR.LOCK' | translate }}
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" class="dropdown-item" (click)="toggleTheme()">
+                    <i class="{{ iconoTema }} icon-lg"></i>{{ themeTextKey | translate }}
+                </a>
+            </li>
+
+            <li>
+                <div class="color-picker-dropdown">
+                    <a href="javascript:void(0)" class="dropdown-item" (click)="togglePanelColores($event)">
+                        <i class="feather icon-droplet"></i> {{ 'PLATAFORMA.NAVBAR.NAVBARCOLOR' | translate }}
+                        <i class="feather" [ngClass]="mostrarPanelColores ? 'icon-chevron-up' : 'icon-chevron-down'"
+                            style="margin-left: auto; font-size: 14px;"></i>
+                    </a>
+
+                    <div class="color-menu-inline" *ngIf="mostrarPanelColores" (click)="$event.stopPropagation()">
+                        <div class="d-flex flex-wrap p-2 gap-2 justify-content-center">
+                            <div *ngFor="let color of colorPalette; let i = index" class="color-box"
+                                [style.background-color]="color.color" [class.selected]="color.color === navbarColor"
+                                (click)="seleccionarColor($event, color.color, i)" [title]="color.color">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

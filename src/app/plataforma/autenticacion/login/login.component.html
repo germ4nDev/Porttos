@@ -1,0 +1,79 @@
+<div class="qplus-auth-screen">
+    <app-full-screen-slider [tipoSlider]="1" class="qplus-auth-bg"></app-full-screen-slider>
+    <nav class="navbar fixed-top navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"></a>
+            <div class="nav-right">
+                <app-language-selector></app-language-selector>
+            </div>
+        </div>
+    </nav>
+
+    <div class="qplus-auth-card card-body login-overlay">
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginUserClick()">
+            <div class="qplus-auth-header text-center">
+                <h3 class="auth-title">{{ 'AUTENTICACION.LOGIN.TITLE' | translate }}</h3>
+                <p class="auth-subtitle">Ingresa tus credenciales para continuar</p>
+                <hr>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text form-input" id="basic-addon1"><i class="feather icon-user"></i></span>
+                <input type="text" placeholder="{{ 'AUTENTICACION.LOGIN.USERNAME' | translate }}"
+                    formControlName="username" class="form-control form-input"
+                    [ngClass]="{ 'is-invalid': usernameControl?.invalid && (usernameControl?.dirty || usernameControl?.touched) }" />
+                @if (usernameControl?.invalid && (usernameControl?.dirty || usernameControl?.touched)) {
+                <div class="invalid-feedback">
+                    @if (usernameControl?.errors?.['required']) {
+                    <div>{{ 'AUTENTICACION.LOGIN.USER_REQ' | translate }}</div>
+                    }
+                </div>
+                }
+            </div>
+            <div class="input-group mb-4">
+                <span class="input-group-text form-input" id="basic-addon2"><i class="feather icon-lock"></i></span>
+                <input id="password" type="password" placeholder="{{ 'AUTENTICACION.LOGIN.PASSWORD' | translate }}"
+                    formControlName="password" class="form-control form-input"
+                    [ngClass]="{ 'is-invalid': passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched) }" />
+                <span class="input-group-text form-input"><i class="feather icon-eye" style="cursor: pointer"
+                        id="togglePassword"></i></span> @if
+                (passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)) {
+                <div class="invalid-feedback">
+                    @if (passwordControl?.errors?.['required']) {
+                    <div>{{ 'AUTENTICACION.LOGIN.PASS_REQ' | translate }}</div>
+                    }
+                </div>
+                }
+            </div>
+            <div class="form-group text-start mt-2">
+                <div class="checkbox checkbox-primary d-inline">
+                    <input type="checkbox" name="checkbox-p-1" id="checkbox-p-1" checked="" />
+                    <label for="checkbox-p-1" class="cr">{{ 'AUTENTICACION.LOGIN.REMEMBER_ME' | translate }}</label>
+                </div>
+            </div>
+            <div class="d-grid">
+                <button class="btn qplus-auth-btn" type="submit" [disabled]="!loginForm.valid || loading">
+                    <span *ngIf="!loading">{{ 'AUTENTICACION.LOGIN.ACCESS' | translate }}</span>
+                    <span *ngIf="loading">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        {{ 'PLATAFORMA.CHARGING' | translate }}
+                    </span>
+                </button>
+            </div>
+            @if (error) {
+            <div class="alert alert-danger mt-3 mb-0">{{ error }}</div>
+            }
+            <div class="d-grid text-center">
+                <br />
+                <p class="text-muted">{{ 'AUTENTICACION.LOGIN.CHANGE_PASS_Q' | translate }}
+                    <a [routerLink]="['/autenticacion/change-password']" class="link-label">{{
+                        'AUTENTICACION.LOGIN.CHANGE_PASS_T' | translate }}</a>
+                </p>
+                <p class="text-muted">{{ 'AUTENTICACION.LOGIN.RESET_PASS_Q' | translate }}
+                    <a [routerLink]="['/autenticacion/reset-password']" class="link-label">{{
+                        'AUTENTICACION.LOGIN.RESET_PASS_T' | translate }}</a>
+                </p>
+            </div>
+        </form>
+
+        <app-social-networks></app-social-networks>
+    </div>

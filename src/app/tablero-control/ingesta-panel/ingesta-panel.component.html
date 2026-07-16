@@ -1,0 +1,167 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+                <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+                    {{ 'PLATAFORMA.FILTERS' | translate }}
+                </button>
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+
+            </ng-container>
+        </div>
+    </aside>
+
+    <!-- <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <div class="header-section">
+                    <h2>Motor de Ingesta Inteligente (ETL - IA)</h2>
+                    <p>Sube los reportes operativos. La IA extraerá los datos críticos y actualizará el tablero
+                        logístico en
+                        tiempo
+                        real para todos los operadores.</p>
+                </div>
+
+                <div class="config-section">
+                    <label for="docType">Tipo de Documento a Procesar:</label>
+                    <select id="docType" [(ngModel)]="tipoDocumento" (change)="selectedFile = null; resetStatus()">
+                        <option value="BOLETIN_PORTUARIO">Boletín Estadístico Portuario (PDF)</option>
+                        <option value="RNDC_EXCEL">Reporte de Despachos RNDC (Excel)</option>
+                        <option value="MATRIZ_BODEGAS">Matriz Operciones Portuarias (Excel)</option>
+                        <option value="TRAFICO">Reporte Portuario Maritimo (CSV)</option>
+                    </select>
+                </div>
+
+                <div class="drag-drop-zone" [class.drag-active]="isDragging" (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+
+                    <div *ngIf="!selectedFile">
+                        <h3>Arrastra tu archivo aquí</h3>
+                        <p>o</p>
+                        <label class="btn-browse">
+                            Explorar Archivos
+                            <input type="file" (change)="onFileSelected($event)" accept=".pdf,.xls,.xlsx" hidden>
+                        </label>
+                        <p class="file-hint">Formatos soportados: PDF para Boletín, Excel para RNDC.</p>
+                    </div>
+
+                    <div *ngIf="selectedFile" class="file-ready">
+                        <i class="fas fa-file-alt file-type-icon"></i>
+                        <div class="file-details">
+                            <span class="file-name">{{ selectedFile.name }}</span>
+                            <span class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</span>
+                        </div>
+                        <button class="btn-clear" (click)="selectedFile = null"><i class="fas fa-times"></i>
+                            Quitar</button>
+                    </div>
+
+                </div>
+
+                <div class="action-section">
+                    <button class="btn-process" [disabled]="!selectedFile || isUploading" (click)="procesarDocumento()">
+                        <i class="fas" [ngClass]="isUploading ? 'fa-spinner fa-spin' : 'fa-brain'"></i>
+                        {{ isUploading ? 'IA Procesando Documento...' : 'Extraer Datos con IA' }}
+                    </button>
+
+                    <div class="status-alert success" *ngIf="uploadSuccess">
+                        <i class="fas fa-check-circle"></i> {{ statusMessage }}
+                    </div>
+                    <div class="status-alert error" *ngIf="uploadError">
+                        <i class="fas fa-exclamation-triangle"></i> {{ statusMessage }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <div class="header-section">
+                    <h2>Motor de Ingesta Inteligente (ETL - IA)</h2>
+                    <p>Sube los reportes operativos. La IA extraerá los datos críticos y actualizará el tablero
+                        logístico en tiempo real para todos los operadores.</p>
+                </div>
+
+                <div class="config-section">
+                    <label for="docType">Tipo de Documento a Procesar:</label>
+                    <select id="docType" [(ngModel)]="tipoDocumento" (change)="selectedFile = null; resetStatus()">
+                        <option value="LINEUP_EXCEL">Line Up Marítimo Nacional (Excel multi-pestaña)</option>
+
+                        <option value="BOLETIN_PORTUARIO">Boletín Estadístico Portuario (PDF)</option>
+                        <option value="RNDC_EXCEL">Reporte de Despachos RNDC (Excel)</option>
+                        <option value="MATRIZ_BODEGAS">Matriz Operaciones Portuarias (Excel)</option>
+                        <option value="TRAFICO">Reporte Portuario Marítimo (CSV)</option>
+                    </select>
+                </div>
+
+                <div class="drag-drop-zone" [class.drag-active]="isDragging" (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+
+                    <div *ngIf="!selectedFile">
+                        <h3>Arrastra tu archivo aquí</h3>
+                        <p>o</p>
+                        <label class="btn-browse">
+                            Explorar Archivos
+                            <input type="file" (change)="onFileSelected($event)" accept=".pdf,.xls,.xlsx,.csv" hidden>
+                        </label>
+                        <p class="file-hint">Formatos soportados: PDF, Excel (.xlsx, .xls) y CSV.</p>
+                    </div>
+
+                    <div *ngIf="selectedFile" class="file-ready">
+                        <i class="fas fa-file-excel file-type-icon text-success"></i>
+                        <div class="file-details">
+                            <span class="file-name">{{ selectedFile.name }}</span>
+                            <span class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</span>
+
+                            <div *ngIf="tipoDocumento === 'LINEUP_EXCEL' && pestanasEncontradas.length > 0"
+                                class="mt-2 text-sm">
+                                <span class="text-info font-weight-bold">
+                                    <i class="fas fa-layer-group"></i> {{ pestanasEncontradas.length }} Terminales
+                                    detectadas:
+                                </span>
+                                <span class="text-gray-400 d-block mt-1">{{ pestanasEncontradas.join(', ') }}</span>
+                                <span class="text-success font-weight-bold d-block mt-1">
+                                    <i class="fas fa-ship"></i> {{ registrosProcesados.length }} Naves listas para
+                                    ingesta
+                                </span>
+                            </div>
+                        </div>
+                        <button class="btn-clear" (click)="limpiarArchivo()"><i class="fas fa-times"></i>
+                            Quitar</button>
+                    </div>
+
+                </div>
+
+                <div class="action-section">
+                    <button class="btn-process"
+                        [disabled]="!selectedFile || isUploading || (tipoDocumento === 'LINEUP_EXCEL' && registrosProcesados.length === 0)"
+                        (click)="procesarDocumento()">
+                        <i class="fas" [ngClass]="isUploading ? 'fa-spinner fa-spin' : 'fa-brain'"></i>
+                        {{ isUploading ? 'IA Procesando Documento...' : 'Extraer Datos con IA' }}
+                    </button>
+
+                    <div class="status-alert success" *ngIf="uploadSuccess">
+                        <i class="fas fa-check-circle"></i> {{ statusMessage }}
+                    </div>
+                    <div class="status-alert error" *ngIf="uploadError">
+                        <i class="fas fa-exclamation-triangle"></i> {{ statusMessage }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

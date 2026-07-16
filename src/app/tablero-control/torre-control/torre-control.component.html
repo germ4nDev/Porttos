@@ -1,0 +1,68 @@
+<app-tc-header titulo="Porttos 1.0" subtitulo="Plataforma de Logistica y Gestión Portuaria" [nodos]="listaDePuertos"
+    (nodoCambiado)="cargarDatosDelPuerto($event)" [tableroBloqueado]="tableroBloqueado"
+    (toggleBloqueo)="toggleBloqueoTablero()" (abrirCatalogo)="mostrarLobby = true">
+</app-tc-header>
+
+<div class="tc-dashboard-container" style="position: relative;">
+    <nav class="tc-nav-tabs">
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_MARITIMO_001'"
+            (click)="cambiarPestana('TLC_MARITIMO_001')">
+            <span class="icon">🛳️</span> Operación Marítima
+        </button>
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_BODEGAS_001'"
+            (click)="cambiarPestana('TLC_BODEGAS_001')">
+            <span class="icon">🏗️</span> Gate & Bodegas
+        </button>
+        <!-- <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_TERRESTRE_001'"
+            (click)="cambiarPestana('TLC_TERRESTRE_001')">
+            <span class="icon">🚛</span> Operación Terrestre
+        </button> -->
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_MAPA_001'"
+            (click)="cambiarPestana('TLC_MAPA_001')">
+            <span class="icon">🧠</span> Mapa Logístico
+        </button>
+        <!-- <button class="tc-tab-btn" [class.active]="pestanaActiva === 'analitica_rndc'"
+            (click)="cambiarPestana('analitica_rndc')">
+            <span class="icon">📈</span> Analítica RNDC
+        </button>
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'seguridad_oea'"
+            (click)="cambiarPestana('seguridad_oea')">
+            <span class="icon">🛡️</span> Seguridad OEA
+        </button>
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'reportes_gerenciales'"
+            (click)="cambiarPestana('reportes_gerenciales')">
+            <span class="icon">📊</span> Reportes Gerenciales
+        </button> -->
+    </nav>
+
+    <div *ngIf="cargando" class="cargador-flotante">
+        <div class="cargador-contenido">
+            <div class="spinner-qplus"></div>
+            <p class="text-white mt-4">Actualizando Torre de Control...</p>
+        </div>
+    </div>
+
+    <gridster class="gridster" [options]="options">
+
+        <gridster-item *ngFor="let widget of dashboard; trackBy: trackByWidget" [item]="widget"
+            [class.qplus-fantasma]="widget.type === 'WDG_FANTASMA'"> <app-widget-selector [type]="widget.type"
+                [data]="widget.data">
+            </app-widget-selector>
+        </gridster-item>
+
+    </gridster>
+
+</div>
+
+<app-widget-lobby [visible]="mostrarLobby" (cerrar)="mostrarLobby = false">
+</app-widget-lobby>
+
+<div class="qplus-backdrop-blur" *ngIf="widgetEnfoque" (click)="cerrarModalEnfoque()">
+    <div class="qplus-modal-lg" (click)="$event.stopPropagation()">
+        <button class="btn-cerrar-modal" (click)="cerrarModalEnfoque()">
+            <i class="icon-close"></i> Cerrar Vista Enfoque
+        </button>
+        <app-widget-selector [type]="widgetEnfoque.type" [data]="widgetEnfoque.data">
+        </app-widget-selector>
+    </div>
+</div>

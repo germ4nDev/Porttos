@@ -1,0 +1,115 @@
+<div class="navbar d-flex justify-content-between align-items-center px-3 py-2">
+    <ul class="navbar-nav d-flex align-items-center gap-3 flex-row ms-auto">
+        <li>
+            <div class="dropdown icon-style" ngbDropdown placement="auto">
+                <a ngbDropdownToggle href="javascript:" class="icono-tema">
+                    <i class="icon feather icon-bell icon-lg icon-style" title="Notification"></i>
+                    <span class="badge bg-danger"><span class="sr-only"></span></span>
+                </a>
+                <div ngbDropdownMenu class="dropdown-menu dropdown-menu-end notification">
+                    <div class="noti-head">
+                        <h6 class="d-inline-block m-b-0">{{ 'PLATAFORMA.NAVBAR.NOTIFICACIONES' | translate }}</h6>
+                        <div class="float-end">
+                            <a href="javascript:" class="m-r-10">{{ 'PLATAFORMA.NAVBAR.READ' | translate }}</a>
+                            <a href="javascript:">{{ 'PLATAFORMA.NAVBAR.CLEAR' | translate }}</a>
+                        </div>
+                    </div>
+                    <ul class="noti-body">
+                        <li class="n-title">
+                            <p class="m-b-0">{{ 'PLATAFORMA.NAVBAR.NEW' | translate }}</p>
+                        </li>
+                        <li class="notification">
+                            <div class="media">
+                                <img class="img-radius" src="assets/images/user/avatar-1.jpg"
+                                    alt="Generic placeholder image" />
+                                <div class="media-body">
+                                    <p><strong>John Doe</strong><span class="n-time text-muted"><i
+                                                class="icon feather icon-clock"></i>30 min</span></p>
+                                    <p>New ticket Added</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="n-title">
+                            <p class="m-b-0">{{ 'PLATAFORMA.NAVBAR.EARLIER' | translate }}</p>
+                        </li>
+                        <li class="notification">
+                            <div class="media">
+                                <img class="img-radius" src="assets/images/user/avatar-2.jpg"
+                                    alt="Generic placeholder image" />
+                                <div class="media-body">
+                                    <p><strong>Joseph William</strong><span class="n-time text-muted"><i
+                                                data-feather="clock"></i>30 min</span></p>
+                                    <p>Purchase New Theme and make payment</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="notification">
+                            <div class="media">
+                                <img class="img-radius" src="assets/images/user/avatar-3.jpg"
+                                    alt="Generic placeholder image" />
+                                <div class="media-body">
+                                    <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i
+                                                class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                                    <p>currently login</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="noti-footer icono-tema">
+                        <a href="javascript:">{{ 'PLATAFORMA.NAVBAR.SHOW' | translate }}</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li (click)="this.visibleUserList = !this.visibleUserList">
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="displayChatbox dropdown-toggle icono-tema">
+                    <i class="icon feather icon-mail icon-lg icon-style" title="Mail InBox"></i>
+                    <span class="badge bg-success"><span class="sr-only"></span></span>
+                </a>
+            </div>
+        </li>
+        <li>
+            <i class="icon feather icon-monitor icon-lg icon-style"
+                title="{{ 'PLATAFORMA.NAVBAR.EMPRESAS' | translate }}" (click)="empresasScreen()"
+                style="cursor: pointer"></i>
+        </li>
+        <li>
+            <i class="icon feather icon-grid icon-lg icon-style"
+                title="{{ 'PLATAFORMA.NAVBAR.APLICACIONES' | translate }}" (click)="aplicacionesScreen()"
+                style="cursor: pointer"></i>
+        </li>
+        <li>
+            <i class="icon feather icon-home icon-lg icon-style" title="{{ 'PLATAFORMA.NAVBAR.SUITES' | translate }}"
+                (click)="suitesScreen()" style="cursor: pointer"></i>
+        </li>
+        <li>
+            <i class="icon feather icon-help-circle icon-lg icon-style"
+                title="{{ 'PLATAFORMA.NAVBAR.HELP' | translate }}" (click)="helpsClick()" style="cursor: pointer"></i>
+        </li>
+        <li>
+            <app-language-selector></app-language-selector>
+        </li>
+        <li>
+            <app-profile-drp></app-profile-drp>
+        </li>
+    </ul>
+    <section *ngIf="visibleUserList && !gradientConfig.isRtlLayout" class="header-user-list"
+        [ngClass]="{ open: visibleUserList }" [@slideInOutLeft]>
+        <app-chat-user-list (ChatToggle)="onChatToggle($event)"
+            (ChatCollapse)="visibleUserList = !visibleUserList; chatMessage = false"></app-chat-user-list>
+    </section>
+    <section *ngIf="chatMessage && !gradientConfig.isRtlLayout" class="header-chat" [ngClass]="{ open: chatMessage }"
+        [@slideInOutLeft]>
+        <app-chat-msg (ChatToggle)="chatMessage = !chatMessage" [friendId]="friendId"></app-chat-msg>
+    </section>
+    <section *ngIf="visibleUserList && gradientConfig.isRtlLayout" class="header-user-list"
+        [ngClass]="{ open: visibleUserList }" [@slideInOutRight]>
+        <app-chat-user-list (ChatToggle)="onChatToggle($event)"
+            (ChatCollapse)="visibleUserList = !visibleUserList; chatMessage = false"></app-chat-user-list>
+    </section>
+    <section *ngIf="chatMessage && gradientConfig.isRtlLayout" class="header-chat" [ngClass]="{ open: chatMessage }"
+        [@slideInOutRight]>
+        <app-chat-msg (ChatToggle)="chatMessage = !chatMessage" [friendId]="friendId"></app-chat-msg>
+    </section>
+</div>

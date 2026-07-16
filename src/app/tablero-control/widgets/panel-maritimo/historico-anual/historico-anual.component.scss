@@ -1,0 +1,62 @@
+@use 'src/app/theme/shared/styles/components' as qplus;
+@include qplus.widget-header;
+
+/* ==========================================================================
+   1. HOST Y TARJETA PRINCIPAL
+   ========================================================================== */
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+
+    container-type: inline-size;
+    /* Mide el ancho del componente */
+    container-name: tarjeta-terminal;
+}
+
+.qplus-widget.widget-historico {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    padding: 16px;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+
+    /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* ==========================================================================
+   3. CONTENEDOR DEL CANVAS (La Jaula de la Gráfica)
+   ========================================================================== */
+.panel-body {
+    flex: 1;
+    /* Toma todo el espacio disponible hasta el tope de 450px */
+
+    /* 🚨 LA MAGIA: Obliga al contenedor Flex a permitir que el canvas
+       se encoja y respete el height: 450px del padre */
+    min-height: 0;
+    min-width: 0;
+
+    width: 100%;
+    padding: 0 1.2rem 1.2rem 1.2rem;
+    position: relative;
+
+    /* Garantizamos que Angular/Chart.js pinte el canvas al 100%
+       del tamaño que nosotros (el CSS) le permitimos, no el que él quiera */
+    canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}

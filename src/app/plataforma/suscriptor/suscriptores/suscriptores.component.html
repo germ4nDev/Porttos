@@ -1,0 +1,98 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+  <aside class="aside-left">
+    <div class="card">
+      <div class="nav-tabs-custom">
+        <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+          {{ 'PLATAFORMA.MENU' | translate }}
+        </button>
+        <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+          {{ 'PLATAFORMA.FILTERS' | translate }}
+        </button>
+      </div>
+
+      <ng-container *ngIf="activeTab === 'menu'">
+        <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+      </ng-container>
+
+      <ng-container *ngIf="activeTab === 'filters'">
+        <div class="p-3 filtros-scroll-wrapper">
+          <h6 class="filtros-title">{{ 'SUSCRIPTOR.SUSCRIPTORES.FILTROS.TITULO' | translate }}</h6>
+          <div class="filtro">
+            <small>{{ 'SUSCRIPTOR.SUSCRIPTORES.FILTROS.FILTRONOMBRE' | translate }}</small>
+            <input
+              type="text"
+              (keyup)="onFiltroNombreChangeClick($event)"
+              class="form-control form-input"
+              placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.FILTROS.NOMBRECHOLDER' | translate }}"
+            />
+          </div>
+          <div class="filtro">
+            <small>{{ 'SUSCRIPTOR.SUSCRIPTORES.FILTROS.FILTROIDENTIFICACION' | translate }}</small>
+            <input
+              type="text"
+              (keyup)="onFiltroIdentificacionChangeClick($event)"
+              class="form-control form-input"
+              placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.FILTROS.IDENTIFICACIONHOLDER' | translate }}"
+            />
+          </div>
+          <div class="filtro">
+            <small>{{ 'SUSCRIPTOR.SUSCRIPTORES.FILTROS.FILTROESTADO' | translate }}</small>
+            <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select" style="cursor: pointer">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+              <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </aside>
+
+  <div class="content-area">
+    <div class="card card-table content-scroll-wrapper">
+      <div class="card-body">
+        <ng-container *ngIf="registrosFiltrados$ | async as dataFiltrada; else loading">
+          <app-data-table
+            [data]="dataFiltrada"
+            [idField]="'codigoSuscriptor'"
+            [tableTitle]="'SUSCRIPTOR.SUSCRIPTORES.TITLE' | translate"
+            [newButtonLabel]="'SUSCRIPTOR.SUSCRIPTORES.NEW' | translate"
+            [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+            [tooltipOption1]="'SUSCRIPTOR.SUSCRIPTORES.EMPRESAS' | translate"
+            [tooltipOption2]="'SUSCRIPTOR.SUSCRIPTORES.USUARIOS' | translate"
+            [colorOpcion1]="colorOpcion1"
+            [letraOpcion1]="letraOpcion1"
+            [colorOpcion2]="colorOpcion2"
+            [letraOpcion2]="letraOpcion2"
+            [metadataColumns]="columnasRegistros"
+            [metadataDetailColumns]="columnasDetailRegistros"
+            [showActions]="true"
+            [showNewButton]="true"
+            [showViewButton]="false"
+            [showEditButton]="true"
+            [showDeleteButton]="true"
+            [showDetail]="true"
+            [showOption1Button]="true"
+            [showOption2Button]="true"
+            [showSearchBox]="false"
+            (newRecord)="OnNuevoRegistroClick()"
+            (editRecord)="OnEditarRegistroClick($event)"
+            (deleteRecord)="OnEliminarRegistroClick($event)"
+            (option1Record)="OnOption1Click($event)"
+            (option2Record)="OnOption2Click($event)"
+          >
+          </app-data-table>
+        </ng-container>
+
+        <ng-template #loading>
+          <div class="d-flex justify-content-center align-items-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Cargando datos...</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

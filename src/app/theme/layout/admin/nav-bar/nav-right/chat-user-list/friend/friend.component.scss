@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+  }
+
+  .status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: green;
+  }
+
+  .username {
+    font-size: 0.85rem;
+    color: #333;
+  }
+}

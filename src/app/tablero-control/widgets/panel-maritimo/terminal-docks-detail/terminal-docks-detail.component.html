@@ -1,0 +1,268 @@
+<!-- <div class="table-container">
+    <table class="qplus-table">
+        <thead>
+            <tr>
+                <th style="width: 12%;">MUELLE</th>
+                <th style="width: 23%;">ESPECIALIDAD</th>
+                <th style="width: 15%;">CALADO</th>
+                <th style="width: 23%;">BARCO</th>
+                <th style="width: 15%;">OPERACIÓN</th>
+                <th style="width: 12%; text-align: center;">ESTADO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let muelle of data">
+
+                <td class="align-middle fw-bold text-white">
+                    {{ muelle.id }}
+                </td>
+
+                <td class="align-middle specialty-cell">
+                    <span class="specialty-dot" [style.backgroundColor]="getDotColor(muelle.especialidad)"></span>
+                    <span class="text-light-grey fw-medium text-truncate d-inline-block align-middle"
+                        style="max-width: 140px;" [title]="muelle.especialidad">
+                        {{ muelle.especialidad | titlecase }}
+                    </span>
+                </td>
+
+                <td class="align-middle text-muted fw-medium">
+                    {{ muelle.calado }}
+                </td>
+
+                <td class="align-middle" [ngClass]="muelle.barcoAtracado ? 'text-white fw-bold' : 'text-muted'">
+                    <span class="text-truncate d-inline-block" style="max-width: 160px;"
+                        [title]="muelle.barcoAtracado || ''">
+                        {{ muelle.barcoAtracado ? (muelle.barcoAtracado | uppercase) : '—' }}
+                    </span>
+                </td>
+
+                <td class="align-middle text-light-grey op-cell">
+                    <span class="text-truncate d-inline-block" style="max-width: 130px;"
+                        [title]="muelle.operacionBarco || 'Disponible'">
+                        {{ muelle.barcoAtracado ? (muelle.operacionBarco | titlecase) : 'Disponible' }}
+                    </span>
+                </td>
+
+                <td class="align-middle text-center">
+                    <span class="status-pill" [ngClass]="muelle.estado === 'ocupado' ? 'pill-ocupado' : 'pill-libre'">
+                        {{ muelle.estado | uppercase }}
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr *ngIf="!data || data.length === 0">
+                <td colspan="6" style="text-align: center; padding: 2rem; color: #94a3b8;">
+                    No hay infraestructura configurada.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->
+
+<!-- <div class="table-container">
+    <table class="qplus-table">
+        <thead>
+            <tr>
+                <th style="width: 10%;">MUELLE</th>
+                <th style="width: 20%;">ESPECIALIDAD</th>
+                <th style="width: 12%;">CALADO</th>
+                <th style="width: 25%;">BARCO</th>
+                <th style="width: 20%;">OPERACIÓN</th>
+                <th style="width: 13%; text-align: center;">ESTADO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let muelle of data" [class.row-active]="muelle.barcoAtracado">
+
+                <td class="align-middle fw-bold text-primary">
+                    {{ muelle.id }}
+                </td>
+
+                <td class="align-middle specialty-cell">
+                    <div class="d-flex align-items-center">
+                        <span class="specialty-dot" [style.backgroundColor]="getDotColor(muelle.especialidad)"></span>
+                        <span class="text-light-grey fw-medium ms-2 text-truncate" [title]="muelle.especialidad">
+                            {{ muelle.especialidad | titlecase }}
+                        </span>
+                    </div>
+                </td>
+
+                <td class="align-middle text-muted small">
+                    {{ muelle.calado }}
+                </td>
+
+                <td class="align-middle">
+                    <div *ngIf="muelle.barcoAtracado; else noBarco" class="text-white fw-bold d-flex flex-column">
+                        <span class="text-truncate" [title]="muelle.barcoAtracado">{{ muelle.barcoAtracado | uppercase
+                            }}</span>
+                    </div>
+                    <ng-template #noBarco>
+                        <span class="text-muted small">—</span>
+                    </ng-template>
+                </td>
+
+                <td class="align-middle op-cell">
+                    <span *ngIf="muelle.barcoAtracado" class="text-light-grey small text-truncate d-block"
+                        [title]="muelle.operacionBarco">
+                        {{ muelle.operacionBarco | titlecase }}
+                    </span>
+                    <span *ngIf="!muelle.barcoAtracado" class="text-muted small">Disponible</span>
+                </td>
+
+                <td class="align-middle text-center">
+                    <div class="d-flex justify-content-center">
+                        <span class="status-pill"
+                            [ngClass]="muelle.estado === 'ocupado' ? 'pill-ocupado' : 'pill-libre'">
+                            <i class="fa-solid"
+                                [ngClass]="muelle.estado === 'ocupado' ? 'fa-anchor' : 'fa-circle-check'"></i>
+                            {{ muelle.estado | uppercase }}
+                        </span>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr *ngIf="!data || data.length === 0">
+                <td colspan="6" class="text-center py-5 text-muted">
+                    <i class="fa-solid fa-ship mb-2 d-block"></i>
+                    No hay infraestructura configurada.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->
+
+
+<!-- <div class="table-container">
+    <table class="qplus-table">
+        <thead>
+            <tr>
+                <th style="width: 12%;">MUELLE</th>
+                <th *ngIf="!vistaCompacta" style="width: 20%;">ESPECIALIDAD</th>
+                <th style="width: 15%;">CALADO</th>
+                <th style="width: 25%;">BARCO</th>
+                <th style="width: 16%;">OPERACIÓN</th>
+                <th style="width: 12%; text-align: center;">ESTADO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let muelle of data" [class.row-active]="muelle.barcoAtracado">
+
+                <td class="align-middle fw-bold text-white">
+                    {{ muelle.id }}
+                </td>
+
+                <td *ngIf="!vistaCompacta" class="align-middle specialty-cell">
+                    <span class="specialty-dot" [style.backgroundColor]="getDotColor(muelle.especialidad)"></span>
+                    <span class="text-light-grey fw-medium text-truncate d-inline-block align-middle ms-2"
+                        style="max-width: 140px;" [title]="muelle.especialidad">
+                        {{ muelle.especialidad | titlecase }}
+                    </span>
+                </td>
+
+                <td class="align-middle text-muted fw-medium">
+                    {{ muelle.calado }}
+                </td>
+
+                <td class="align-middle" [ngClass]="muelle.barcoAtracado ? 'text-white fw-bold' : 'text-muted'">
+                    <span class="text-truncate d-inline-block" style="max-width: 160px;"
+                        [title]="muelle.barcoAtracado || ''">
+                        {{ muelle.barcoAtracado ? (muelle.barcoAtracado | uppercase) : '—' }}
+                    </span>
+                </td>
+
+                <td class="align-middle text-light-grey op-cell">
+                    <span class="text-truncate d-inline-block" style="max-width: 130px;"
+                        [title]="muelle.operacionBarco || 'Disponible'">
+                        {{ muelle.barcoAtracado ? (muelle.operacionBarco | titlecase) : 'Disponible' }}
+                    </span>
+                </td>
+
+                <td class="align-middle text-center">
+                    <span class="status-pill" [ngClass]="muelle.estado === 'ocupado' ? 'pill-ocupado' : 'pill-libre'">
+                        {{ muelle.estado | uppercase }}
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr *ngIf="!data || data.length === 0">
+                <td [attr.colspan]="vistaCompacta ? 5 : 6" style="text-align: center; padding: 2rem; color: #94a3b8;">
+                    No hay infraestructura configurada o barcos operando.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->
+
+<div class="table-container">
+    <table class="qplus-table">
+        <thead>
+            <tr>
+                <th class="col-muelle">MUELLE</th>
+                <th class="col-especialidad">ESPECIALIDAD</th>
+                <th class="col-calado">CALADO</th>
+                <th class="col-barco">BARCO</th>
+                <th class="col-operacion">OPERACIÓN</th>
+                <th class="col-estado text-center">ESTADO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let muelle of data">
+
+                <td class="col-muelle align-middle fw-bold text-white">
+                    {{ muelle.id }}
+                </td>
+
+                <td class="col-especialidad align-middle specialty-cell">
+                    <span class="specialty-dot" [style.backgroundColor]="getDotColor(muelle.especialidad)"></span>
+                    <span class="text-light-grey fw-medium text-truncate d-inline-block align-middle ms-2"
+                        style="max-width: 140px;" [title]="muelle.especialidad">
+                        {{ muelle.especialidad | titlecase }}
+                    </span>
+                </td>
+
+                <td class="col-calado align-middle text-muted fw-medium">
+                    {{ muelle.calado }}
+                </td>
+
+                <td class="col-barco align-middle"
+                    [ngClass]="muelle.barcoAtracado ? 'text-white fw-bold' : 'text-muted'">
+                    <span class="text-truncate d-inline-block" style="max-width: 160px;"
+                        [title]="muelle.barcoAtracado || ''">
+                        {{ muelle.barcoAtracado ? (muelle.barcoAtracado | uppercase) : '—' }}
+                    </span>
+                </td>
+
+                <!-- <td class="col-cantidad align-middle text-light-grey op-cell">
+                    <span class="text-truncate d-inline-block" style="max-width: 130px;"
+                        [title]="muelle.cantidadMovida || '0'">
+                        {{ muelle.cantidadMovida ? muelle.cantidadMovida : '0 tons' }}
+                    </span>
+                </td> -->
+
+                <td class="col-operacion align-middle text-light-grey op-cell">
+                    <span class="text-truncate d-inline-block" style="max-width: 130px;"
+                        [title]="muelle.operacionBarco || 'Disponible'">
+                        {{ muelle.barcoAtracado ? (muelle.operacionBarco | titlecase) : 'Disponible' }}
+                    </span>
+                </td>
+
+                <td class="col-estado align-middle text-center">
+
+                    <span class="status-pill" [ngClass]="muelle.estado === 'ocupado' ? 'pill-ocupado' : 'pill-libre'">
+                        {{ muelle.status | uppercase }}
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr *ngIf="!data || data.length === 0">
+                <td colspan="6" class="text-center py-4" style="color: #94a3b8;">
+                    No hay infraestructura configurada.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

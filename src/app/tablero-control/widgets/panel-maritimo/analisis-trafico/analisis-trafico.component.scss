@@ -1,0 +1,132 @@
+@use 'src/app/theme/shared/styles/components' as qplus;
+@include qplus.widget-header;
+
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+
+    container-type: inline-size;
+    /* Mide el ancho del componente */
+    container-name: tarjeta-terminal;
+}
+
+.qplus-widget.widget-analisis-trafico {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    padding: 16px;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+
+    /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .panel-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 20px;
+        padding: 15px 20px;
+    }
+
+    // Grid superior de los 4 KPIs
+    .kpi-macro-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+
+        .kpi-macro-card {
+            background-color: var(--widget-bg); // Fondo ligeramente más claro que el widget
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 3px solid #3b82f6; // Borde azul decorativo a la izquierda
+            transition: transform 0.2s ease;
+
+            &:nth-child(2) {
+                border-left-color: #10b981;
+            }
+
+            // Verde
+            &:nth-child(3) {
+                border-left-color: #f59e0b;
+            }
+
+            // Naranja
+            &:nth-child(4) {
+                border-left-color: #0ea5e9;
+            }
+
+            // Celeste
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.06);
+                transform: translateY(-2px);
+            }
+
+            .km-label {
+                font-size: 11px;
+                color: var(--text-subtitle-color);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 6px;
+            }
+
+            .km-valor {
+                font-size: 28px;
+                font-weight: 700;
+                color: var(--text-color);
+                line-height: 1.1;
+                margin-bottom: 6px;
+            }
+
+            .km-sub {
+                font-size: 11px;
+                color: var(--text-subtitle-color);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    // Contenedor de la gráfica
+    .chart-container-macro {
+        flex: 1;
+        position: relative;
+        min-height: 250px; // Altura mínima para que la gráfica no se aplaste
+        width: 100%;
+    }
+
+    // Clases de color para los textos de tendencia
+    .text-success {
+        color: #10b981 !important;
+    }
+
+    .text-danger {
+        color: #ef4444 !important;
+    }
+
+    .text-info {
+        color: #0ea5e9 !important;
+    }
+
+    .text-warning {
+        color: #f59e0b !important;
+    }
+}

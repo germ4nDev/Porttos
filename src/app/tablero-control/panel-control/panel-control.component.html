@@ -1,0 +1,207 @@
+<div class="qplus-dashboard-container">
+    <header class="dashboard-header">
+        <div class="header-titles">
+            <h1 class="title">Torre de Control Logística 4.0</h1>
+            <p class="subtitle">Plataforma de Visibilidad y Agentes IA</p>
+        </div>
+
+        <div class="header-controls">
+            <label for="nodoOperativo">Nodo Operativo:</label>
+            <select id="nodoOperativo" class="form-select">
+                <option value="buenaventura">Buenaventura (SPRBUN / TCBUEN)</option>
+            </select>
+            <div>
+                <i class="icon feather icon-help-circle icon-lg" title="{{ 'PLATAFORMA.NAVBAR.HELP' | translate }}"
+                    (click)="RegresarClick()" style="cursor: pointer"></i>
+            </div>
+            <div>
+                <app-language-selector></app-language-selector>
+            </div>
+            <div>
+                <app-profile-drp></app-profile-drp>
+            </div>
+        </div>
+
+    </header>
+
+    <div class="kpi-grid">
+        <app-kpi-card titulo="CAMIONES EN OPERACIÓN" valor="1,284"
+            subtitulo="hoy · pre-gate 87 · interior 412 · puerto 312" colorBorde="blue">
+        </app-kpi-card>
+
+        <app-kpi-card titulo="CONTENEDORES DÍA" valor="2,847" subtitulo="FCL 2,140 · LCL 124 · Reefer 583"
+            colorBorde="lightblue">
+        </app-kpi-card>
+
+        <app-kpi-card titulo="GRANEL - TONELADAS DÍA" valor="38.4" sufijo="k"
+            subtitulo="Agrícola 24.2k · Mineral 9.8k · Líquido 4.4k" colorBorde="cyan">
+        </app-kpi-card>
+
+        <app-kpi-card titulo="CARGA SUELTA - TM" valor="4,820" subtitulo="Break-bulk · Project · Paletizada"
+            colorBorde="orange">
+        </app-kpi-card>
+
+        <app-kpi-card titulo="VEHÍCULOS RO-RO" valor="1,142" subtitulo="Imp 824 · Exp 318 · PDI 95% ocupado"
+            colorBorde="purple">
+        </app-kpi-card>
+
+        <app-kpi-card titulo="SATURACIÓN BODEGAS" valor="72" sufijo="%"
+            subtitulo="8 bodegas · 2 críticas · ruteo activo" colorBorde="red">
+        </app-kpi-card>
+    </div>
+
+    <nav class="dashboard-nav-tabs">
+        <button class="tab-btn" [ngClass]="{'active': pestanaActiva === 'operacion_maritima'}"
+            (click)="cambiarPestana('operacion_maritima')">
+            <span class="icon">🛳️</span> Operación Marítima
+        </button>
+
+        <button class="tab-btn" [ngClass]="{'active': pestanaActiva === 'gate_bodegas'}"
+            (click)="cambiarPestana('gate_bodegas')">
+            <span class="icon">🏗️</span> Gate & Bodegas
+        </button>
+
+        <button class="tab-btn" [ngClass]="{'active': pestanaActiva === 'operacion_terrestre'}"
+            (click)="cambiarPestana('operacion_terrestre')">
+            <span class="icon">🚛</span> Operación Terrestre
+        </button>
+
+        <button class="tab-btn" [ngClass]="{'active': pestanaActiva === 'analitica_rndc'}"
+            (click)="cambiarPestana('analitica_rndc')">
+            <span class="icon">📈</span> Analítica RNDC
+        </button>
+
+        <button class="tab-btn" [ngClass]="{'active': pestanaActiva === 'ingesta_ia'}"
+            (click)="cambiarPestana('ingesta_ia')">
+            <span class="icon">🧠</span> Ingesta IA
+        </button>
+
+        <button class="tab-btn" [ngClass]="{'active': pestanaActiva === 'seguridad_oea'}"
+            (click)="cambiarPestana('seguridad_oea')">
+            <span class="icon">🛡️</span> Seguridad OEA
+        </button>
+
+        <button class="tab-btn" [ngClass]="{'active': pestanaActiva === 'reportes_gerenciales'}"
+            (click)="cambiarPestana('reportes_gerenciales')">
+            <span class="icon">📊</span> Reportes Gerenciales
+        </button>
+    </nav>
+
+    <main class="dashboard-content">
+
+        <div class="terminals-row">
+
+            <div class="terminal-card">
+                <div class="terminal-header">
+                    <h3>SPRBUN <span class="sub">SOCIEDAD PORTUARIA REGIONAL</span></h3>
+                    <span class="badge operando">OPERATIVO</span>
+                </div>
+                <div class="docks-grid">
+                    <div class="dock active">M-1</div>
+                    <div class="dock active">M-2</div>
+                    <div class="dock">M-3</div>
+                    <div class="dock active">M-4</div>
+                    <div class="dock active">M-5</div>
+                    <div class="dock warning">M-6</div>
+                    <div class="dock">M-7</div>
+                    <div class="dock active">M-8</div>
+                </div>
+                <div class="terminal-mini-stats">
+                    <div class="stat">
+                        <h4>62%</h4>
+                        <p>OCUPACIÓN</p>
+                    </div>
+                    <div class="stat">
+                        <h4>5</h4>
+                        <p>MOTONAVES</p>
+                    </div>
+                    <div class="stat">
+                        <h4>14.2k</h4>
+                        <p>TM HOY</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-card">
+                <div class="terminal-header">
+                    <h3>TCBUEN <span class="sub">TERMINAL DE CONTENEDORES</span></h3>
+                    <span class="badge congestionado">CONGESTIONADO</span>
+                </div>
+                <div class="docks-grid">
+                    <div class="dock active">N-1</div>
+                    <div class="dock active">N-2</div>
+                    <div class="dock active">N-3</div>
+                    <div class="dock active">N-4</div>
+                    <div class="dock">N-5</div>
+                    <div class="dock active">N-6</div>
+                    <div class="dock active">N-7</div>
+                    <div class="dock active">N-8</div>
+                </div>
+                <div class="terminal-mini-stats">
+                    <div class="stat">
+                        <h4>87%</h4>
+                        <p>OCUPACIÓN</p>
+                    </div>
+                    <div class="stat">
+                        <h4>7</h4>
+                        <p>MOTONAVES</p>
+                    </div>
+                    <div class="stat">
+                        <h4>22.1k</h4>
+                        <p>TEU HOY</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-card">
+                <div class="terminal-header">
+                    <h3>PUERTO AGUADULCE <span class="sub">BAHÍA - MULTIPROPÓSITO</span></h3>
+                    <span class="badge operando">OPERATIVO</span>
+                </div>
+                <div class="docks-grid">
+                    <div class="dock">A-1</div>
+                    <div class="dock">A-2</div>
+                    <div class="dock active">A-3</div>
+                    <div class="dock">A-4</div>
+                    <div class="dock active">A-5</div>
+                    <div class="dock">A-6</div>
+                    <div class="dock warning">A-7</div>
+                    <div class="dock active">A-8</div>
+                </div>
+                <div class="terminal-mini-stats">
+                    <div class="stat">
+                        <h4>50%</h4>
+                        <p>OCUPACIÓN</p>
+                    </div>
+                    <div class="stat">
+                        <h4>4</h4>
+                        <p>MOTONAVES</p>
+                    </div>
+                    <div class="stat">
+                        <h4>8.7k</h4>
+                        <p>TM HOY</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="master-table-row">
+
+            <div class="table-container-large">
+                <h3 style="color: white; margin-top: 0; margin-bottom: 20px; font-size: 16px;">
+                    🚢 REPORTE DE MOTONAVES - 72H
+                </h3>
+
+                <!-- <app-vessel-table [motonaves]="motonavesMaestras"></app-vessel-table> -->
+            </div>
+
+            <div class="chart-container-small">
+                <h3 style="color: white; margin-top: 0; margin-bottom: 20px; font-size: 16px;">
+                    ⏱️ ETA VS ATA
+                </h3>
+                <p style="color: #8b95a5; font-size: 13px;">(Espacio reservado para gráfica de retrasos)</p>
+            </div>
+
+        </div>
+    </main>
+</div>

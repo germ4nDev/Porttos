@@ -1,0 +1,30 @@
+<div class="qplus-widget kpi-card d-flex flex-column" [ngClass]="data.colorBorde">
+
+    <ng-container *ngIf="data.cargandoIA">
+        <div class="sk-skeleton-container d-flex flex-column justify-content-center h-100 gap-2">
+            <div class="skeleton-box w-75 sk-kpi-title"></div>
+            <div class="skeleton-box w-50 sk-kpi-value"></div>
+            <div class="skeleton-box w-100 sk-kpi-trend"></div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!data.cargandoIA">
+
+        <div class="kpi-content" [ngClass]="data.colorBorde || ''">
+
+            <div class="kpi-header">
+                <h3 class="kpi-title">{{ data.titulo }}</h3>
+            </div>
+
+            <div class="kpi-body">
+                <h2 class="kpi-value">{{ data.valor }}</h2>
+            </div>
+
+            <div class="kpi-footer">
+                <p class="kpi-trend">{{ data.tendencia }}</p>
+            </div>
+
+        </div>
+    </ng-container>
+
+</div>

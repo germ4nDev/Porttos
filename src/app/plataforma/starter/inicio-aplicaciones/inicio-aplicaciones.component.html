@@ -1,0 +1,42 @@
+<div class="qplus-list-screen">
+
+    <app-full-screen-slider [tipoSlider]="2" class="qplus-list-bg"></app-full-screen-slider>
+
+    <nav class="navbar fixed-top navbar-expand-lg">
+        <div class="container-fluid panel-overlay">
+            <a class="navbar-brand" href="#"></a>
+            <div class="nav-right">
+                <app-language-selector></app-language-selector>
+            </div>
+        </div>
+    </nav>
+
+    <div class="qplus-apps-layout">
+
+        <div class="qplus-apps-header text-center">
+            <h2 class="apps-main-title">{{ 'PLATAFORMA.TITULO_GRID_APLICACIONES' | translate }}</h2>
+            <p class="apps-subtitle">{{ 'PLATAFORMA.SUBTITULO_GRID_APLICACIONES' | translate }}</p>
+        </div>
+
+        <div class="qplus-apps-grid">
+            <div class="qplus-app-item-card" *ngFor="let app of aplicaciones"
+                [style.backgroundImage]="'url(' + app.imagenInicio + ')'">
+
+                <div class="app-card-overlay">
+                    <div class="app-card-info">
+                        <h3 class="app-name">{{ app.nombreAplicacion }}</h3>
+                        <p class="app-description" [innerHTML]="app.descripcionAplicacion"></p>
+                    </div>
+
+                    <div class="app-card-actions"><br>
+                        <button (click)="ingresarPlataforma(app)" class="qplus-enter-btn">
+                            {{ 'PLATAFORMA.ENTRAR' | translate }} <i class="feather icon-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

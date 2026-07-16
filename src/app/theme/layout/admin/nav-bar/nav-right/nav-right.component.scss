@@ -1,0 +1,228 @@
+.icon-lg {
+  font-size: 24px; // o el tamaño que necesites
+}
+
+.nav-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dropdown-menu {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+  position: absolute;
+}
+
+.badge {
+  font-size: 10px;
+  padding: 3px 5px;
+  border-radius: 999px;
+  position: relative;
+  top: -10px;
+  right: 10px;
+}
+
+.profile-notification {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  min-width: 250px;
+  padding: 1rem;
+  margin-top: 10px;
+
+  .pro-head {
+    text-align: center;
+    margin-bottom: 1rem;
+    position: relative;
+
+    img {
+      height: 70px;
+      width: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #007bff;
+      margin-bottom: 0.5rem;
+    }
+
+    span {
+      display: block;
+      font-weight: 600;
+      font-size: 16px;
+    //   color: #fff;
+    }
+
+    .dud-logout {
+      position: absolute;
+      top: 0;
+      right: 0;
+    //   color: #fff;
+      font-size: 1.2rem;
+
+      &:hover {
+        color: #dc3545;
+      }
+    }
+  }
+
+  .pro-body {
+    list-style: none;
+    padding: 0;
+
+    li {
+      a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        // color: #fff;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: background 0.3s;
+
+        i {
+          font-size: 16px;
+        }
+
+        // &:hover {
+        //   background-color: #dadadb;
+        // }
+      }
+    }
+  }
+}
+
+.notification {
+//   background-color: #1e1e2d;
+//   color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  min-width: 300px;
+  padding: 0.5rem 1rem;
+  margin-top: 10px;
+
+  .noti-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #444;
+    padding: 0.5rem 0;
+
+    h6 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    a {
+      font-size: 12px;
+    //   color: #0dcaf0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &.m-r-10 {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .noti-body {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 0.5rem;
+
+    .notification {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+
+      .media {
+        display: flex;
+        gap: 10px;
+
+        img {
+          height: 40px;
+          width: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .media-body {
+          p {
+            margin: 0;
+            font-size: 13px;
+            // color: #e1e1e1;
+
+            strong {
+              display: block;
+            //   color: #fff;
+              font-weight: 600;
+            }
+
+            .n-time {
+              font-size: 11px;
+            //   color: #999;
+            }
+          }
+        }
+      }
+    }
+
+    .n-title {
+      p {
+        font-size: 11px;
+        font-weight: bold;
+        // color: #aaa;
+        margin: 0.5rem 0;
+      }
+    }
+  }
+
+  .noti-footer {
+    text-align: center;
+    padding: 0.5rem 0;
+
+    a {
+      font-size: 12px;
+    //   color: #0dcaf0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.noti-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.noti-body::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+// Asegura que las cajas de color tengan un tamaño visible
+.color-box {
+  width: 24px; // Puedes ajustar el tamaño
+  height: 24px; // Puedes ajustar el tamaño
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+// Asegura que el dropdown sea visible y esté sobre otros elementos
+.dropdown-menu {
+  z-index: 1050; // Un valor alto para asegurar que se muestre encima
+}
+
+// Opcional: Estilo para la caja de color seleccionada
+// .color-box.selected {
+//   border: 2px solid #fff; // Un borde blanco para destacar la selección
+//   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+// }

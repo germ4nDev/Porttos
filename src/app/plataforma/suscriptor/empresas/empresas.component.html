@@ -1,0 +1,83 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+                <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+                    {{ 'PLATAFORMA.FILTERS' | translate }}
+                </button>
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+                <div class="p-3 filtros-scroll-wrapper">
+                    <h6 class="filtros-title text-center">{{ 'SUSCRIPTOR.EMPRESAS.FILTROS.TITULO' | translate }}</h6>
+                    <div class="filtro">
+                        <small>{{ 'SUSCRIPTOR.EMPRESAS.FILTROS.FILTROSUSCRIPTOR' | translate }}</small>
+                        <select class="form-control form-select" style="cursor: pointer;"
+                            (change)="onFiltroSuscriptorChangeClick($event)">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option [value]="suscriptor.codigoSuscriptor" *ngFor="let suscriptor of suscriptores">
+                                {{ suscriptor.nombreSuscriptor }}</option>
+                        </select>
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'SUSCRIPTOR.EMPRESAS.FILTROS.FILTRONOMBRE' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroNombreChangeClick($event)" class="form-control form-input"
+                            placeholder="{{ 'SUSCRIPTOR.EMPRESAS.FILTROS.PLACEHOLDERNOMBRE' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'SUSCRIPTOR.EMPRESAS.FILTROS.FILTRODECRIPCION' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroDescripcionChangeClick($event)"
+                            class="form-control form-input"
+                            placeholder="{{ 'SUSCRIPTOR.EMPRESAS.FILTROS.PLACEHOLDERDESCRIPCION' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'SUSCRIPTOR.EMPRESAS.FILTROS.FILTROESTADO' | translate }}</small>
+                        <select class="form-control form-select" style="cursor: pointer;"
+                            (change)="onFiltroEstadoChangeClick($event)">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <ng-container *ngIf="registrosFiltrado$ | async as dataFiltrada">
+                    <app-data-table
+                        [data]="dataFiltrada"
+                        [idField]="'codigoEmpresaSC'"
+                        [tableTitle]="'SUSCRIPTOR.EMPRESAS.TITLE' | translate"
+                        [newButtonLabel]="'SUSCRIPTOR.EMPRESAS.NEW' | translate"
+                        [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+                        [metadataColumns]="columnasRegistros"
+                        [metadataDetailColumns]="columnasDetailRegistros"
+                        [showDetail]="true"
+                        [showActions]="true"
+                        [showNewButton]="true"
+                        [showViewButton]="false"
+                        [showEditButton]="true"
+                        [showDeleteButton]="true"
+                        [showOption1Button]="false"
+                        [showBackButton]="true"
+                        (newRecord)="OnNuevoRegistroClick()"
+                        (editRecord)="OnEditarRegistroClick($event)"
+                        (deleteRecord)="OnEliminarRegistroClick($event)"
+                        (backRecord)="OnRegresarClick($event)">
+                    </app-data-table>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

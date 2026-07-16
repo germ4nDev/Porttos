@@ -1,0 +1,39 @@
+<div class="dynamic-table-wrapper mt-3 border border-secondary rounded overflow-hidden">
+
+    @if (tableData.length === 0) {
+    <div class="p-3 text-center text-muted text-xs bg-dark">
+        No hay registros disponibles para mostrar.
+    </div>
+    } @else {
+    <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+        <table class="table table-dark table-hover table-sm m-0 align-middle text-xs" style="white-space: nowrap;">
+
+            <thead style="position: sticky; top: 0; z-index: 1; background-color: #1a1a24;">
+                <tr>
+                    @for (col of columns; track col) {
+                    <th scope="col"
+                        class="text-uppercase text-indigo-300 font-mono px-3 py-2 border-bottom border-secondary">
+                        {{ col }}
+                    </th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (row of tableData; track $index) {
+                <tr>
+                    @for (col of columns; track col) {
+                    <td class="px-3 py-2 text-gray-300 border-bottom border-secondary"
+                        style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+                        {{ row[col] }}
+                    </td>
+                    }
+                </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+    }
+
+</div>

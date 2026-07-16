@@ -1,0 +1,70 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+  <aside class="aside-left">
+    <div class="card">
+      <div class="nav-tabs-custom">
+        <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+          {{ 'PLATAFORMA.MENU' | translate }}
+        </button>
+        <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+          {{ 'PLATAFORMA.FILTERS' | translate }}
+        </button>
+      </div>
+      <ng-container *ngIf="activeTab === 'menu'">
+        <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+      </ng-container>
+      <ng-container *ngIf="activeTab === 'filters'">
+        <div class="p-3 filtros-scroll-wrapper">
+          <h6 class="filtros-title">{{ 'ITEMSPAQUETES.FILTROS.TITULO' | translate }}</h6>
+          <div class="filtro">
+            <small>{{ 'PAQUETES.FILTROS.FILTRONOMBRE' | translate }}</small>
+            <select (change)="onFiltroCodigoChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option [value]="reg.codigoModuloPQ" *ngFor="let reg of registros">
+                {{ reg.nomModulo }}
+              </option>
+            </select>
+          </div>
+          <div class="filtro">
+            <small>{{ 'PAQUETES.FILTROS.FILTROESTADO' | translate }}</small>
+            <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select">
+              <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+              <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
+              <option value="false">{{ 'PLATAFORMA.INACTIVE' | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </aside>
+  <div class="content-area-pq">
+    <div class="card card-table content-scroll-wrapper">
+      <div class="card-body">
+        <ng-container *ngIf="modulosPaqueteFiltrados$ | async as dataFiltrada">
+          <app-data-table
+            [data]="dataFiltrada"
+            [idField]="'codigoModuloPQ'"
+            [tableTitle]="'ITEMSPAQUETES.TITLE' | translate"
+            [metadataColumns]="columnasPaquetes"
+            [metadataDetailColumns]="columnasDetailRegistros"
+            [showDetail]="false"
+            [showActions]="true"
+            [showNewButton]="true"
+            [showBackButton]="true"
+            [showViewButton]="false"
+            [showEditButton]="false"
+            [showDeleteButton]="true"
+            [showSearchBox]="false"
+            [newButtonLabel]="'ITEMS.NEW' | translate"
+            [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+            (newRecord)="OnNuevoRegistroClick()"
+            (editRecord)="OnEditarRegistroClick($event)"
+            (backRecord)="OnRegresarClick()"
+            (deleteRecord)="OnEliminarRegistroClick($event)"
+          >
+          </app-data-table>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

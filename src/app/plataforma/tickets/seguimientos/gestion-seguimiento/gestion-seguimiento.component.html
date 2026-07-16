@@ -1,0 +1,176 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'TICKETS.SEGUIMIENTOS.NEW' | translate }}
+                        </h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'TICKETS.SEGUIMIENTOS.UPDATE' | translate }}
+                        </h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TICKETS.SEGUIMIENTOS.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TICKETS.SEGUIMIENTOS.GESTION.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.GESTION.CODE' | translate }}</label>
+                                <input type="text" class="form-control form-input" name="codigoSeguimiento"
+                                    placeholder="{{ 'TICKETS.GESTION.PLACEHOLDERCODE' | translate }}"
+                                    [ngClass]="{'is-invalid': !codigoSeguimiento.valid && (codigoSeguimiento.dirty || codigoSeguimiento.touched || isSubmit) }"
+                                    #codigoSeguimiento="ngModel" required [(ngModel)]="FormRegistro.codigoSeguimiento" readonly />
+                                <label
+                                    *ngIf="!codigoSeguimiento.valid && (codigoSeguimiento.dirty || codigoSeguimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.GESTION.REQUERIDOCODE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoRequerimiento">{{
+                                    'TICKETS.SEGUIMIENTOS.GESTION.CODIGOREQUERIMIENTO' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoRequerimiento"
+                                    id="codigoRequerimiento"
+                                    #codigoRequerimiento="ngModel" required
+                                    [(ngModel)]="FormRegistro.codigoRequerimiento"
+                                    (change)="onRequerimientoChangeClick($event)">
+                                    <option value="">{{'TICKETS.SEGUIMIENTOS.GESTION.PLACEHOLDERREQUERIMIENTO'| translate }}</option>
+                                    <option [value]="codigo.codigoRequerimiento" *ngFor="let codigo of requerimientos">{{ codigo.nombreRequerimiento }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoRequerimiento.valid && (codigoRequerimiento.dirty || codigoRequerimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.SEGUIMIENTOS.GESTION.REQUERIDOREQUERIMIENTO' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreSeguimiento">{{
+                                    'TICKETS.SEGUIMIENTOS.GESTION.NAME' | translate
+                                    }}</label>
+                                <input class="form-control form-input" id="nombreSeguimiento"
+                                    name="nombreSeguimiento" type="text"
+                                    placeholder="{{ 'TICKETS.SEGUIMIENTOS.GESTION.PLACEHOLDERNAME' | translate }}"
+                                    [ngClass]="{'is-invalid': !nombreSeguimiento.valid && (nombreSeguimiento.dirty || nombreSeguimiento.touched || isSubmit)}"
+                                    #nombreSeguimiento="ngModel" required
+                                    [(ngModel)]="FormRegistro.nombreSeguimiento" />
+                                <label
+                                    *ngIf="!nombreSeguimiento.valid && (nombreSeguimiento.dirty || nombreSeguimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.SEGUIMIENTOS.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="fecha">
+                                    {{ 'TICKETS.SEGUIMIENTOS.GESTION.FECHASEGUIMIENTO' | translate }}
+                                </label>
+                                <div class="input-group">
+                                    <input class="form-control form-input" placeholder="yyyy-mm-dd" name="fecha"
+                                        id="fecha" [(ngModel)]="FormRegistro.fecha" ngbDatepicker #d="ngbDatepicker"
+                                        (dateSelect)="onDateChange()" required />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
+                                            type="button">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="estadoSeguimiento">{{
+                                    'TICKETS.SEGUIMIENTOS.GESTION.STATUS' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;"
+                                    name="estadoSeguimiento" id="estadoSeguimiento"
+                                    [ngClass]="{ 'is-invalid': !estadoSeguimiento.valid && (estadoSeguimiento.dirty || estadoSeguimiento.touched || isSubmit) }"
+                                    #estadoSeguimiento="ngModel" required [(ngModel)]="FormRegistro.estadoSeguimiento"
+                                    (change)="onEstadoChangeClick($event)">
+                                    <option value="">{{ 'TICKETS.SEGUIMIENTOS.GESTION.PLACEHOLDERESTADO' | translate }}</option>
+                                    <option [value]="esta.siglaEstado" *ngFor="let esta of estados">{{ esta.nombreEstado }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!estadoSeguimiento.valid && (estadoSeguimiento.dirty || estadoSeguimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.SEGUIMIENTOS.GESTION.REQUERIDOESTADO' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.SEGUIMIENTOS.GESTION.DESCRIPTION' | translate
+                                    }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionSeguimiento ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)"
+                                    name="descripcionSeguimiento" [(ngModel)]="FormRegistro.descripcionSeguimiento"
+                                    [ngClass]="{'is-invalid': !descripcionSeguimiento.valid && (descripcionSeguimiento.dirty || descripcionSeguimiento.touched || isSubmit)}"
+                                    #descripcionSeguimiento="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionSeguimiento.valid && (descripcionSeguimiento.dirty || descripcionSeguimiento.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TICKETS.SEGUIMIENTOS.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TICKETS.SEGUIMIENTOS.GESTION.CAPTURA' | translate
+                                    }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview">
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none"
+                                        name="capturaTicket">
+                                    <span class="file-name" [ngClass]="{'has-file': fileName}">
+                                        {{ fileName || ('TICKETS.SEGUIMIENTOS.GESTION.CAPTURAHOLDER' | translate) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

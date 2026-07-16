@@ -1,0 +1,15 @@
+<div class="terminal-panel">
+    <div class="terminal-header">
+        <h3 class="terminal-name">{{ nombreTerminal }}</h3>
+
+        <span class="status-badge" [ngClass]="estado">
+            <i class="fas fa-circle status-dot"></i>
+            {{ estado === 'operando' ? 'Operación Normal' : (estado === 'congestion' ? 'Alta Congestión' :
+            'Mantenimiento') }}
+        </span>
+    </div>
+
+    <div class="terminal-body">
+        <ng-content></ng-content>
+    </div>
+</div>

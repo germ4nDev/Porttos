@@ -1,0 +1,128 @@
+// /* * ESTILOS BASE (LIGHT THEME) - Estos son los estilos por defecto (claro)
+//  * * Si el tema principal de tu app es CLARO, ajusta los colores base aquí.
+//  */
+
+// /* 1. Contenedor Principal y Área de Edición (Light Theme) */
+// :host ::ng-deep .ql-container,
+// :host ::ng-deep .ql-toolbar {
+//     /* Fondo claro */
+//     background-color: #ffffff;
+//     border-color: #dee2e6; /* Borde de gris claro */
+// }
+
+// /* 2. Área de Contenido (Donde el usuario escribe) (Light Theme) */
+// :host ::ng-deep .ql-container {
+//     border-top: none !important;
+// }
+
+// :host ::ng-deep .ql-editor {
+//     /* Color del texto (oscuro) */
+//     color: #212529;
+// }
+
+// /* 3. Toolbar (Barra de herramientas) (Light Theme) */
+// :host ::ng-deep .ql-toolbar {
+//     /* Color de los iconos y botones (oscuro) */
+//     color: #6c757d;
+// }
+
+// /* Estilos de los iconos (Svg Paths) (Light Theme) */
+// :host ::ng-deep .ql-toolbar svg path,
+// :host ::ng-deep .ql-toolbar button {
+//     fill: #6c757d !important;
+//     color: #6c757d !important;
+// }
+
+// /* Estilo para los menús desplegables (headers, fuentes) (Light Theme) */
+// :host ::ng-deep .ql-picker-label {
+//     color: #212529 !important;
+// }
+
+// /* 4. Estilo de Botón ACTIVO (Light Theme) */
+// :host ::ng-deep .ql-toolbar .ql-active {
+//     background-color: #f0f0f0 !important;
+//     border-color: #f0f0f0 !important;
+// }
+
+// :host ::ng-deep .ql-toolbar .ql-active svg path,
+// :host ::ng-deep .ql-toolbar .ql-active button {
+//     fill: #007bff !important; /* Color de acento */
+//     color: #007bff !important;
+// }
+
+// /* 5. Tooltips de los botones (Light Theme) */
+// :host ::ng-deep .ql-tooltip {
+//     background-color: #343a40;
+//     color: #f8f9fa;
+//     border-color: #495057;
+// }
+
+// /* Corrección de fondo para el desplegable (select options) (Light Theme) */
+// :host ::ng-deep .ql-picker-options {
+//     background-color: #ffffff !important;
+//     border-color: #dee2e6 !important;
+// }
+
+// /* Color del texto de las opciones del desplegable (Headers, etc.) (Light Theme) */
+// :host ::ng-deep .ql-picker-options span {
+//     color: #212529 !important;
+// }
+
+
+// /* *************************************************************** */
+// /* * ESTILOS DARK THEME - Se aplican cuando un ancestro tiene la clase .dark-theme */
+// /* *************************************************************** */
+// :host-context(.dark-theme) {
+
+//     /* 1. Contenedor Principal y Área de Edición (Dark Theme) */
+//     ::ng-deep .ql-container,
+//     ::ng-deep .ql-toolbar {
+//         background-color: #212529 !important; /* Fondo oscuro */
+//         border-color: #495057 !important; /* Borde más suave */
+//     }
+
+//     /* 2. Área de Contenido (Donde el usuario escribe) (Dark Theme) */
+//     ::ng-deep .ql-editor {
+//         color: #f8f9fa !important; /* Color del texto (blanco) */
+//     }
+
+//     /* 3. Toolbar (Barra de herramientas) (Dark Theme) */
+//     ::ng-deep .ql-toolbar {
+//         color: #f8f9fa !important; /* Color de los iconos y botones (casi blanco) */
+//     }
+
+//     /* Estilos de los iconos (Svg Paths) (Dark Theme) */
+//     ::ng-deep .ql-toolbar svg path,
+//     ::ng-deep .ql-toolbar button {
+//         fill: #f8f9fa !important; /* ¡Casi blanco! */
+//         color: #f8f9fa !important;
+//     }
+
+//     /* Estilo para los menús desplegables (headers, fuentes) (Dark Theme) */
+//     ::ng-deep .ql-picker-label {
+//         color: #f8f9fa !important;
+//     }
+
+//     /* 4. Estilo de Botón ACTIVO (Dark Theme) */
+//     ::ng-deep .ql-toolbar .ql-active {
+//         background-color: #495057 !important; /* Fondo de acento más oscuro */
+//         border-color: #495057 !important;
+//     }
+
+//     ::ng-deep .ql-toolbar .ql-active svg path,
+//     ::ng-deep .ql-toolbar .ql-active button {
+//         fill: #007bff !important; /* Color de acento */
+//         color: #007bff !important;
+//     }
+
+//     /* Corrección de fondo para el desplegable (select options) (Dark Theme) */
+//     ::ng-deep .ql-picker-options {
+//         background-color: #2c3034 !important; /* Fondo oscuro del menú */
+//         border-color: #495057 !important;
+//     }
+
+//     /* Color del texto de las opciones del desplegable (Headers, etc.) (Dark Theme) */
+//     ::ng-deep .ql-picker-options span {
+//         color: #f8f9fa !important;
+//     }
+// }

@@ -1,0 +1,79 @@
+.terminal-panel {
+    --bg-panel: #151521;
+    --border-color: #323246;
+    --text-main: #ffffff;
+    --text-muted: #a1a5b7;
+
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .terminal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid var(--border-color);
+
+        .terminal-name {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+
+            .status-dot {
+                font-size: 8px;
+            }
+
+            &.operando {
+                color: #50cd89;
+                background-color: rgba(80, 205, 137, 0.1);
+            }
+
+            &.congestion {
+                color: #f64e60;
+                background-color: rgba(246, 78, 96, 0.1);
+            }
+
+            &.mantenimiento {
+                color: #ffc700;
+                background-color: rgba(255, 199, 0, 0.1);
+            }
+        }
+    }
+
+    .terminal-body {
+        padding: 20px;
+    }
+}
+
+// Soporte para Modo Claro
+:host-context(body.light-mode),
+:host-context([data-bs-theme="light"]),
+:host-context(.light) {
+    .terminal-panel {
+        --bg-panel: #ffffff;
+        --border-color: #e4e6ef;
+        --text-main: #181c32;
+        --text-muted: #a1a5b7;
+
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+    }
+}

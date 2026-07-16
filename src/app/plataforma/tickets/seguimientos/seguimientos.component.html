@@ -1,0 +1,74 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+                <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+                    {{ 'PLATAFORMA.FILTERS' | translate }}
+                </button>
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+                <div class="p-3 filtros-scroll-wrapper">
+                    <DIV class="text-center">
+                        <h6 class="filtros-title">{{ 'TICKETS.SEGUIMIENTOS.FILTROS.TITULO' | translate }}</h6>
+                    </DIV>
+                    <div class="filtro">
+                        <small>{{ 'TICKETS.SEGUIMIENTOS.FILTROS.FILTRONOMBRE' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroNombreChangeClick($event)" class="form-control form-input"
+                            placeholder="{{ 'TICKETS.SEGUIMIENTOS.FILTROS.NOMBRECHOLDER' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'TICKETS.SEGUIMIENTOS.FILTROS.FILTRODECRIPCION' | translate }}</small>
+                        <input type="text" (keyup)="onFiltroDescripcionChangeClick($event)" class="form-control form-input"
+                            placeholder="{{ 'TICKETS.SEGUIMIENTOS.FILTROS.DESCRIPCIONCHOLDER' | translate }}" />
+                    </div>
+                    <div class="filtro">
+                        <small>{{ 'TICKETS.SEGUIMIENTOS.FILTROS.FILTROESTADO' | translate }}</small>
+                        <select class="form-control form-input" style="cursor: pointer;"
+                            (change)="onFiltroEstadoChangeClick($event)">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option [value]="estado.siglaEstado" *ngFor="let estado of estadosSeguimiento">
+                                {{ estado.nombreEstado }}</option>
+                        </select>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <ng-container *ngIf="registrosFiltrado$ | async as dataFiltrada">
+                    <app-data-table
+                        [data]="dataFiltrada"
+                        [idField]="'codigoSeguimiento'"
+                        [tableTitle]="'TICKETS.SEGUIMIENTOS.TITLE' | translate"
+                        [metadataColumns]="columnasRegistros"
+                        [metadataDetailColumns]="columnasDetailRegistros"
+                        [showActions]="true"
+                        [showBackButton]="codigoRegistro !== '0'"
+                        [showNewButton]="true"
+                        [showViewButton]="false"
+                        [showEditButton]="true"
+                        [showDeleteButton]="true"
+                        [showDetail]="true"
+                        [newButtonLabel]="'TICKETS.SEGUIMIENTOS.NEW' | translate"
+                        [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+                        (newRecord)="OnNuevoRegistroClick()"
+                        (backRecord)="OnBackRegistroClick()"
+                        (editRecord)="OnEditarRegistroClick($event)"
+                        (deleteRecord)="OnEliminarRegistroClick($event)">
+                    </app-data-table>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

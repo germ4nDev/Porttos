@@ -1,0 +1,233 @@
+@use 'src/app/theme/shared/styles/components' as qplus;
+@include qplus.widget-header;
+
+/* ==========================================================================
+   1. HOST Y TARJETA PRINCIPAL (El cascarón estricto)
+   ========================================================================== */
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+    container-type: inline-size;
+    container-name: tarjeta-terminal;
+}
+
+.qplus-widget.vessel-table-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    padding: 16px;
+
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+
+    /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* SCROLLBAR GENERAL DEL WIDGET */
+.qplus-widget {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, .12) transparent;
+
+    &::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, .12);
+        border-radius: 999px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, .25);
+    }
+}
+
+
+/* ==========================================================================
+   2. EL CUERPO Y EL SCROLL (La zona flexible)
+   ========================================================================== */
+.panel-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    /* Candado flex */
+
+    display: flex;
+    flex-direction: column;
+
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 12px;
+
+    /* 🚨 Atajamos cualquier desborde intermedio */
+    overflow: hidden;
+}
+
+.table-responsive {
+    /* Toma todo el espacio que le da el panel-body */
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+
+    /* 🚨 AQUI NACE EL SCROLL */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Scrollbar elegante */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* ==========================================================================
+   3. ESTILOS DE LA TABLA (Los que se nos habían borrado)
+   ========================================================================== */
+.qplus-table {
+    width: 100%;
+    min-width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: var(--widget-bg);
+        font-size: 0.6rem;
+        font-weight: 800;
+        color: var(--text-subtitle-color);
+        text-transform: uppercase;
+        padding: 12px 8px;
+        border-bottom: 1px solid var(--border-color);
+        text-align: left;
+    }
+
+    td {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--text-color);
+        padding: 12px 8px;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    /* Definición exacta de columnas (Ajustadas a 7) */
+    th:nth-child(1) {
+        width: 18%;
+    }
+
+    th:nth-child(2) {
+        width: 14%;
+    }
+
+    th:nth-child(3) {
+        width: 12%;
+    }
+
+    th:nth-child(4) {
+        width: 10%;
+    }
+
+    /* ETA ajustado */
+    th:nth-child(5) {
+        width: 15%;
+    }
+
+    /* ATA ajustado */
+    th:nth-child(6) {
+        width: 15%;
+    }
+
+    /* CARGA ajustado */
+    th:nth-child(7) {
+        width: 16%;
+    }
+
+    /* ESTADO ajustado */
+
+    th:first-child,
+    td:first-child {
+        padding-left: 1.2rem;
+    }
+
+    th:last-child,
+    td:last-child {
+        padding-right: 1.5rem;
+        overflow: visible;
+    }
+}
+
+/* ==========================================================================
+   4. PÍLDORAS DE ESTADO
+   ========================================================================== */
+.status-pill {
+    padding: 4px 12px;
+    border-radius: 50px;
+    /* Borde bien redondeado */
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid transparent;
+    /* Para que el borde de color resalte */
+}
+
+/* 2. Colores por estado (Ajustados a tu paleta oscura) */
+
+/* Verde para Descargando / Atracado */
+.badge-descargando {
+    color: #10b981;
+    border-color: #10b981;
+    background-color: rgba(16, 185, 129, 0.1);
+    /* Fondo verde casi transparente */
+}
+
+/* Amarillo/Naranja para Fondeo / Espera */
+.badge-fondeo {
+    color: #f59e0b;
+    border-color: #f59e0b;
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+/* Azul para En Tránsito */
+.badge-transito {
+    color: #3b82f6;
+    border-color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+}

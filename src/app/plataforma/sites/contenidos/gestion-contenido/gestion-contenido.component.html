@@ -1,0 +1,147 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+            </div>
+
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'SITIOS.CONTENIDOS.GESTION.NEW' | translate
+                            }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'SITIOS.CONTENIDOS.UPDATE' | translate }}
+                        </h4>
+                    </div>
+                    <div class="d-flex">
+                        <button *ngIf="!modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SITIOS.CONTENIDOS.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SITIOS.CONTENIDOS.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigoEnlace">
+                                    {{ 'SITIOS.CONTENIDOS.GESTION.ENLACES' | translate }}</label>
+                                <select class="form-control form-input" style="cursor: pointer;" name="codigoEnlace"
+                                    id="codigoEnlace"
+                                    [ngClass]="{ 'is-invalid': !codigoEnlace.valid && (codigoEnlace.dirty || codigoEnlace.touched || isSubmit) }"
+                                    #codigoEnlace="ngModel" required [(ngModel)]="FormRegistro.codigoEnlace"
+                                    (change)="onContenidochangeClick($event)">
+                                    <option value="" disabled>{{ 'SITIOS.CONTENIDOS.GESTION.PLACEHOLDERENLACES' |
+                                        translate }}
+                                    </option>
+                                    <option [value]="enlace.codigoEnlace" *ngFor="let enlace of enlaces">
+                                        {{ enlace.nombreEnlace }}</option>
+                                </select>
+                                <label
+                                    *ngIf="!codigoEnlace.valid && (codigoEnlace.dirty || codigoEnlace.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.CONTENIDOS.GESTION.REQUERIDOENLACES' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreContenido">{{ 'SITIOS.CONTENIDOS.NAME' |
+                                    translate
+                                    }}</label>
+                                <input class="form-control form-input" id="nombreContenido" name="nombreContenido"
+                                    type="text"
+                                    placeholder="{{ 'SITIOS.CONTENIDOS.GESTION.PLACEHOLDERNAME' | translate }}"
+                                    [ngClass]="{'is-invalid': !nombreContenido.valid && (nombreContenido.dirty || nombreContenido.touched || isSubmit)}"
+                                    #nombreContenido="ngModel" required [(ngModel)]="FormRegistro.nombreContenido" />
+                                <label
+                                    *ngIf="!nombreContenido.valid && (nombreContenido.dirty || nombreContenido.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.CONTENIDOS.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SITIOS.CONTENIDOS.CONTENIDO' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTextoContenido"
+                                    [contentHtml]="FormRegistro.contenido ?? ''"
+                                    (contentHtmlChange)="actualizarContenido($event)" name="contenido"
+                                    [(ngModel)]="FormRegistro.contenido"
+                                    [ngClass]="{'is-invalid': !contenido.valid && (contenido.dirty || contenido.touched || isSubmit)}"
+                                    #contenido="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label *ngIf="!contenido.valid && (contenido.dirty || contenido.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.CONTENIDOS.GESTION.REQUERIDOCONTENIDO' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SITIOS.CONTENIDOS.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="option" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoContenido">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="option" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoContenido">
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SITIOS.CONTENIDOS.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionContenido ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionContenido($event)"
+                                    name="descripcionContenido" [(ngModel)]="FormRegistro.descripcionContenido"
+                                    [ngClass]="{'is-invalid': !descripcionContenido.valid && (descripcionContenido.dirty || descripcionContenido.touched || isSubmit)}"
+                                    #descripcionContenido="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionContenido.valid && (descripcionContenido.dirty || descripcionContenido.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SITIOS.CONTENIDOS.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,146 @@
+@use 'src/app/theme/shared/styles/components' as qplus;
+@include qplus.widget-header;
+
+/* =======================================================
+   1. DEFINICIÓN DEL CONTENEDOR MAESTRO
+   ======================================================= */
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Declaramos la tarjeta como un contenedor medible */
+    container-type: inline-size;
+    container-name: widget-reportes;
+}
+
+.qplus-widget.reportes-operativos {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    // padding: 12px !important;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+
+    /* 🚨 ESTO ES LO QUE ATAJA EL DESBORDE DEL FONDO GRIS */
+    overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.panel-header {
+    padding: 12px !important;
+}
+
+.panel-body {
+    flex: 1;
+    min-height: 0;
+    background-color: var(--widget-bg);
+    overflow-y: auto;
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+    display: flex;
+    flex-direction: column;
+
+    /* =========================================
+       DISEÑO DEL SCROLLBAR (Para que no se vea el feo scroll por defecto del navegador)
+       ========================================= */
+    &::-webkit-scrollbar {
+        width: 6px;
+        /* Un poco más ancho para que sea fácil de agarrar */
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        /* Fondo invisible */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.15);
+        /* Color sutil */
+        border-radius: 10px;
+        /* Bordes redondos */
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+        /* Se ilumina un poco al pasar el mouse */
+    }
+
+    .reporte-item {
+        display: flex;
+        justify-content: space-between; // 🔥 Esto empuja la fecha a la derecha
+        align-items: center;
+
+        background: rgba(255, 255, 255, 0.04); // El fondo sutil de la tarjeta
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 12px;
+        border-left: 4px solid transparent; // Borde invisible por defecto
+
+        transition: background 0.2s ease, transform 0.2s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(2px); // Pequeño efecto al pasar el mouse
+        }
+
+        // 🔥 Las clases dinámicas que conectan con tu Base de Datos
+        &.border-verde {
+            border-left-color: #10b981;
+        }
+
+        &.border-azul {
+            border-left-color: #3b82f6;
+        }
+
+        &.border-amarillo {
+            border-left-color: #f59e0b;
+        }
+
+        &.border-celeste {
+            border-left-color: #06b6d4;
+        }
+
+        &.border-rojo {
+            border-left-color: #ef4444;
+        }
+
+        .reporte-content {
+            flex: 1;
+            padding-right: 16px; // Evita que el texto choque con la fecha
+        }
+
+        .r-titulo {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-color, #f8fafc);
+            margin: 0 0 6px 0;
+        }
+
+        .r-desc {
+            font-size: 0.85rem;
+            color: var(--text-subtitle-color, #94a3b8);
+            margin: 0;
+        }
+
+        .reporte-meta {
+            text-align: right;
+            min-width: 60px; // Espacio fijo para la fecha
+
+            .r-fecha {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: var(--text-subtitle-color, #94a3b8);
+            }
+        }
+    }
+}

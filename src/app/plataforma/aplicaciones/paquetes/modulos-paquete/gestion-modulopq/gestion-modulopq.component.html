@@ -1,0 +1,135 @@
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+  <aside class="aside-left">
+    <div class="card">
+      <div class="nav-tabs-custom">
+        <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+      </div>
+      <ng-container>
+        <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+      </ng-container>
+    </div>
+  </aside>
+
+  <div class="form-area">
+    <div class="card">
+      <div class="card-header card-header-sticky">
+        <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex align-items-center">
+            <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'MODULOS.GESTION.NEW' | translate }}</h4>
+            <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'MODULOS.UPDATE' | translate }}</h4>
+          </div>
+          <div class="d-flex">
+            <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion" (click)="btnRegresarClick()">
+              {{ 'PLATAFORMA.REGRESAR' | translate }}
+              <i class="feather icon-arrow-left ms-2"></i>
+            </button>
+            <button
+              *ngIf="!modoEdicion"
+              type="button"
+              class="btn btn-primary btn-NuevoRegistro btn-animacion"
+              (click)="btnGestionarRegistroClick(codigoPaquete)"
+            >
+              {{ 'MODULOS.GESTION.CREATE' | translate }}
+              <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+            </button>
+            <button
+              *ngIf="modoEdicion"
+              type="button"
+              class="btn btn-primary btn-NuevoRegistro btn-animacion"
+              (click)="btnGestionarRegistroClick(codigoPaquete)"
+            >
+              {{ 'MODULOS.UPDATE' | translate }}
+              <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body form-scroll-wrapper">
+        <form #validationForm="ngForm" class="editForm" novalidate>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-control-label" for="codigoAplicacion"> {{ 'MODULOS.GESTION.APLICACION' | translate }}</label>
+                <select
+                  class="form-control form-input"
+                  style="cursor: pointer"
+                  name="codigoAplicacion"
+                  id="codigoAplicacion"
+                  [ngClass]="{ 'is-invalid': !codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit) }"
+                  #codigoAplicacion="ngModel"
+                  required
+                  [(ngModel)]="FormRegistro.codigoAplicacion"
+                  (change)="onAplicacionChangeClick($event)"
+                >
+                  <option value="">{{ 'MODULOS.GESTION.PLACEHOLDERAPLICACION' | translate }} </option>
+                  <option [value]="app.codigoAplicacion" *ngFor="let app of aplicaciones"> {{ app.nombreAplicacion }}</option>
+                </select>
+                <label
+                  *ngIf="!codigoAplicacion.valid && (codigoAplicacion.dirty || codigoAplicacion.touched || isSubmit)"
+                  class="error jquery-validation-error small form-text invalid-feedback"
+                >
+                  {{ 'MODULOS.GESTION.REQUERIDOAPLICACION' | translate }}
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-control-label" for="codigoSuite"> {{ 'MODULOS.GESTION.SUITE' | translate }}</label>
+                <select
+                  class="form-control form-input"
+                  style="cursor: pointer"
+                  name="codigoSuite"
+                  id="codigoSuite"
+                  [ngClass]="{ 'is-invalid': !codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit) }"
+                  #codigoSuite="ngModel"
+                  required
+                  [(ngModel)]="FormRegistro.codigoSuite"
+                  (change)="onSuiteChangeClick($event)"
+                >
+                  <option value="">{{ 'MODULOS.GESTION.PLACEHOLDERSUITE' | translate }} </option>
+                  <option [value]="sui.codigoSuite" *ngFor="let sui of suites"> {{ sui.nombreSuite }} </option>
+                </select>
+                <label
+                  *ngIf="!codigoSuite.valid && (codigoSuite.dirty || codigoSuite.touched || isSubmit)"
+                  class="error jquery-validation-error small form-text invalid-feedback"
+                >
+                  {{ 'MODULOS.GESTION.REQUERIDOAPLICACION' | translate }}
+                </label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="modulosPadre.length > 0">
+              <div class="text-center flex flex-col justify-center"
+                ><br />
+                <h4 class="titles">Modulos asociados al Paquete</h4>
+                <h6 class="sub-titles"> Asocie todos los modulos que van a ser incluidos en el Paquete </h6>
+                <button type="button" class="btn btn-primary btn-NuevoRegistro transition" (click)="btnAsociarTodosClick()">
+                  {{ 'PLATAFORMA.ALLDATA' | translate }} </button
+                ><br /><br />
+              </div>
+            </div>
+            <div class="col-md-12" style="max-height: 400px; overflow-y: auto">
+              <div class="row">
+                <div class="col-md-6 mb-2" *ngFor="let modulo of modulosPadre; let i = index">
+                  <div class="form-check custom-check-form">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [(ngModel)]="modulo.checked"
+                      [name]="'modCheck_' + i"
+                      [id]="'modu_' + i"
+                      (change)="onModuloCheckChange($event, modulo)"
+                    />
+                    <label class="form-check-label text-white ml-2" [for]="'dimen_' + i">
+                      {{ modulo.nombreModulo }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

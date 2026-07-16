@@ -1,0 +1,44 @@
+<div class="qplus-widget resumen-semanal">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3 class="panel-titulo">
+                <i class="feather icon-anchor"></i> {{ data?.titulo || 'ARRIBOS 7 DÍAS' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Programación de arribos y atraques' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-toggle-view" (click)="toggleVista()" title="Alternar vista">
+                <i *ngIf="mostrarTabla" class="feather icon-bar-chart-2" data-feather="bar-chart-2"></i>
+                <i *ngIf="!mostrarTabla" class="feather icon-list" data-feather="list"></i>
+            </button>
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <ng-container *ngIf="mostrarTabla">
+            <div *ngFor="let item of listaArribos">
+                <div class="arribo-info">
+                    <label class="arribo-nombre">{{ item.motonave || 'Motonave en tránsito' }}</label><br>
+                    <small class="arribo-terminal">{{ item.terminal || 'Terminal por definir' }} - {{ item.eta
+                        }}</small>
+                </div><br>
+            </div>
+        </ng-container>
+        <canvas baseChart [datasets]="barChartData.datasets" [labels]="barChartData.labels" [options]="barChartOptions"
+            [type]="'bar'" *ngIf="!mostrarTabla">
+        </canvas>
+
+        <!-- <ng-template #noData>
+                <p class="text-muted">No hay arribos programados.</p>
+            </ng-template> -->
+
+        <!-- <ng-template #sinArribos>
+            <div class="arribo-item text-center" style="justify-content: center; padding: 30px;">
+                <p style="color: #a0a0a0; margin: 0;">No hay arribos programados en este rango.</p>
+            </div>
+        </ng-template> -->
+    </div>
+</div>

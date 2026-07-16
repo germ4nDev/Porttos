@@ -1,0 +1,27 @@
+<div class="qplus-widget widget-implicaciones">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3 class="panel-titulo">
+                <i class="feather icon-wind"></i> {{ data.titulo || 'IMPLICACIONES PARA EL CONTROL DE LA OPERACIÓN' }}
+            </h3>
+            <p class="subtitle">{{ data.subtitulo || 'Implicaciones para el control de la operación' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="insights-grid">
+            <div class="insight-item" *ngFor="let item of data?.insights">
+                <h4 class="insight-title">
+                    <span class="dot" [ngStyle]="{'background-color': item.color}"></span>
+                    {{ item.titulo }}
+                </h4>
+                <p class="insight-text">{{ item.descripcion }}</p>
+            </div>
+        </div>
+    </div>
+</div>

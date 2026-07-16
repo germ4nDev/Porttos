@@ -1,0 +1,24 @@
+<div class="qplus-widget resumen-maritimo-panel">
+
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-wind"></i>{{ data.titulo || 'RESUMEN SEMANAL' }}</h3>
+            <p class="subtitle">Resúmen Semanal Marítimo</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="resumen-maritimo-grid">
+            <div class="resumen-maritimo-card" *ngFor="let kpi of data?.metricas">
+                <span class="c-titulo">{{ kpi.label }}</span>
+                <!-- <span class="c-valor">{{ kpi.valor }}</span> -->
+                <span class="c-sub">{{ kpi.tendencia || '--' }}</span>
+            </div>
+        </div>
+    </div>
+</div>

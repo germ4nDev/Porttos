@@ -1,0 +1,43 @@
+// Definición de colores oscuros para SweetAlert2
+$swal-dark-bg: #2b2b2b; // Fondo oscuro para el modal (popup)
+$swal-dark-text: #f0f0f0; // Color de texto claro
+$swal-dark-border: 1px solid #444444; // Borde sutil
+
+.swal2-dark-mode-custom {
+    // Estilos para el contenedor principal del modal (popup)
+    background-color: $swal-dark-bg !important;
+    color: $swal-dark-text !important;
+    border: $swal-dark-border !important;
+    border-radius: 0.75rem !important;
+
+    // Estilos para el título
+    .swal2-title {
+        color: $swal-dark-text !important;
+    }
+
+    // Estilos para el texto del contenido
+    .swal2-content {
+        color: #cccccc !important;
+    }
+
+    // Estilos para el botón de icono (la advertencia '!')
+    .swal2-icon {
+        border-color: #ffc107 !important; // Color del borde del icono
+
+        .swal2-icon-content {
+            color: #ffc107 !important; // Color del '!'
+        }
+    }
+
+    // Opcional: Estilos para el contenedor de los botones
+    .swal2-actions {
+        .swal2-confirm, .swal2-cancel {
+            // Asegura que los botones se vean bien
+            box-shadow: none !important;
+
+            &:focus {
+                box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2) !important;
+            }
+        }
+    }
+}
