@@ -93,8 +93,6 @@
     --data-table-detail-row: #dfdfdf;
     --card-trend-color: #94a3b8;
 
-    --app-navbar-color: #007bff;
-    --app-texto-color: #ffffff;
     --texto-color: #333333;
     --primary-color: #0d6efd;
     --aside-tab-active: #007bff;
@@ -153,8 +151,6 @@ body.dark-theme {
     --data-table-detail-row: #3d3d3d;
     --card-trend-color: #616b79;
 
-    --app-navbar-color: #375a7f;
-    --app-texto-color: #ffffff;
     --texto-color: #ffffff;
     --primary-color: #375a7f;
     --aside-tab-active: #375a7f;
@@ -834,10 +830,6 @@ td {
 .dt-length select {
     padding: 0.25rem;
     margin-right: 1rem;
-}
-
-.icon-style {
-    color: var(--app-iconos-color) !important;
 }
 
 .drop-menu {

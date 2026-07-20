@@ -14,8 +14,11 @@ export class Terminal {
         public descripcion?: string,
         public unidad_medida?: string,
         public capacidad_reefer?: string,
+        public geocerca_geo?: any,
+        public terminal_geocerca_wkt?: string,
+
         public nomEstado?: string,
-        public activo?: boolean,
+        public estado?: boolean,
         public usuario_cargue?: string,
         public fecha_cargue?: string,
     ) { }

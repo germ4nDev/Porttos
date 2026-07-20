@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { OperacionTerrestreComponent } from './torre-control/components/operacion-terrestre/operacion-terrestre.component';
 
 const routes: Routes = [
     {
@@ -30,6 +31,21 @@ const routes: Routes = [
                 path: 'torre-control',
                 loadComponent: () => import('./torre-control/torre-control.component')
                     .then(c => c.TorreControlComponent)
+            },
+            {
+                path: 'operacion-maritima',
+                loadComponent: () => import('./torre-control/components/operacion-maritima/operacion-maritima.component')
+                    .then(c => c.OperacionMaritimaComponent)
+            },
+            {
+                path: 'operacion-terrestre',
+                loadComponent: () => import('./torre-control/components/operacion-terrestre/operacion-terrestre.component')
+                    .then(c => c.OperacionTerrestreComponent)
+            },
+            {
+                path: 'operacion-geografica',
+                loadComponent: () => import('./torre-control/components/operacion-geografica/operacion-geografica.component')
+                    .then(c => c.OperacionGeograficaComponent)
             },
             {
                 path: 'widget-panel',

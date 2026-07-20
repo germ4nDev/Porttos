@@ -1,4 +1,3 @@
-import { escape } from './../../../../../ClaudeAPI2.0/node_modules/parse5/node_modules/entities/src/escape';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core'
 import { CommonModule } from '@angular/common'
@@ -220,12 +219,12 @@ export class TerminalesPanelComponent implements OnInit, OnDestroy {
 
     OnNuevaAplicaicionClick(): void {
         this._localStorageService.setObject('regId', 'nuevo')
-        this.router.navigate(['tablero-control/gestion-widget'])
+        this.router.navigate(['tablero-control/gestion-terminal-panel'])
     }
 
     OnEditarAplicaicionClick(id: string): void {
         this._localStorageService.setObject('regId', id)
-        this.router.navigate(['tablero-control/gestion-widget'])
+        this.router.navigate(['tablero-control/gestion-terminal-panel'])
     }
 
     OnEliminarAplicaicionClick(id: string): void {

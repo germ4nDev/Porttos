@@ -13,15 +13,15 @@
             (click)="cambiarPestana('TLC_BODEGAS_001')">
             <span class="icon">🏗️</span> Gate & Bodegas
         </button>
-        <!-- <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_TERRESTRE_001'"
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_TERRESTRE_001'"
             (click)="cambiarPestana('TLC_TERRESTRE_001')">
             <span class="icon">🚛</span> Operación Terrestre
-        </button> -->
+        </button>
         <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_MAPA_001'"
             (click)="cambiarPestana('TLC_MAPA_001')">
             <span class="icon">🧠</span> Mapa Logístico
         </button>
-        <!-- <button class="tc-tab-btn" [class.active]="pestanaActiva === 'analitica_rndc'"
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'analitica_rndc'"
             (click)="cambiarPestana('analitica_rndc')">
             <span class="icon">📈</span> Analítica RNDC
         </button>
@@ -32,7 +32,7 @@
         <button class="tc-tab-btn" [class.active]="pestanaActiva === 'reportes_gerenciales'"
             (click)="cambiarPestana('reportes_gerenciales')">
             <span class="icon">📊</span> Reportes Gerenciales
-        </button> -->
+        </button>
     </nav>
 
     <div *ngIf="cargando" class="cargador-flotante">
@@ -66,3 +66,55 @@
         </app-widget-selector>
     </div>
 </div>
+
+
+
+<!-- <app-tc-header titulo="Porttos 1.0" subtitulo="Plataforma de Logistica y Gestión Portuaria" [nodos]="listaDePuertos"
+    (nodoCambiado)="cargarDatosDelPuerto($event)" [tableroBloqueado]="tableroBloqueado"
+    (toggleBloqueo)="toggleBloqueoTablero()" (abrirCatalogo)="mostrarLobby = true">
+</app-tc-header>
+
+<div class="tc-dashboard-container" style="position: relative;">
+    <nav class="tc-nav-tabs">
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_MARITIMO_001'"
+            (click)="cambiarPestana('TLC_MARITIMO_001')">
+            <span class="icon">🛳️</span> Operación Marítima
+        </button>
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_BODEGAS_001'"
+            (click)="cambiarPestana('TLC_BODEGAS_001')">
+            <span class="icon">🏗️</span> Gate & Bodegas
+        </button>
+        <button class="tc-tab-btn" [class.active]="pestanaActiva === 'TLC_MAPA_001'"
+            (click)="cambiarPestana('TLC_MAPA_001')">
+            <span class="icon">🧠</span> Mapa Logístico
+        </button>
+    </nav>
+
+    <main class="tab-content">
+        @switch (pestanaActiva) {
+        @case ('TLC_MARITIMO_001') {
+        @defer {
+        <app-operacion-maritima [layoutBase]="layoutActivo" [puerto]="puertoSeleccionado" [bloqueado]="tableroBloqueado"
+            (layoutCambiado)="sincronizarLayoutHaciaMaestro($event)">
+        </app-operacion-maritima>
+        } @loading { <div class="spinner-qplus">Cargando Módulo Marítimo...</div> }
+        }
+
+        @case ('TLC_MAPA_001') {
+        @defer {
+        <app-operacion-geografica [layoutBase]="layoutActivo" [puerto]="puertoSeleccionado"
+            [bloqueado]="tableroBloqueado" (layoutCambiado)="sincronizarLayoutHaciaMaestro($event)">
+        </app-operacion-geografica>
+        } @loading { <div class="spinner-qplus">Iniciando Motor Geográfico...</div> }
+        }
+
+        @case ('TLC_BODEGAS_001') {
+        }
+        }
+    </main>
+</div>
+
+<app-widget-lobby [visible]="mostrarLobby" (cerrar)="mostrarLobby = false"></app-widget-lobby>
+
+<div class="qplus-backdrop-blur" *ngIf="widgetEnfoque" (click)="cerrarModalEnfoque()">
+</div> -->

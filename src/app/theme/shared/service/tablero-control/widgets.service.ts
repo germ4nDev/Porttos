@@ -59,10 +59,6 @@ export class WidgetsService {
         return this.http.get(`${base_url}/widgets`);
     }
 
-    // getWidgetByCode(codigo: string): Observable<any> {
-    //     return this.http.get(`${base_url}/widgets/${codigo}`); // Ojo al plural /widgets/
-    // }
-
     getWidgetByCode(codigo: string): Observable<any> {
         const url = `${base_url}/widgets/${codigo}`
         return this.http.get(url).pipe(

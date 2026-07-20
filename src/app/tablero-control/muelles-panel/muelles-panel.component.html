@@ -63,9 +63,8 @@
                         [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="true"
                         [showNewButton]="true" [showViewButton]="false" [showEditButton]="true"
                         [showDeleteButton]="true" [showSearchBox]="false" [newButtonLabel]="'MUELLES.NEW' | translate"
-                        [exportLabel]="'PLATAFORMA.EXCEL' | translate" (newRecord)="OnNuevaAplicaicionClick()"
-                        (editRecord)="OnEditarAplicaicionClick($event)"
-                        (deleteRecord)="OnEliminarAplicaicionClick($event)">
+                        [exportLabel]="'PLATAFORMA.EXCEL' | translate" (newRecord)="OnNuevaRegistroClick()"
+                        (editRecord)="OnEditarRegistroClick($event)" (deleteRecord)="OnEliminarRegistroClick($event)">
                     </app-data-table>
                 </ng-container>
                 <ng-template #loading>

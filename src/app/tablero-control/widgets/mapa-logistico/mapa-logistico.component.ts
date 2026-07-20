@@ -226,10 +226,8 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
                 console.log(`✅ ¡El mapa recibió ${geoJson.features.length} barcos!`);
 
                 // 🟢 AQUÍ ACTUALIZAS TU MAPA DE MAPLIBRE/MAPBOX
-                // Si ya tienes el mapa cargado, actualizas el "source" con la nueva data:
-                // if (this.mapaInstancia.getSource('motonaves-source')) {
-                //   this.mapaInstancia.getSource('motonaves-source').setData(geoJson);
-                // }
+                // Usamos tu método auxiliar existente apuntando al source correcto
+                this.actualizarFuente('naves-source', geoJson);
             }
         });
     }
@@ -443,6 +441,21 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
             setTimeout(() => clearInterval(comprobarDimensiones), 3000);
         });
 
+        const images = [
+            { id: 'icon-ship', url: '/assets/icons/ship.png' },
+            { id: 'icon-anchor', url: '/assets/icons/anchor.png' }
+        ];
+
+        // images.forEach(img => {
+        //     this.map.loadImage(img.url, (error, image) => {
+        //         if (error) throw error;
+        //         // Solo agregamos si no existe para evitar errores en recargas
+        //         if (!this.map.hasImage(img.id)) {
+        //             this.map.addImage(img.id, image!);
+        //         }
+        //     });
+        // });
+
         this.map.addControl(new maplibregl.NavigationControl(), 'top-right');
     }
 
@@ -480,14 +493,25 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
             }
         });
 
+        this.map.addLayer({
+            id: 'debug-terminales-fill',
+            type: 'fill',
+            source: 'infra-source',
+            filter: ['==', 'tipo', 'terminal'], // Filtro estricto para probar
+            paint: {
+                'fill-color': '#ff0000', // Rojo para que sea imposible no verlo
+                'fill-opacity': 0.8
+            }
+        });
+
 
         if (this.peajesGeoJson) this.actualizarFuente('peajes-source', this.peajesGeoJson);
 
         const layers = [
-            { id: 'puerto-fill', type: 'fill', source: 'infra-source', filter: ['all', ['==', '$type', 'Polygon'], ['==', 'tipo', 'puerto']], paint: { 'fill-color': !this.isDark ? '#60a5fa' : '#3b82f6', 'fill-opacity': 0.15 } },
             { id: 'capa-infra-fill', type: 'fill', source: 'infra-source', filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'tipo', 'puerto']], paint: { 'fill-color': this._getMatchConfig('fill'), 'fill-opacity': 0.7 } },
-            { id: 'puerto-line', type: 'line', source: 'infra-source', filter: ['all', ['==', '$type', 'Polygon'], ['==', 'tipo', 'puerto']], paint: { 'line-color': !this.isDark ? '#699dd8' : '#567cf7', 'line-width': 2.5, 'line-dasharray': [4, 2] } },
             { id: 'capa-infra-line', type: 'line', source: 'infra-source', filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'tipo', 'puerto']], paint: { 'line-color': this._getMatchConfig('line'), 'line-width': 1.5 } },
+            { id: 'puerto-line', type: 'line', source: 'infra-source', filter: ['all', ['==', '$type', 'Polygon'], ['==', 'tipo', 'puerto']], paint: { 'line-color': !this.isDark ? '#699dd8' : '#567cf7', 'line-width': 2.5, 'line-dasharray': [4, 2] } },
+            { id: 'puerto-fill', type: 'fill', source: 'infra-source', filter: ['all', ['==', '$type', 'Polygon'], ['==', 'tipo', 'puerto']], paint: { 'fill-color': !this.isDark ? '#60a5fa' : '#3b82f6', 'fill-opacity': 0.15 } },
 
             { id: 'vias-layer', type: 'line', source: 'vias-source', layout: { 'line-cap': 'round', 'line-join': 'round', 'visibility': 'visible' }, paint: { 'line-color': !this.isDark ? '#5d85be' : '#64748b', 'line-width': 1.8, 'line-opacity': 0.75 } },
             { id: 'geocercas-layer', type: 'fill', source: 'geocercas-peajes-source', paint: { 'fill-color': '#eab308', 'fill-opacity': 0.15 } },
@@ -561,7 +585,30 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
             },
             { id: 'naves-clusters', type: 'circle', source: 'naves-source', filter: ['has', 'point_count'], paint: { 'circle-color': '#06b6d4', 'circle-radius': 15, 'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff' } },
             { id: 'naves-cluster-count', type: 'symbol', source: 'naves-source', filter: ['has', 'point_count'], layout: { 'text-field': ['to-string', ['get', 'point_count']], 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'], 'text-size': 12, 'text-allow-overlap': true }, paint: { 'text-color': '#ffffff' } },
-            { id: 'naves-individual', type: 'circle', source: 'naves-source', filter: ['!', ['has', 'point_count']], paint: { 'circle-color': '#06b6d4', 'circle-radius': 6, 'circle-stroke-width': 1.5, 'circle-stroke-color': '#ffffff' } },
+            {
+                id: 'naves-individual',
+                type: 'symbol', // Cambiamos de circle a symbol
+                source: 'naves-source',
+                filter: ['!', ['has', 'point_count']],
+                layout: {
+                    'icon-image': [
+                        'case',
+                        ['!=', ['get', 'mmsi'], null], 'icon-ship', // Si tiene MMSI, es barco activo
+                        'icon-anchor' // Si no, es ancla (DIMAR puro)
+                    ],
+                    'icon-size': 0.8, // Ajusta el tamaño según tu PNG
+                    'icon-allow-overlap': true,
+                    'text-field': ['get', 'nombre_motonave'],
+                    'text-size': 11,
+                    'text-offset': [0, 1.5],
+                    'text-anchor': 'top'
+                },
+                paint: {
+                    'text-color': this.isDark ? '#ffffff' : '#020617',
+                    'text-halo-color': this.isDark ? '#020617' : '#ffffff',
+                    'text-halo-width': 2
+                }
+            },
             {
                 id: 'naves-nombres',
                 type: 'symbol',
@@ -743,38 +790,89 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         if (!Array.isArray(puertosArray)) return { type: 'FeatureCollection', features };
 
         puertosArray.forEach(puerto => {
-            if (puerto.puerto_geocerca_wkt) {
-                const geo = this.convertirWKT_ACirculo(puerto.puerto_geocerca_wkt);
+            // 1. Puerto
+            const wktPuerto = puerto.puerto_wkt || puerto.puerto_geocerca_wkt;
+            if (wktPuerto) {
+                const geo = this.convertirWKT_ACirculo(wktPuerto);
                 if (geo) features.push({ type: 'Feature', geometry: geo as any, properties: { id: puerto.id_puerto, nombre: puerto.nombre_puerto, tipo: 'puerto' } });
             }
+
             if (Array.isArray(puerto.terminales)) {
                 puerto.terminales.forEach((terminal: any) => {
-                    if (terminal.terminal_geocerca_wkt) {
-                        const geo = parse(terminal.terminal_geocerca_wkt);
-                        if (geo) features.push({ type: 'Feature', geometry: geo as any, properties: { id: terminal.id_terminal, nombre: terminal.nombre_terminal, tipo: 'terminal' } });
-                    }
+
+                    // 🌟 Array temporal para guardar los muelles de ESTA terminal específica
+                    const muellesFeaturesTerminal: any[] = [];
+
+                    // 2. Procesamos PRIMERO los muelles (Así tenemos sus coordenadas por si la terminal viene nula)
                     if (Array.isArray(terminal.muelles)) {
                         terminal.muelles.forEach((muelle: any) => {
-                            if (muelle.muelle_geocerca_wkt) {
-                                const geo = parse(muelle.muelle_geocerca_wkt);
-                                if (geo) features.push({ type: 'Feature', geometry: geo as any, properties: { id: muelle.id_interno, nombre: muelle.nombre_muelle, tipo: 'muelle' } });
+                            const wktMuelle = muelle.muelle_wkt || muelle.muelle_geocerca_wkt;
+                            if (wktMuelle) {
+                                const geo = parse(wktMuelle);
+                                if (geo) {
+                                    const muelleFeature = {
+                                        type: 'Feature',
+                                        geometry: geo as any,
+                                        properties: {
+                                            id: muelle.id_interno,
+                                            nombre: muelle.nombre_muelle,
+                                            tipo: 'muelle'
+                                        }
+                                    };
+                                    muellesFeaturesTerminal.push(muelleFeature); // Guardamos para la envolvente
+                                    features.push(muelleFeature); // Y lo mandamos de una vez al mapa general
+                                }
                             }
                         });
                     }
-                    if (Array.isArray(terminal.infraestructuras)) {
-                        terminal.infraestructuras.forEach((infra: any) => {
-                            const tipo = infra.tipo_infra ? infra.tipo_infra.toLowerCase() : 'infra_general';
-                            if (infra.infra_geocerca_wkt) {
-                                const geo = parse(infra.infra_geocerca_wkt);
-                                if (geo) features.push({ type: 'Feature', geometry: geo as any, properties: { id: infra.id_infraestructura, nombre: infra.nombre_infra, tipo } });
-                            } else if (infra.latitud && infra.longitud) {
-                                features.push({ type: 'Feature', geometry: { type: 'Point', coordinates: [infra.longitud, infra.latitud] }, properties: { id: infra.id_infraestructura, nombre: infra.nombre_infra, tipo, estado_operativo: infra.estado_operativo } });
+
+                    // 3. Procesamos la Terminal (Con la magia dinámica de Turf.js)
+                    const wktTerminal = terminal.terminal_wkt || terminal.terminal_geocerca_wkt;
+                    let terminalGeo = null;
+
+                    if (wktTerminal) {
+                        // Caso A: La BD trae la geocerca real de la terminal. La usamos tal cual.
+                        terminalGeo = parse(wktTerminal);
+                    } else if (muellesFeaturesTerminal.length > 0) {
+                        // Caso B (🌟 ENVOLVENTE DINÁMICA): La BD NO trae geocerca, pero la terminal tiene muelles.
+                        try {
+                            // 3.1 Convertimos los muelles en una colección de Turf
+                            const featureCollection = turf.featureCollection(muellesFeaturesTerminal);
+                            // 3.2 Creamos una envolvente (Bounding Box) que encierra todos sus muelles
+                            const envolvente = turf.envelope(featureCollection);
+
+                            // 3.3 Le damos un buffer de 50 metros (0.05 km) para que los muelles no queden pegados al borde del polígono
+                            const envolventeConMargen = turf.buffer(envolvente, 0.05, { units: 'kilometers' });
+
+                            // Extraemos la geometría resultante de forma segura para TypeScript
+                            if (envolventeConMargen && envolventeConMargen.geometry) {
+                                terminalGeo = envolventeConMargen.geometry;
+                            }
+
+                            // console.log(`✅ Geocerca autogenerada para terminal: ${terminal.nombre_terminal}`);
+                        } catch (e) {
+                            console.warn(`⚠️ Error generando envolvente para terminal: ${terminal.nombre_terminal}`, e);
+                        }
+                    }
+
+                    // Si logramos obtener una geometría (ya sea de la BD o autogenerada), la pintamos
+                    if (terminalGeo) {
+                        features.push({
+                            type: 'Feature',
+                            geometry: terminalGeo as any,
+                            properties: {
+                                id: terminal.id_terminal,
+                                nombre: terminal.nombre_terminal,
+                                tipo: 'terminal',
+                                // Opcional: Agregamos una bandera por si en el futuro quieres que las autogeneradas sean de otro color/opacidad en los "paint" properties
+                                autogenerada: !wktTerminal
                             }
                         });
                     }
                 });
             }
         });
+
         return { type: 'FeatureCollection', features };
     }
 
@@ -1069,6 +1167,41 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
     private actualizarFuente(sourceId: string, data: any): void {
         if (!this.map || !this.map.getSource(sourceId)) return;
         (this.map.getSource(sourceId) as any).setData(data);
+    }
+
+    private evaluarAtraqueEspacial(navesGeoJson: any, muellesFeatures: any[]) {
+        if (!navesGeoJson || !navesGeoJson.features) return navesGeoJson;
+
+        navesGeoJson.features.forEach((nave: any) => {
+            // Protección extra por si alguna nave viene sin coordenadas válidas
+            if (!nave.geometry || !nave.geometry.coordinates) return;
+
+            const puntoNave = turf.point(nave.geometry.coordinates);
+            let muelleAsignado = null;
+
+            for (const muelle of muellesFeatures) {
+                // Creamos un área magnética de 80 metros (0.08 km) alrededor del polígono del muelle
+                const zonaAtraque = turf.buffer(muelle, 0.08, { units: 'kilometers' });
+
+                // 🌟 SOLUCIÓN: Verificamos que la zona exista antes de evaluar el punto
+                if (zonaAtraque && turf.booleanPointInPolygon(puntoNave, zonaAtraque as any)) {
+                    muelleAsignado = muelle.properties.nombre;
+                    break; // Lo encontramos, dejamos de buscar
+                }
+            }
+
+            // Si el geoproceso determinó que está en el muelle, forzamos su estado operativo
+            if (muelleAsignado) {
+                nave.properties.estado_nave = 'ARRIBADAS';
+                nave.properties.instalacion_portuaria = muelleAsignado;
+            } else if (nave.properties.velocidad !== undefined && nave.properties.velocidad < 0.5) {
+                nave.properties.estado_nave = 'FONDEADAS';
+            } else {
+                nave.properties.estado_nave = 'EN TRÁNSITO';
+            }
+        });
+
+        return navesGeoJson;
     }
 
     private getStyle(): string {

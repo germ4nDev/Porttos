@@ -64,10 +64,28 @@ export class TerminalesService {
     }
 
     saveTerminal(terminal: Terminal): Observable<any> {
-        // CORRECCIÓN 4: Arreglado el typo $${base_url} y usamos el id_terminal para el endpoint
-        return terminal.id_terminal
-            ? this.http.put(`${base_url}/terminales/${terminal.id_terminal}`, terminal)
-            : this.http.post(`${base_url}/terminales`, terminal);
+        const url = `${base_url}/terminales`
+        return this.http.post(url, terminal).pipe(
+            map((resp: any) => {
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
+    }
+
+    updateTerminal(terminal: Terminal): Observable<any> {
+        const url = `${base_url}/terminales/${terminal.id_terminal}`
+        return this.http.put(url, terminal).pipe(
+            map((resp: any) => {
+                console.log('data de terminal modificacda', resp)
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
     }
 
     deleteTerminal(id_terminal: string): Observable<any> {

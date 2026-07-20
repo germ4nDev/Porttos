@@ -58,14 +58,32 @@ export class PuertosService {
     }
 
     getPuertoByCode(id: string): Observable<any> {
-        return this.http.get(`${base_url}/puertos/${id}`); // Ojo al plural /puertos/
+        return this.http.get(`${base_url}/puertos/${id}`);
     }
 
     savePuerto(puerto: Puerto): Observable<any> {
-        // CORRECCIÓN 4: Arreglado el typo $${base_url} y usamos el id_puerto para el endpoint
-        return puerto.id_puerto
-            ? this.http.put(`${base_url}/puertos/${puerto.id_puerto}`, puerto)
-            : this.http.post(`${base_url}/puertos`, puerto);
+        const url = `${base_url}/puertos`
+        return this.http.post(url, puerto).pipe(
+            map((resp: any) => {
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
+    }
+
+    updatePuerto(puerto: Puerto): Observable<any> {
+        const url = `${base_url}/puertos/${puerto.id_puerto}`
+        return this.http.put(url, puerto).pipe(
+            map((resp: any) => {
+                console.log('data de puerto modificacda', resp)
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
     }
 
     deletePuerto(id_puerto: string): Observable<any> {

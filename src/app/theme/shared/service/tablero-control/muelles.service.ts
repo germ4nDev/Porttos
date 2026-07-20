@@ -59,16 +59,40 @@ export class MuellesService {
         return this.http.get(`${base_url}/muelles`);
     }
 
-    getMuelleByCode(id: string): Observable<any> {
+    getMuelleByCode(id: any): Observable<any> {
+        if (!id) {
+            throw { statusCode: 400, msg: "El id_interno es requerido" };
+        }
+
         return this.http.get(`${base_url}/muelles/${id}`); // Ojo al plural /muelles/
     }
 
     saveMuelle(muelle: Muelle): Observable<any> {
-        // CORRECCIÓN 4: Arreglado el typo $${base_url} y usamos el id_muelle para el endpoint
-        return muelle.id_interno
-            ? this.http.put(`${base_url}/muelles/${muelle.id_interno}`, muelle)
-            : this.http.post(`${base_url}/muelles`, muelle);
+        const url = `${base_url}/muelles`
+        return this.http.post(url, muelle).pipe(
+            map((resp: any) => {
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
     }
+
+    updateMuelle(muelle: Muelle): Observable<any> {
+        const url = `${base_url}/muelles/${muelle.id_interno}`
+        return this.http.put(url, muelle).pipe(
+            map((resp: any) => {
+                console.log('data de muelle modificacda', resp)
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
+    }
+
+
 
     deleteMuelle(id_interno: string): Observable<any> {
         return this.http.delete(`${base_url}/muelles/${id_interno}`);

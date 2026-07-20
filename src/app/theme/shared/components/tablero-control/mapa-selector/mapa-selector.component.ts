@@ -87,7 +87,6 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
         );
     }
 
-    // --- MANEJO DEL MODAL Y PRESENTACIÓN ---
     openModal() {
         this.isModalOpen = true;
         this.tempValue = JSON.parse(JSON.stringify(this.innerValue));
@@ -114,16 +113,31 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
     }
 
     getDisplayText(): string {
-        if (this.modo === 'punto' && this.innerValue?.ubicacion) {
-            return `📍 Lat: ${this.innerValue.ubicacion.lat.toFixed(4)}, Lon: ${this.innerValue.ubicacion.lon.toFixed(4)}`;
+        // --- MODO PUNTO ---
+        if (this.modo === 'punto') {
+            // Busca en el estado actual o cae de respaldo a los datos de la BD
+            const ubicacion = this.innerValue?.ubicacion ||
+                this._savedFeatures?.ubicacion ||
+                (this._savedFeatures?.lat ? this._savedFeatures : null);
+
+            if (ubicacion && ubicacion.lat !== undefined && ubicacion.lon !== undefined) {
+                return `📍 Lat: ${ubicacion.lat.toFixed(4)}, Lon: ${ubicacion.lon.toFixed(4)}`;
+            }
         }
-        if (this.modo === 'poligono' && this.innerValue?.geocerca) {
-            return '🗺️ Polígono delimitado configurado';
+
+        // --- MODO POLÍGONO ---
+        if (this.modo === 'poligono') {
+            // Verifica si hay una geocerca configurada actualmente o si el padre pasó una desde la BD
+            const tieneGeocerca = this.innerValue?.geocerca || this._savedFeatures;
+
+            if (tieneGeocerca) {
+                return '🗺️ Polígono delimitado configurado';
+            }
         }
+
         return '';
     }
 
-    // --- LÓGICA DEL MAPA ---
     private initMap(): void {
         if (!this.mapContainer) return;
 
@@ -183,50 +197,6 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
         });
     }
 
-    // restoreFilteredData() {
-    //     if (!this.draw) return;
-
-    //     // 1. Limpiamos el mapa
-    //     this.draw.deleteAll();
-
-    //     // 2. Normalizamos el dato que inyectó el padre
-    //     let featuresToDraw = [];
-
-    //     if (this._savedFeatures) {
-    //         // Opción A: Es una FeatureCollection (la estructura estándar)
-    //         if (this._savedFeatures.type === 'FeatureCollection') {
-    //             featuresToDraw = this._savedFeatures.features;
-    //         }
-    //         // Opción B: Es la geometría pura (Polygon o Point) que viene en el log
-    //         else if (this._savedFeatures.type === 'Polygon' || this._savedFeatures.type === 'Point') {
-    //             featuresToDraw = [{
-    //                 type: 'Feature',
-    //                 geometry: this._savedFeatures,
-    //                 properties: {}
-    //             }];
-    //         }
-    //         // Opción C: Caso específico de tu objeto 'geocerca' (si está anidado)
-    //         else if (this._savedFeatures.geocerca) {
-    //             featuresToDraw = [{
-    //                 type: 'Feature',
-    //                 geometry: this._savedFeatures.geocerca,
-    //                 properties: {}
-    //             }];
-    //         }
-    //     }
-
-    //     // 3. Crear la estructura que Mapbox Draw necesita
-    //     const featureCollection = {
-    //         type: 'FeatureCollection',
-    //         features: featuresToDraw
-    //     } as any;
-
-    //     // 4. Pintar en el mapa
-    //     if (featureCollection.features.length > 0) {
-    //         console.log("🎨 Dibujando en el mapa:", featureCollection);
-    //         this.draw.add(featureCollection);
-    //     };
-    // }
     restoreFilteredData() {
         if (!this.draw) return;
 
@@ -237,21 +207,25 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
         const dataToProcess = this._savedFeatures;
         if (!dataToProcess) return;
 
-        // 1. Extraer el dato real del contenedor (ubicacion vs geocerca)
-        // Usamos el '?' para evitar errores si el objeto padre viene incompleto
+        // 1. Extraer el dato real del contenedor
         let rawData = dataToProcess.type ? dataToProcess :
             (this.modo === 'punto' ? dataToProcess.ubicacion : dataToProcess.geocerca);
 
         if (!rawData) return;
 
-        // 2. Normalizar: Si es un FeatureCollection, lo usamos directamente.
-        // Si es solo una geometría, la envolvemos en una Feature.
+        // 2. Normalizar la estructura para MapboxDraw
         let featureCollection: any;
 
         if (rawData.type === 'FeatureCollection') {
             featureCollection = rawData;
+        } else if (rawData.type === 'Feature') {
+            // NUEVO: Si la base de datos ya envió un Feature, no lo volvemos a envolver
+            featureCollection = {
+                type: 'FeatureCollection',
+                features: [rawData]
+            };
         } else {
-            // Esto es para cuando recibimos la geometría pura (Polygon o Point)
+            // Si es la geometría pura (Polygon o Point), la envolvemos en un Feature
             featureCollection = {
                 type: 'FeatureCollection',
                 features: [{
@@ -262,14 +236,18 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
             };
         }
 
-        // 3. Validación Final: Antes de llamar a draw.add, nos aseguramos de que no haya 'undefined'
+        // 3. Validación Final y Pintado
         if (featureCollection.features && featureCollection.features.length > 0) {
             // Filtramos features inválidas por seguridad
             featureCollection.features = featureCollection.features.filter((f: any) => f.geometry && f.geometry.type);
 
             if (featureCollection.features.length > 0) {
                 console.log("🎨 Dibujando ahora mismo:", featureCollection);
-                this.draw.add(featureCollection);
+                try {
+                    this.draw.add(featureCollection);
+                } catch (error) {
+                    console.error("Error al pintar la geocerca. Revisa la estructura del GeoJSON:", error);
+                }
             }
         }
     }
@@ -297,7 +275,23 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
     }
 
     private updateGeocerca(feature: any) {
-        this.tempValue.geocerca = feature ? { type: 'Polygon', coordinates: feature.geometry.coordinates } : null;
+        if (!feature) {
+            this.tempValue.geocerca = null;
+            return;
+        }
+
+        // 1. Si es un Feature estándar de GeoJSON (tiene 'geometry')
+        if (feature.geometry && feature.geometry.coordinates) {
+            this.tempValue.geocerca = { type: 'Polygon', coordinates: feature.geometry.coordinates };
+        }
+        // 2. Si el objeto pasado ES la geometría directamente
+        else if (feature.type === 'Polygon' && feature.coordinates) {
+            this.tempValue.geocerca = { type: 'Polygon', coordinates: feature.coordinates };
+        }
+        // 3. Fallback seguro
+        else {
+            this.tempValue.geocerca = null;
+        }
     }
 
     private refreshMapState() {
@@ -311,9 +305,25 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
         }
     }
 
-    // --- MÉTODOS CVA ---
     private emitChange() { this.onChange(this.innerValue); this.onTouched(); }
-    writeValue(value: any): void { this.innerValue = value || { ubicacion: null, geocerca: null }; }
+    writeValue(value: any): void {
+        if (!value) {
+            this.innerValue = { ubicacion: null, geocerca: null };
+            return;
+        }
+
+        // Si el valor ya viene con la estructura correcta { geocerca: ... } o { ubicacion: ... }
+        if (value.ubicacion !== undefined || value.geocerca !== undefined) {
+            this.innerValue = value;
+        } else {
+            // Si el backend envía directamente la geometría (Ej: { type: 'Polygon', coordinates: [...] })
+            // Lo acomodamos internamente para que coincida con la estructura de tu componente
+            this.innerValue = {
+                ubicacion: this.modo === 'punto' ? value : null,
+                geocerca: this.modo === 'poligono' ? value : null
+            };
+        }
+    }
     registerOnChange(fn: any): void { this.onChange = fn; }
     registerOnTouched(fn: any): void { this.onTouched = fn; }
 

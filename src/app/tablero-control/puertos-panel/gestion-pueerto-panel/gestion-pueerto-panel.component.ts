@@ -38,6 +38,7 @@ import { MapaSelectorComponent } from 'src/app/theme/shared/components/tablero-c
 export class GestionPueertoPanelComponent implements OnInit {
     @Output() toggleSidebar = new EventEmitter<void>()
     FormRegistro: Puerto = new Puerto()
+    puerto: Puerto = new Puerto()
     logActividad: PTLLogActividadAPModel = new PTLLogActividadAPModel()
     menuItems$!: Observable<NavigationItem[]>
     gradientConfig: any
@@ -59,7 +60,6 @@ export class GestionPueertoPanelComponent implements OnInit {
     lockMessage: string = ''
     suscriptor: string = ''
     modoMapa: 'punto' | 'bbox' = 'punto';
-
 
     constructor(
         private router: Router,
@@ -85,8 +85,11 @@ export class GestionPueertoPanelComponent implements OnInit {
             this.modoEdicion = true
             this._puertosService.getPuertoByCode(regId).subscribe({
                 next: (resp: any) => {
-                    console.log('data puerto', resp);
-                    this.FormRegistro = resp
+                    this.puerto = resp.data
+                    this.FormRegistro = resp.data
+                    this.FormRegistro.ubicacion_geo = resp.data.ubicacion_geo
+                    this.FormRegistro.geocerca_geo = resp.data.geocerca_geo
+                    console.log('data registro', this.FormRegistro);
                     // this.selectedFileUrl = this._uploadService.getFilePath(this.suscriptor, 'widgets', resp.aplicacion.imagenInicio)
                 },
                 error: () => {
@@ -95,8 +98,6 @@ export class GestionPueertoPanelComponent implements OnInit {
             })
         }
     }
-
-
 
     ngOnInit() {
         this.menuItems$ = this._navigationService.menuItems$
@@ -157,22 +158,6 @@ export class GestionPueertoPanelComponent implements OnInit {
         }
     }
 
-    // manejarCambioGeografico(event: any) {
-    //     if (event.modo === 'punto') {
-    //         // Actualizamos solo el punto
-    //         this.FormRegistro.latitud_central = event.coordenadas.lat;
-    //         this.FormRegistro.longitud_central = event.coordenadas.lon;
-    //     }
-    //     else if (event.modo === 'bbox') {
-    //         // Actualizamos los 4 límites del BBOX
-    //         const coords = event.coordenadas;
-    //         this.FormRegistro.bbox_lat_sur = coords.bbox_lat_sur;
-    //         this.FormRegistro.bbox_lon_oeste = coords.bbox_lon_oeste;
-    //         this.FormRegistro.bbox_lat_norte = coords.bbox_lat_norte;
-    //         this.FormRegistro.bbox_lon_este = coords.bbox_lon_este;
-    //     }
-    // }
-
     actualizarMapa(data: { ubicacion_geo: any, geocerca_geo: any }) {
         this.FormRegistro.ubicacion_geo = data.ubicacion_geo;
         this.FormRegistro.geocerca_geo = data.geocerca_geo;
@@ -192,10 +177,6 @@ export class GestionPueertoPanelComponent implements OnInit {
 
     actualizarGeocerca(data: any) {
         console.log("📥 [Padre] Datos recibidos del mapa:", data);
-
-        // Verificación de seguridad:
-        // Si 'data' es el formulario completo, algo anda muy mal en la comunicación.
-        // Si 'data' es la FeatureCollection, entonces la asignación es correcta.
         if (data && data.type === 'FeatureCollection') {
             this.FormRegistro.geocerca_geo = data;
             console.log("✅ [Padre] Geocerca asignada correctamente.");
@@ -204,45 +185,11 @@ export class GestionPueertoPanelComponent implements OnInit {
         }
     }
 
-    // btnGestionarRegistroClick(form: any) {
-    //     // 1. Auditoría QPLUS
-    //     this.FormRegistro.usuario_cargue = this._localStorageService.getUsuarioLocalStorage().codigoUsuario;
-    //     this.FormRegistro.fecha_cargue = new Date().toISOString();
-
-    //     // 2. Ejecutar Guardado
-    //     // Como 'FormRegistro' ya contiene los objetos GeoJSON (ubicacion y geocerca),
-    //     // solo enviamos el objeto completo al servicio.
-    //     this._puertosService.savePuerto(this.FormRegistro).subscribe({
-    //         next: (resp: any) => {
-    //             if (resp.ok) {
-    //                 this._swalService.getAlertSuccess(this.translate.instant('PUERTOS.UPDATESUCCSESSFULLY'));
-    //                 this.router.navigate(['/tablero-control/puertos-panel']);
-    //             }
-    //         },
-    //         error: (err: any) => {
-    //             console.error(err);
-    //             this._swalService.getAlertError('No se pudo guardar el puerto');
-    //         }
-    //     });
-    // }
-
     btnGestionarRegistroClick(form: any) {
         const payload = { ...this.FormRegistro };
 
-        // 2. Extraemos la geometría real de las propiedades anidadas
-        // (Ajustamos la estructura a lo que espera el DTO del backend)
-        payload.ubicacion_geo = this.FormRegistro.ubicacion_geo?.ubicacion ? {
-            type: 'FeatureCollection',
-            features: [{
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: [this.FormRegistro.ubicacion_geo.ubicacion.lon, this.FormRegistro.ubicacion_geo.ubicacion.lat]
-                },
-                properties: {}
-            }]
-        } : null;
-
+        payload.ubicacion_geo = this.FormRegistro.ubicacion_geo ? this.FormRegistro.ubicacion_geo : this.puerto.ubicacion_geo
+        payload.geocerca_geo = this.FormRegistro.geocerca_geo ? this.FormRegistro.geocerca_geo : this.puerto.geocerca_geo
         payload.geocerca_geo = this.FormRegistro.geocerca_geo?.geocerca ? {
             type: 'FeatureCollection',
             features: [{
@@ -252,25 +199,17 @@ export class GestionPueertoPanelComponent implements OnInit {
             }]
         } : null;
 
-        // 3. Auditoría QPLUS
         payload.usuario_cargue = this._localStorageService.getUsuarioLocalStorage().codigoUsuario;
         payload.fecha_cargue = new Date().toISOString();
 
         if (this.modoEdicion) {
             console.log('MODIFICAR PUERTO', payload);
-            this._puertosService.savePuerto(payload).subscribe({
+            this._puertosService.updatePuerto(payload).subscribe({
                 next: (resp: any) => {
                     if (resp.ok) {
-                        const logData = {
-                            codigoTipoLog: '',
-                            codigoRespuesta: '201',
-                            descripcionLog: this.translate.instant('PUERTOS.CREATESUCCSESSFULLY')
-                        }
-                        this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
-                        this._swalService.getAlertSuccess(this.translate.instant('PUERTOS.CREATESUCCSESSFULLY'))
                         form.resetForm()
-                        // this.isSubmit = false;
-                        this.router.navigate(['/torre-control/puertos-panel'])
+                        this._swalService.getAlertSuccess(this.translate.instant('PUERTOS.CREATESUCCSESSFULLY'))
+                        this.router.navigate(['/tablero-control/puertos-panel'])
                     }
                 },
                 error: (err: any) => {
@@ -290,16 +229,9 @@ export class GestionPueertoPanelComponent implements OnInit {
                 next: (resp: any) => {
                     console.log('resp', resp)
                     if (resp.ok) {
-                        const logData = {
-                            codigoTipoLog: '',
-                            codigoRespuesta: '201',
-                            descripcionLog: this.translate.instant('PUERTOS.ELIMINAREXITOSA')
-                        }
-                        this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
-                        this._swalService.getAlertSuccess(this.translate.instant('PUERTOS.UPDATESUCCSESSFULLY'))
                         form.resetForm()
-                        // this.isSubmit = false;
-                        this.router.navigate(['/torre-control/puertos-panel'])
+                        this._swalService.getAlertSuccess(this.translate.instant('PUERTOS.UPDATESUCCSESSFULLY'))
+                        this.router.navigate(['/tablero-control/puertos-panel'])
                     }
                 },
                 error: (err: any) => {
