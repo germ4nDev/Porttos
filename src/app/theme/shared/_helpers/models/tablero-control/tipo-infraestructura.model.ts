@@ -4,6 +4,7 @@ export class TipoInfraestructura {
         public codigo_tipo?: string,
         public nombre?: string,
         public descripcion?: string,
+        public color_ui?: string,
         public estado?: boolean,
         public nomEstado?: string,
         public usuario_cargue?: string,

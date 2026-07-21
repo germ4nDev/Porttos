@@ -180,6 +180,11 @@ export class TiposInfraestructuraPanelComponent implements OnInit, OnDestroy {
             type: 'text'
         },
         {
+            name: 'color_ui',
+            header: 'FAROS.COLOR',
+            type: 'color_chip'
+        },
+        {
             name: 'nomEstado',
             header: 'TIPOSINFRA.ESTADO',
             type: 'estado'
@@ -196,12 +201,12 @@ export class TiposInfraestructuraPanelComponent implements OnInit, OnDestroy {
 
     OnNuevaAplicaicionClick(): void {
         this._localStorageService.setObject('regId', 'nuevo')
-        this.router.navigate(['tablero-control/gestion-widget'])
+        this.router.navigate(['tablero-control/gestion-tipo-infraestructura'])
     }
 
     OnEditarAplicaicionClick(id: string): void {
         this._localStorageService.setObject('regId', id)
-        this.router.navigate(['tablero-control/gestion-widget'])
+        this.router.navigate(['tablero-control/gestion-tipo-infraestructura'])
     }
 
     OnEliminarAplicaicionClick(id: string): void {

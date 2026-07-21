@@ -1,1 +1,143 @@
-<p>gestion-tipo-infraestructura works!</p>
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button>{{ 'PLATAFORMA.MENU' | translate }}</button>
+            </div>
+            <ng-container>
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'TIPOSINFRAESTRUCTURA.NEW' | translate }}
+                        </h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'TIPOSINFRAESTRUCTURA.UPDATE' | translate }}
+                        </h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro" (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TIPOSINFRAESTRUCTURA.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button" class="btn btn-primary btn-NuevoRegistro"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'TIPOSINFRAESTRUCTURA.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="codigo_tipo">{{ 'TIPOSINFRAESTRUCTURA.NAME' |
+                                    translate
+                                    }}</label>
+
+                                <input class="form-control form-input" id="codigo_tipo" name="codigo_tipo" type="text"
+                                    placeholder="{{ 'TIPOSINFRAESTRUCTURA.NAME' | translate }}"
+                                    (input)="onVerificarTipo($event)"
+                                    [ngClass]="{ 'is-invalid': (!codigo_tipo.valid && (codigo_tipo.dirty || codigo_tipo.touched || isSubmit)) || codigo_tipoDuplicado }"
+                                    #codigo_tipo="ngModel" required [(ngModel)]="FormRegistro.codigo_tipo" />
+
+                                <label
+                                    *ngIf="!codigo_tipo.valid && (codigo_tipo.dirty || codigo_tipo.touched || isSubmit) && !codigo_tipoDuplicado"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TIPOSINFRAESTRUCTURA.EXISTENAMEHOLDERERROR' | translate }}
+                                </label>
+
+                                <label *ngIf="nombreDuplicado"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TIPOSINFRAESTRUCTURA.EXISTENAMEHOLDERERROR' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombre">{{ 'TIPOSINFRAESTRUCTURA.NAME' |
+                                    translate
+                                    }}</label>
+
+                                <input class="form-control form-input" id="nombre" name="nombre" type="text"
+                                    placeholder="{{ 'TIPOSINFRAESTRUCTURA.NAME' | translate }}"
+                                    (input)="onVerificarNombre($event)"
+                                    [ngClass]="{ 'is-invalid': (!nombre.valid && (nombre.dirty || nombre.touched || isSubmit)) || nombreDuplicado }"
+                                    #nombre="ngModel" required [(ngModel)]="FormRegistro.nombre" />
+
+                                <label
+                                    *ngIf="!nombre.valid && (nombre.dirty || nombre.touched || isSubmit) && !nombreDuplicado"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TIPOSINFRAESTRUCTURA.EXISTENAMEHOLDERERROR' | translate }}
+                                </label>
+
+                                <label *ngIf="nombreDuplicado"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TIPOSINFRAESTRUCTURA.EXISTENAMEHOLDERERROR' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">{{ 'PLATAFORMA.COLORS.COLORTEXT' | translate
+                                    }}</label>
+                                <app-color-selector [initialColor]="FormRegistro.color_ui" [id]="textoColor"
+                                    (colorSelected)="OnColorSelectedClick($event)"></app-color-selector>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TIPOSINFRAESTRUCTURA.DESCRIPTION' | translate }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcion ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionVersion($event)" name="descripcion"
+                                    [(ngModel)]="FormRegistro.descripcion" [ngClass]="{
+                                        'is-invalid': !descripcion.valid && (descripcion.dirty || descripcion.touched || isSubmit)
+                                    }" #descripcion="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcion.valid && (descripcion.dirty || descripcion.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'TIPOSINFRAESTRUCTURA.DESCRIPCIONHOLDER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'TIPOSINFRAESTRUCTURA.STATUS' | translate }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estado" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estado" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVO' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estado" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estado" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVO' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

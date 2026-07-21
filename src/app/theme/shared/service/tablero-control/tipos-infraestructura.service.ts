@@ -64,10 +64,28 @@ export class TiposTipoInfraestructuraService {
     }
 
     saveTipoInfraestructura(tipo: TipoInfraestructura): Observable<any> {
-        // CORRECCIÓN 4: Arreglado el typo $${base_url} y usamos el id_tipo para el endpoint
-        return tipo.id_tipo
-            ? this.http.put(`${base_url}/tipos-infraestructura/${tipo.id_tipo}`, tipo)
-            : this.http.post(`${base_url}/tipos-infraestructura`, tipo);
+        const url = `${base_url}/tipos-infraestructura`
+        return this.http.post(url, tipo).pipe(
+            map((resp: any) => {
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
+    }
+
+    updateTipoInfraestructura(tipo: TipoInfraestructura): Observable<any> {
+        const url = `${base_url}/tipos-infraestructura/${tipo.id_tipo}`
+        return this.http.put(url, tipo).pipe(
+            map((resp: any) => {
+                console.log('data de tipo modificacda', resp)
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
     }
 
     deleteTipoInfraestructura(id_tipo: string): Observable<any> {

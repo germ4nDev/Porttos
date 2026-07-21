@@ -16,9 +16,9 @@
             </ng-container>
             <ng-container *ngIf="activeTab === 'filters'">
                 <!-- <div class="p-3 filtros-scroll-wrapper">
-                    <h6 class="filtros-title">{{ 'TIPOSINFRA.FILTROS.TITULO' | translate }}</h6>
+                    <h6 class="filtros-title">{{ 'TIPOSINFRAESTRUCTURA.FILTROS.TITULO' | translate }}</h6>
                     <div class="filtro">
-                        <small>{{ 'TIPOSINFRA.FILTROS.FILTROCODIGO' | translate }}</small>
+                        <small>{{ 'TIPOSINFRAESTRUCTURA.FILTROS.FILTROCODIGO' | translate }}</small>
                         <select (change)="onFiltroCodigoChangeClick($event)" class="form-control form-select">
                             <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
                             <option [value]="app.codigoAplicacion" *ngFor="let app of aplicaciones">
@@ -27,7 +27,7 @@
                         </select>
                     </div>
                     <div class="filtro">
-                        <small>{{ 'TIPOSINFRA.FILTROS.FILTRONOMBRE' | translate }}</small>
+                        <small>{{ 'TIPOSINFRAESTRUCTURA.FILTROS.FILTRONOMBRE' | translate }}</small>
                         <select (change)="onFiltroNombreChangeClick($event)" class="form-control form-select">
                             <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
                             <option [value]="app.nombreAplicacion" *ngFor="let app of aplicaciones">
@@ -36,13 +36,13 @@
                         </select>
                     </div>
                     <div class="filtro">
-                        <small>{{ 'TIPOSINFRA.FILTROS.FILTRODECRIPCION' | translate }}</small>
+                        <small>{{ 'TIPOSINFRAESTRUCTURA.FILTROS.FILTRODECRIPCION' | translate }}</small>
                         <input type="text" (keyup)="onFiltroDescripcionChangeClick($event)"
                             class="form-control form-input"
-                            placeholder="{{ 'TIPOSINFRA.FILTROS.DESCRIPCIONCHOLDER' | translate }}" />
+                            placeholder="{{ 'TIPOSINFRAESTRUCTURA.FILTROS.DESCRIPCIONCHOLDER' | translate }}" />
                     </div>
                     <div class="filtro">
-                        <small>{{ 'TIPOSINFRA.FILTROS.FILTROESTADO' | translate }}</small>
+                        <small>{{ 'TIPOSINFRAESTRUCTURA.FILTROS.FILTROESTADO' | translate }}</small>
                         <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select">
                             <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
                             <option value="true">{{ 'PLATAFORMA.ACTIVE' | translate }}</option>
@@ -59,12 +59,13 @@
             <div class="card-body">
                 <ng-container *ngIf="tiposInfraestructuraFiltradas$ | async as dataFiltrada; else loading">
                     <app-data-table [data]="dataFiltrada" [idField]="'id_tipo'"
-                        [tableTitle]="'TIPOSINFRA.TITLE' | translate" [metadataColumns]="columnasAplicaciopnes"
-                        [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="true"
-                        [showNewButton]="true" [showViewButton]="false" [showEditButton]="true"
-                        [showDeleteButton]="true" [showSearchBox]="false"
-                        [newButtonLabel]="'TIPOSINFRA.NEW' | translate" [exportLabel]="'PLATAFORMA.EXCEL' | translate"
-                        (newRecord)="OnNuevaAplicaicionClick()" (editRecord)="OnEditarAplicaicionClick($event)"
+                        [tableTitle]="'TIPOSINFRAESTRUCTURA.TITLE' | translate"
+                        [metadataColumns]="columnasAplicaciopnes" [metadataDetailColumns]="columnasDetailRegistros"
+                        [showDetail]="true" [showActions]="true" [showNewButton]="true" [showViewButton]="false"
+                        [showEditButton]="true" [showDeleteButton]="true" [showSearchBox]="false"
+                        [newButtonLabel]="'TIPOSINFRAESTRUCTURA.NEW' | translate"
+                        [exportLabel]="'PLATAFORMA.EXCEL' | translate" (newRecord)="OnNuevaAplicaicionClick()"
+                        (editRecord)="OnEditarAplicaicionClick($event)"
                         (deleteRecord)="OnEliminarAplicaicionClick($event)">
                     </app-data-table>
                 </ng-container>
