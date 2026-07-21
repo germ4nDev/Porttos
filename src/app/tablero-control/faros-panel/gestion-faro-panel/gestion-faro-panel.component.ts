@@ -7,12 +7,10 @@ import { TextEditorComponent } from 'src/app/theme/shared/components/text-editor
 import { SharedModule } from 'src/app/theme/shared/shared.module'
 import {
     LocalStorageService,
-    PtlAplicacionesService,
     PtllogActividadesService,
     SwalAlertService,
     UploadFilesService
 } from 'src/app/theme/shared/service'
-import { Widget } from './../../../theme/shared/_helpers/models/tablero-control/widget.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { NavigationItem } from 'src/app/theme/shared/_helpers/models/Navigation.model'
 import { PTLLogActividadAPModel } from 'src/app/theme/shared/_helpers/models/PTLlogActividadAP.model'
@@ -21,29 +19,25 @@ import { NavBarComponent } from 'src/app/theme/layout/admin/nav-bar/nav-bar.comp
 import { NavContentComponent } from 'src/app/theme/layout/admin/navigation/nav-content/nav-content.component'
 import { Observable, Subscription } from 'rxjs'
 import Swal from 'sweetalert2'
-import { TerminalesService } from 'src/app/theme/shared/service/tablero-control/terminales.service'
+import { FarosService } from 'src/app/theme/shared/service/tablero-control/faros.service'
 import { MapaSelectorComponent } from 'src/app/theme/shared/components/tablero-control/mapa-selector/mapa-selector.component'
-import { Terminal } from 'src/app/theme/shared/_helpers/models/tablero-control/terminal.model'
-import { Puerto } from 'src/app/theme/shared/_helpers/models/tablero-control/puerto.model'
-import { PuertosService } from 'src/app/theme/shared/service/tablero-control/puertos.service'
-
-// import { BaseSessionModel } from 'src/app/theme/shared/_helpers/models/BaseSession.model';
-// import { PTLLogActividadAPModel } from 'src/app/theme/shared/_helpers/models/PTLlogActividadAP.model';
+import { FaroModel } from 'src/app/theme/shared/_helpers/models/tablero-control/faro.model'
+import { ColorSelectorComponent } from 'src/app/theme/shared/components/color-selector/color-selector.component'
 
 @Component({
-    selector: 'app-gestion-terminal-panel',
+    selector: 'app-gestion-faro-panel',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent],
-    templateUrl: './gestion-terminal-panel.component.html',
-    styleUrl: './gestion-terminal-panel.component.scss'
+    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent, ColorSelectorComponent],
+    templateUrl: './gestion-faro-panel.component.html',
+    styleUrl: './gestion-faro-panel.component.scss'
 })
-export class GestionTerminalPanelComponent implements OnInit {
+export class GestionFaroPanelComponent implements OnInit {
     @Output() toggleSidebar = new EventEmitter<void>()
-    FormRegistro: Terminal = new Terminal()
-    terminal: Terminal = new Terminal()
+    FormRegistro: FaroModel = new FaroModel()
+    faro: FaroModel = new FaroModel()
     logActividad: PTLLogActividadAPModel = new PTLLogActividadAPModel()
     menuItems$!: Observable<NavigationItem[]>
-    puertos: Puerto[] = [];
+    faros: FaroModel[] = [];
     gradientConfig: any
     navCollapsed: boolean = false
     navCollapsedMob: boolean = false
@@ -53,7 +47,6 @@ export class GestionTerminalPanelComponent implements OnInit {
     userPhotoUrl: string = ''
     fileName: string | null = null
     selectedFileUrl: string | null = null
-    // public datosGuardados: any = null;
     form: undefined
     isSubmit: boolean = false
     modoEdicion: boolean = false
@@ -63,17 +56,23 @@ export class GestionTerminalPanelComponent implements OnInit {
     lockMessage: string = ''
     suscriptor: string = ''
     modoMapa: 'punto' | 'bbox' = 'punto';
+    public nombreDuplicado: boolean = false;
+    textoColor: string = 'id_color'
 
+    ETIPOS_FARO = [
+        { id: 'PEAJE', label: 'Peaje', color: '#22c55e' },
+        { id: 'PUNTO_CONTROL', label: 'Punto de Control', color: '#facc15' },
+        { id: 'ZONA_TERRESTRE', label: 'Zona Terrestre', color: '#f59e0b' },
+        { id: 'ZONA_MARITIMA', label: 'Zona Marítima', color: '#dc2626' }
+    ];
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute,
         private translate: TranslateService,
         private _navigationService: NavigationService,
         private _localStorageService: LocalStorageService,
         private _logActividadesService: PtllogActividadesService,
-        private _terminalesService: TerminalesService,
-        private _puertosService: PuertosService,
+        private _farosService: FarosService,
         private _swalService: SwalAlertService,
         private _translate: TranslateService,
         private _uploadService: UploadFilesService
@@ -88,16 +87,17 @@ export class GestionTerminalPanelComponent implements OnInit {
         const regId = this._localStorageService.getObject<string>('regId') || 'nuevo'
         if (regId !== 'nuevo') {
             this.modoEdicion = true
-            this._terminalesService.getTerminalByCode(regId).subscribe({
+            console.log('id FaroModel', regId);
+            this._farosService.getFaroById(regId).subscribe({
                 next: (resp: any) => {
-                    console.log('data Terminal', resp);
-                    this.terminal = resp.data
-                    this.FormRegistro = resp.data
+                    console.log('data FaroModel', resp.data);
+                    this.faro = resp.data
                     this.FormRegistro.geocerca_geo = resp.data.geocerca_geo
+                    this.FormRegistro = resp.data
                     console.log('data registro', this.FormRegistro);
                 },
                 error: () => {
-                    Swal.fire('Error', 'No se pudo obtener el Terminal', 'error')
+                    Swal.fire('Error', 'No se pudo obtener el FaroModel', 'error')
                 }
             })
         }
@@ -120,15 +120,29 @@ export class GestionTerminalPanelComponent implements OnInit {
         }
         console.log('--------- modoEdicion', this.modoEdicion)
         if (this.modoEdicion == false) {
-            // this.FormRegistro.thumbnail_url = 'no-image.png'
-            this.FormRegistro.id_puerto = '';
+            // this.FormRegistro.id_interno = '';
+            // this.FormRegistro.id_terminal = '';
             console.log('FormRegistro loading', this.FormRegistro)
         }
-        this.puertos = this._puertosService.getPuertosActuales();
-        console.log('todos los puertos', this.puertos)
+        this.faros = this._farosService.getFarosActuales();
         console.log('Inicial formregistro', this.FormRegistro)
-        // const navSettings = this._localStorageService.getNavSettingsLocalStorage();
         console.log('data del log', this.logActividad)
+    }
+
+    onVerificarNombre(event: any) {
+        const nombreBuscado = event.target.value.trim().toUpperCase();
+
+        if (!nombreBuscado) {
+            this.nombreDuplicado = false; // Si borra todo, quitamos el error
+            return;
+        }
+
+        const existe = this.faros.some(faro =>
+            faro.nombre_faro?.trim().toLowerCase() === nombreBuscado
+        );
+
+        // 👇 Actualizamos el estado para la vista
+        this.nombreDuplicado = existe;
     }
 
     actualizarDescripcionVersion(nuevoContenido: string): void {
@@ -170,6 +184,11 @@ export class GestionTerminalPanelComponent implements OnInit {
         this.FormRegistro.geocerca_geo = data.geocerca_geo;
     }
 
+    OnColorSelectedClick(evento: any) {
+        console.log('evento', evento);
+        this.FormRegistro.color_ui = evento.color;
+    }
+
     actualizarGeocerca(data: any) {
         console.log("📥 [Padre] Datos recibidos del mapa:", data);
         if (data && data.type === 'FeatureCollection') {
@@ -182,7 +201,7 @@ export class GestionTerminalPanelComponent implements OnInit {
 
     btnGestionarRegistroClick(form: any) {
         const payload = { ...this.FormRegistro };
-        payload.geocerca_geo = this.FormRegistro.geocerca_geo ? this.FormRegistro.geocerca_geo : this.terminal.geocerca_geo
+        payload.geocerca_geo = this.FormRegistro.geocerca_geo ? this.FormRegistro.geocerca_geo : this.faro.geocerca_geo
         payload.geocerca_geo = this.FormRegistro.geocerca_geo?.geocerca ? {
             type: 'FeatureCollection',
             features: [{
@@ -193,15 +212,15 @@ export class GestionTerminalPanelComponent implements OnInit {
         } : null;
         payload.usuario_cargue = this._localStorageService.getUsuarioLocalStorage().codigoUsuario;
         payload.fecha_cargue = new Date().toISOString();
-
+        console.log('payload', payload);
         if (this.modoEdicion) {
-            console.log('MODIFICAR Terminal', payload);
-            this._terminalesService.updateTerminal(payload).subscribe({
+            this._farosService.updateFaro(payload).subscribe({
                 next: (resp: any) => {
                     if (resp.ok) {
+                        console.log('MODIFICAdo FaroModel', resp.data);
                         form.resetForm()
-                        this._swalService.getAlertSuccess(this.translate.instant('TerminalS.CREATESUCCSESSFULLY'))
-                        this.router.navigate(['/tablero-control/terminales-panel'])
+                        this._swalService.getAlertSuccess(this.translate.instant('MUELLES.CREATESUCCSESSFULLY'))
+                        this.router.navigate(['/tablero-control/faros-panel'])
                     }
                 },
                 error: (err: any) => {
@@ -209,21 +228,21 @@ export class GestionTerminalPanelComponent implements OnInit {
                     const logData = {
                         codigoTipoLog: '',
                         codigoRespuesta: '501',
-                        descripcionLog: this.translate.instant('TerminalS.CREATESUCCSESSFULLY')
+                        descripcionLog: this.translate.instant('MUELLES.CREATESUCCSESSFULLY')
                     }
                     this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
-                    this._swalService.getAlertError('No se pudo actualizar el puertto')
+                    this._swalService.getAlertError('No se pudo actualizar el faro')
                 }
             })
         } else {
-            console.log('CREAR Terminal', payload);
-            this._terminalesService.saveTerminal(payload).subscribe({
+            console.log('CREAR FaroModel', payload);
+            this._farosService.saveFaro(payload).subscribe({
                 next: (resp: any) => {
                     console.log('resp', resp)
                     if (resp.ok) {
                         form.resetForm()
-                        this._swalService.getAlertSuccess(this.translate.instant('TerminalS.UPDATESUCCSESSFULLY'))
-                        this.router.navigate(['/tablero-control/terminales-panel'])
+                        this._swalService.getAlertSuccess(this.translate.instant('MUELLES.UPDATESUCCSESSFULLY'))
+                        this.router.navigate(['/tablero-control/faros-panel'])
                     }
                 },
                 error: (err: any) => {
@@ -231,17 +250,17 @@ export class GestionTerminalPanelComponent implements OnInit {
                     const logData = {
                         codigoTipoLog: '',
                         codigoRespuesta: '500',
-                        descripcionLog: this.translate.instant('TerminalS.ELIMINAREXITOSA')
+                        descripcionLog: this.translate.instant('MUELLES.ELIMINAREXITOSA')
                     }
                     this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
-                    this._swalService.getAlertError('No se pudo crear el Terminal')
+                    this._swalService.getAlertError('No se pudo crear el FaroModel')
                 }
             })
         }
     }
 
     btnRegresarClick() {
-        this.router.navigate(['/tablero-control/terminales-panel'])
+        this.router.navigate(['/tablero-control/faros-panel'])
     }
 
     navMobClick() {
@@ -261,3 +280,4 @@ export class GestionTerminalPanelComponent implements OnInit {
         this.toggleSidebar.emit()
     }
 }
+

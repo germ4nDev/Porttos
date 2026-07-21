@@ -19,6 +19,8 @@ import { FiltroTableroService } from 'src/app/theme/shared/service/tablero-contr
 import { IWidget } from 'src/app/theme/shared/interfaces/torre-control/widget.interface';
 import { ToastrService } from 'ngx-toastr';
 import { MapSocketService } from 'src/app/theme/shared/service/tablero-control/map-socket.service';
+import { FaroModel } from 'src/app/theme/shared/_helpers/models/tablero-control/faro.model';
+import { FarosService } from 'src/app/theme/shared/service/tablero-control/faros.service';
 
 const INFRA_THEME = {
     'puerto': { fill: '#cbd5e1', line: '#475569', circle: '#cbd5e1' },
@@ -107,6 +109,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         private _torreService: DashboardService,
         public _mapaService: MapaGeneralService,
         public _mapaSocketService: MapSocketService,
+        public _farosService: FarosService,
         private _filtroTableroService: FiltroTableroService,
         private http: HttpClient,
         private toastr: ToastrService,
@@ -306,6 +309,26 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
                 }
             })
         );
+    }
+
+    private cargarFaros(): void {
+        this._farosService.cargarFaros().subscribe({
+            next: (faros: FaroModel[]) => {
+                console.log('Faros recibidos desde Node.js:', faros);
+
+                // Iteramos sobre cada faro recibido
+                faros.forEach(faro => {
+                    const miGeojson = faro.geocerca_geo;
+
+                    // Aquí el GeoJSON ya es un objeto JavaScript (FeatureCollection).
+                    // Puedes pasarlo directamente a Mapbox/MapLibre o Turf.js
+                    //this.agregarFaroAlMapa(miGeojson, faro.radio_metros);
+                });
+            },
+            error: (error) => {
+                console.error('Error al obtener los faros:', error);
+            }
+        });
     }
 
     private verificarCambioDeSessionYVolar(idEsperado: string, intento: number): void {

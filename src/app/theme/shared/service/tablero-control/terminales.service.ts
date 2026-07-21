@@ -60,6 +60,10 @@ export class TerminalesService {
     }
 
     getTerminalByCode(id: string): Observable<any> {
+        if (!id) {
+            throw { statusCode: 400, msg: "El id_interno es requerido" };
+        }
+
         return this.http.get(`${base_url}/terminales/${id}`); // Ojo al plural /terminales/
     }
 

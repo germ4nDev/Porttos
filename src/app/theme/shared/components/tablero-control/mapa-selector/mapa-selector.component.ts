@@ -112,10 +112,49 @@ export class MapaSelectorComponent implements ControlValueAccessor, OnInit, OnDe
         this.closeModal();
     }
 
+    // getDisplayText(): string {
+    //     // --- MODO PUNTO ---
+    //     if (this.modo === 'punto') {
+    //         // Busca en el estado actual o cae de respaldo a los datos de la BD
+    //         const ubicacion = this.innerValue?.ubicacion ||
+    //             this._savedFeatures?.ubicacion ||
+    //             (this._savedFeatures?.lat ? this._savedFeatures : null);
+
+    //         if (ubicacion && ubicacion.lat !== undefined && ubicacion.lon !== undefined) {
+    //             return `📍 Lat: ${ubicacion.lat.toFixed(4)}, Lon: ${ubicacion.lon.toFixed(4)}`;
+    //         }
+    //     }
+
+    //     // --- MODO POLÍGONO ---
+    //     if (this.modo === 'poligono') {
+    //         // Verifica si hay una geocerca configurada actualmente o si el padre pasó una desde la BD
+    //         const tieneGeocerca = this.innerValue?.geocerca || this._savedFeatures;
+
+    //         if (tieneGeocerca) {
+    //             return '🗺️ Polígono delimitado configurado';
+    //         }
+    //     }
+
+    //     return '';
+    // }
     getDisplayText(): string {
         // --- MODO PUNTO ---
         if (this.modo === 'punto') {
-            // Busca en el estado actual o cae de respaldo a los datos de la BD
+
+            // 1. NUEVO: Verificar si la data viene de la BD como un GeoJSON FeatureCollection
+            const isGeoJson = this._savedFeatures?.type === 'FeatureCollection' &&
+                this._savedFeatures?.features?.length > 0;
+
+            if (isGeoJson) {
+                const geometry = this._savedFeatures.features[0].geometry;
+                if (geometry.type === 'Point' && geometry.coordinates) {
+                    const lon = geometry.coordinates[0];
+                    const lat = geometry.coordinates[1];
+                    return `📍 Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
+                }
+            }
+
+            // 2. Tu lógica original (sirve de respaldo para el innerValue del componente)
             const ubicacion = this.innerValue?.ubicacion ||
                 this._savedFeatures?.ubicacion ||
                 (this._savedFeatures?.lat ? this._savedFeatures : null);

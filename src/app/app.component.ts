@@ -28,6 +28,7 @@ import { TerminalesService } from './theme/shared/service/tablero-control/termin
 import { MuellesService } from './theme/shared/service/tablero-control/muelles.service'
 import { WidgetsService } from './theme/shared/service/tablero-control/widgets.service'
 import { LayoutService } from './theme/shared/service/tablero-control/layout.service'
+import { FarosService } from './theme/shared/service/tablero-control/faros.service'
 
 @Component({
     selector: 'app-root',
@@ -63,6 +64,7 @@ export class AppComponent implements OnInit {
         private _muellesService: MuellesService,
         private _rolesAPService: PTLRolesAPService,
         private _widgetsService: WidgetsService,
+        private _farosService: FarosService,
         private _layoutService: LayoutService
     ) { }
 
@@ -182,6 +184,10 @@ export class AppComponent implements OnInit {
         this._layoutService.cargarLayout().subscribe(
             () => console.log('** layouts cargados y guardados en el servicio'),
             err => console.error('Error al cargar layouts:', err)
+        )
+        this._farosService.cargarFaros().subscribe(
+            () => console.log('** faros cargados y guardados en el servicio'),
+            err => console.error('Error al cargar faros:', err)
         )
     }
 }

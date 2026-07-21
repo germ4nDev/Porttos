@@ -88,6 +88,16 @@ const routes: Routes = [
                     .then(c => c.GestionMuellePanelComponent)
             },
             {
+                path: 'faros-panel',
+                loadComponent: () => import('./faros-panel/faros-panel.component')
+                    .then(c => c.FarosPanelComponent)
+            },
+            {
+                path: 'gestion-faro-panel',
+                loadComponent: () => import('./faros-panel/gestion-faro-panel/gestion-faro-panel.component')
+                    .then(c => c.GestionFaroPanelComponent)
+            },
+            {
                 path: 'infraestructuras-panel',
                 loadComponent: () => import('./infraestructuras-panel/infraestructuras-panel.component')
                     .then(c => c.InfraestructurasPanelComponent)

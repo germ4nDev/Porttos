@@ -58,6 +58,10 @@ export class PuertosService {
     }
 
     getPuertoByCode(id: string): Observable<any> {
+        if (!id) {
+            throw { statusCode: 400, msg: "El id_puerto es requerido" };
+        }
+
         return this.http.get(`${base_url}/puertos/${id}`);
     }
 
