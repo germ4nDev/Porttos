@@ -1,464 +1,375 @@
 <app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
 <div class="layout-wrapper">
-  <aside class="aside-left">
-    <div class="card">
-      <div class="nav-tabs-custom"
-        ><button>{{ 'PLATAFORMA.MENU' | translate }}</button></div
-      >
-      <ng-container><app-nav-content [navigationItems]="menuItems | async"></app-nav-content></ng-container>
-    </div>
-  </aside>
-  <div class="form-area">
-    <div class="card">
-      <div class="card-header card-header-sticky">
-        <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
-          <div class="d-flex align-items-center">
-            <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.NEW' | translate }}</h4>
-            <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.UPDATE' | translate }}</h4>
-          </div>
-          <div class="d-flex">
-            <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion" (click)="btnRegresarClick()">
-              {{ 'PLATAFORMA.REGRESAR' | translate }}
-              <i class="feather icon-arrow-left ms-2"></i>
-            </button>
-            <button
-              *ngIf="!modoEdicion"
-              type="button"
-              class="btn btn-primary btn-NuevoRegistro btn-animacion"
-              (click)="btnGestionarRegistroClick(validationForm)"
-            >
-              {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CREATE' | translate }}
-              <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
-            </button>
-            <button
-              *ngIf="modoEdicion"
-              type="button"
-              class="btn btn-primary btn-NuevoRegistro btn-animacion"
-              (click)="btnGestionarRegistroClick(validationForm)"
-            >
-              {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.UPDATE' | translate }}
-              <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
-            </button>
-          </div>
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom"><button>{{ 'PLATAFORMA.MENU' | translate }}</button></div>
+            <ng-container><app-nav-content [navigationItems]="menuItems | async"></app-nav-content></ng-container>
         </div>
-      </div>
-      <div class="card-body form-scroll-wrapper">
-        <form #validationForm="ngForm" class="editForm" novalidate>
-          <div class="row">
-            <!-- SECTION CODIGO -->
-            <div class="col-md-12">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CODE' | translate }}</label>
-                <input
-                  type="text"
-                  class="form-control form-input"
-                  name="codigoSuscriptor"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERCODE' | translate }}"
-                  [ngClass]="{ 'is-invalid': !codigoSuscriptor.valid && (codigoSuscriptor.dirty || codigoSuscriptor.touched || isSubmit) }"
-                  #codigoSuscriptor="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.codigoSuscriptor"
-                  readonly
-                />
-                <label
-                  *ngIf="!codigoSuscriptor.valid && (codigoSuscriptor.dirty || codigoSuscriptor.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'PLATAFORMA.REQUIRED' | translate }}
-                </label>
-              </div>
+    </aside>
+    <div class="form-area">
+        <div class="card">
+            <div class="card-header card-header-sticky">
+                <div class="dt-toolbar d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="datatable-title" *ngIf="!modoEdicion">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.NEW' |
+                            translate }}</h4>
+                        <h4 class="datatable-title" *ngIf="modoEdicion">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.UPDATE' |
+                            translate }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnRegresarClick()">
+                            {{ 'PLATAFORMA.REGRESAR' | translate }}
+                            <i class="feather icon-arrow-left ms-2"></i>
+                        </button>
+                        <button *ngIf="!modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CREATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                        <button *ngIf="modoEdicion" type="button"
+                            class="btn btn-primary btn-NuevoRegistro btn-animacion"
+                            (click)="btnGestionarRegistroClick(validationForm)">
+                            {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.UPDATE' | translate }}
+                            <i class="feather ms-2" [ngClass]="modoEdicion ? 'icon-edit' : 'icon-plus'"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <!-- SECTION NOMBRE -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="nombreSuscriptor">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.NAME' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="nombreSuscriptor"
-                  name="nombreSuscriptor"
-                  type="text"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERNAME' | translate }}"
-                  [ngClass]="{ 'is-invalid': !nombreSuscriptor.valid && (nombreSuscriptor.dirty || nombreSuscriptor.touched || isSubmit) }"
-                  #nombreSuscriptor="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.nombreSuscriptor"
-                />
-                <label
-                  *ngIf="!nombreSuscriptor.valid && (nombreSuscriptor.dirty || nombreSuscriptor.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDONAME' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION IDENTIFICACIÓN -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="identificacion">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.IDENTIFICATION' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="identificacion"
-                  name="identificacion"
-                  type="text"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERIDENTIFICACION' | translate }}"
-                  [ngClass]="{ 'is-invalid': !identificacion.valid && (identificacion.dirty || identificacion.touched || isSubmit) }"
-                  #identificacion="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.identificacionSuscriptor"
-                />
-                <label
-                  *ngIf="!identificacion.valid && (identificacion.dirty || identificacion.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOIDENTIFICATION' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION DIRECCIÓN -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="direccionSuscriptor">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.ADDRESS' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="direccionSuscriptor"
-                  name="direccionSuscriptor"
-                  type="text"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERADDRESS' | translate }}"
-                  [ngClass]="{
+            <div class="card-body form-scroll-wrapper">
+                <form #validationForm="ngForm" class="editForm" novalidate>
+                    <div class="row">
+                        <!-- SECTION CODIGO -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CODE' | translate
+                                    }}</label>
+                                <input type="text" class="form-control form-input" name="codigoSuscriptor"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERCODE' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !codigoSuscriptor.valid && (codigoSuscriptor.dirty || codigoSuscriptor.touched || isSubmit) }"
+                                    #codigoSuscriptor="ngModel" required [(ngModel)]="FormRegistro.codigoSuscriptor"
+                                    readonly />
+                                <label
+                                    *ngIf="!codigoSuscriptor.valid && (codigoSuscriptor.dirty || codigoSuscriptor.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.REQUIRED' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION NOMBRE -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="nombreSuscriptor">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.NAME' | translate }}</label>
+                                <input class="form-control form-input" id="nombreSuscriptor" name="nombreSuscriptor"
+                                    type="text"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERNAME' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !nombreSuscriptor.valid && (nombreSuscriptor.dirty || nombreSuscriptor.touched || isSubmit) }"
+                                    #nombreSuscriptor="ngModel" required [(ngModel)]="FormRegistro.nombreSuscriptor" />
+                                <label
+                                    *ngIf="!nombreSuscriptor.valid && (nombreSuscriptor.dirty || nombreSuscriptor.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDONAME' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION IDENTIFICACIÓN -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="identificacionSuscriptor">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.IDENTIFICATION' | translate }}</label>
+                                <input class="form-control form-input" id="identificacionSuscriptor"
+                                    name="identificacionSuscriptor" type="text"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERIDENTIFICACION' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !identificacionSuscriptor.valid && (identificacionSuscriptor.dirty || identificacionSuscriptor.touched || isSubmit) }"
+                                    #identificacionSuscriptor="ngModel" required
+                                    [(ngModel)]="FormRegistro.identificacionSuscriptor" />
+                                <label
+                                    *ngIf="!identificacionSuscriptor.valid && (identificacionSuscriptor.dirty || identificacionSuscriptor.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOIDENTIFICATION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION DIRECCIÓN -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="direccionSuscriptor">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.ADDRESS' | translate }}</label>
+                                <input class="form-control form-input" id="direccionSuscriptor"
+                                    name="direccionSuscriptor" type="text"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERADDRESS' | translate }}"
+                                    [ngClass]="{
                     'is-invalid': !direccionSuscriptor.valid && (direccionSuscriptor.dirty || direccionSuscriptor.touched || isSubmit)
-                  }"
-                  #direccionSuscriptor="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.direccionSuscriptor"
-                />
-                <label
-                  *ngIf="!direccionSuscriptor.valid && (direccionSuscriptor.dirty || direccionSuscriptor.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOADDRESS' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION COREO CORPORATIVO -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="correoSuscriptor">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.EMAILSUSCRIPTOR' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="correoSuscriptor"
-                  name="correoSuscriptor"
-                  type="text"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDEREMAILSUSCRIPTOR' | translate }}"
-                  [ngClass]="{ 'is-invalid': !correoSuscriptor.valid && (correoSuscriptor.dirty || correoSuscriptor.touched || isSubmit) }"
-                  #correoSuscriptor="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.correoSuscriptor"
-                />
-                <label
-                  *ngIf="!correoSuscriptor.valid && (correoSuscriptor.dirty || correoSuscriptor.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOEMAILSUSCRIPTOR' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION TELEFONO -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="telefonoContacto">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PHONE' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="telefonoContacto"
-                  name="telefonoContacto"
-                  type="text"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERPHONE' | translate }}"
-                  [ngClass]="{ 'is-invalid': !telefonoContacto.valid && (telefonoContacto.dirty || telefonoContacto.touched || isSubmit) }"
-                  #telefonoContacto="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.telefonoContacto"
-                />
-                <label
-                  *ngIf="!telefonoContacto.valid && (telefonoContacto.dirty || telefonoContacto.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOPHONE' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION NÚMERO EMPRESAS -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="numeroEmpresas">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.NUMEROMEMPRESA' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="numeroEmpresas"
-                  name="numeroEmpresas"
-                  type="number"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERNUMEROMEMPRESA' | translate }}"
-                  [ngClass]="{ 'is-invalid': !numeroEmpresas.valid && (numeroEmpresas.dirty || numeroEmpresas.touched || isSubmit) }"
-                  #numeroEmpresas="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.numeroEmpresas"
-                />
-                <label
-                  *ngIf="!numeroEmpresas.valid && (numeroEmpresas.dirty || numeroEmpresas.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDONUMEROEMPRESA' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION NÚMERO DE USUARIOS -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="numeroUsuarios">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.NUMEROUSERS' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="numeroUsuarios"
-                  name="numeroUsuarios"
-                  type="number"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERNUMEROUSERS' | translate }}"
-                  [ngClass]="{ 'is-invalid': !numeroUsuarios.valid && (numeroUsuarios.dirty || numeroUsuarios.touched || isSubmit) }"
-                  #numeroUsuarios="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.numeroUsuarios"
-                />
-                <label
-                  *ngIf="!numeroUsuarios.valid && (numeroUsuarios.dirty || numeroUsuarios.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDONUMEROUSERS' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION USUARIO ADM -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-control-label" for="usuarioAdministrador">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.ADMINUSER' | translate }}</label>
-                <input
-                  class="form-control form-input"
-                  id="usuarioAdministrador"
-                  name="usuarioAdministrador"
-                  type="text"
-                  placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERADMINUSER' | translate }}"
-                  [ngClass]="{
+                  }" #direccionSuscriptor="ngModel" required [(ngModel)]="FormRegistro.direccionSuscriptor" />
+                                <label
+                                    *ngIf="!direccionSuscriptor.valid && (direccionSuscriptor.dirty || direccionSuscriptor.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOADDRESS' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION COREO CORPORATIVO -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="correoSuscriptor">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.EMAILSUSCRIPTOR' | translate }}</label>
+                                <input class="form-control form-input" id="correoSuscriptor" name="correoSuscriptor"
+                                    type="text"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDEREMAILSUSCRIPTOR' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !correoSuscriptor.valid && (correoSuscriptor.dirty || correoSuscriptor.touched || isSubmit) }"
+                                    #correoSuscriptor="ngModel" required [(ngModel)]="FormRegistro.correoSuscriptor" />
+                                <label
+                                    *ngIf="!correoSuscriptor.valid && (correoSuscriptor.dirty || correoSuscriptor.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOEMAILSUSCRIPTOR' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION TELEFONO -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="telefonoContacto">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.PHONE' | translate }}</label>
+                                <input class="form-control form-input" id="telefonoContacto" name="telefonoContacto"
+                                    type="text"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERPHONE' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !telefonoContacto.valid && (telefonoContacto.dirty || telefonoContacto.touched || isSubmit) }"
+                                    #telefonoContacto="ngModel" required [(ngModel)]="FormRegistro.telefonoContacto" />
+                                <label
+                                    *ngIf="!telefonoContacto.valid && (telefonoContacto.dirty || telefonoContacto.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOPHONE' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION NÚMERO EMPRESAS -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="numeroEmpresas">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.NUMEROMEMPRESA' | translate }}</label>
+                                <input class="form-control form-input" id="numeroEmpresas" name="numeroEmpresas"
+                                    type="number"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERNUMEROMEMPRESA' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !numeroEmpresas.valid && (numeroEmpresas.dirty || numeroEmpresas.touched || isSubmit) }"
+                                    #numeroEmpresas="ngModel" required [(ngModel)]="FormRegistro.numeroEmpresas" />
+                                <label
+                                    *ngIf="!numeroEmpresas.valid && (numeroEmpresas.dirty || numeroEmpresas.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDONUMEROEMPRESA' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION NÚMERO DE USUARIOS -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="numeroUsuarios">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.NUMEROUSERS' | translate }}</label>
+                                <input class="form-control form-input" id="numeroUsuarios" name="numeroUsuarios"
+                                    type="number"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERNUMEROUSERS' | translate }}"
+                                    [ngClass]="{ 'is-invalid': !numeroUsuarios.valid && (numeroUsuarios.dirty || numeroUsuarios.touched || isSubmit) }"
+                                    #numeroUsuarios="ngModel" required [(ngModel)]="FormRegistro.numeroUsuarios" />
+                                <label
+                                    *ngIf="!numeroUsuarios.valid && (numeroUsuarios.dirty || numeroUsuarios.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDONUMEROUSERS' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION USUARIO ADM -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="usuarioAdministrador">{{
+                                    'SUSCRIPTOR.SUSCRIPTORES.GESTION.ADMINUSER' | translate }}</label>
+                                <input class="form-control form-input" id="usuarioAdministrador"
+                                    name="usuarioAdministrador" type="text"
+                                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERADMINUSER' | translate }}"
+                                    [ngClass]="{
                     'is-invalid': !usuarioAdministrador.valid && (usuarioAdministrador.dirty || usuarioAdministrador.touched || isSubmit)
-                  }"
-                  #usuarioAdministrador="ngModel"
-                  required
-                  [(ngModel)]="FormRegistro.usuarioAdministrador"
-                />
-                <label
-                  *ngIf="!usuarioAdministrador.valid && (usuarioAdministrador.dirty || usuarioAdministrador.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOADMINUSER' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION CLAVE ACTUAL -->
-            <div class="col-md-6" *ngIf="modoEdicion">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CLAVEACTUAL' | translate }}</label>
-                <div class="input-group mb-4">
-                  <input
-                    type="password"
-                    class="form-control form-input"
-                    name="claveActual"
-                    placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERCLAVEACTUAL' | translate }}"
-                    #claveActual="ngModel"
-                    [(ngModel)]="FormRegistro.claveActual"
-                    [ngClass]="{ 'is-valid': isClaveValida, 'is-invalid': isSubmit && !isClaveValida && modoEdicion }"
-                  />
-                  <button
-                    type="button"
-                    id="validarClave"
-                    class="btn btn-primary btn-NuevoRegistroGroup"
-                    [disabled]="isClaveValida"
-                    (click)="validarClaveActual(FormRegistro.claveActual)"
-                  >
-                    <i class="feather" [ngClass]="isClaveValida ? 'icon-check' : 'icon-lock'"></i>
-                    {{ (isClaveValida ? 'PLATAFORMA.VALIDADA' : 'PLATAFORMA.VALIDARPASSWORD') | translate }}
-                  </button>
-                </div>
-                <small class="text-success" *ngIf="isClaveValida">
-                  {{ 'PLATAFORMA.PASSWORD_VERIFIED' | translate }}
-                </small>
-              </div>
-            </div>
-            <!-- SECTION CLAVE NUEVA -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CLAVENEW' | translate }}</label>
-                <input
-                  type="password"
-                  class="form-control form-input"
-                  name="claveNew"
-                  [disabled]="modoEdicion && isClaveActual"
-                  placeholder="********"
-                  #claveNew="ngModel"
-                  [required]="!modoEdicion"
-                  [(ngModel)]="FormRegistro.claveNew"
-                />
-              </div>
-            </div>
-            <!-- SECTION CONFIRMAR CLAVE -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CLAVECONFIRM' | translate }}</label>
-                <input
-                  type="password"
-                  class="form-control form-input"
-                  name="claveConfirm"
-                  [disabled]="modoEdicion && isClaveActual"
-                  [ngClass]="{ 'is-invalid': !clavesCoinciden && claveConfirm.touched }"
-                  placeholder="********"
-                  #claveConfirm="ngModel"
-                  [required]="!modoEdicion"
-                  [(ngModel)]="FormRegistro.claveConfirm"
-                />
-                <label *ngIf="!clavesCoinciden && claveConfirm.touched" class="error small form-text invalid-feedback">
-                  {{ 'PLATAFORMA.PASSWORDNOTMATCH' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION DESCRIPCION -->
-            <div class="col-md-12">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.DESCRIPTION' | translate }}</label>
-                <app-text-editor
-                  [toolbarType]="tipoEditorTexto"
-                  [contentHtml]="FormRegistro.descripcionSuscriptor ?? ''"
-                  (contentHtmlChange)="actualizarDescripcionSuscriptor($event)"
-                  name="descripcionSuscriptor"
-                  [(ngModel)]="FormRegistro.descripcionSuscriptor"
-                  [ngClass]="{
+                  }" #usuarioAdministrador="ngModel" required [(ngModel)]="FormRegistro.usuarioAdministrador" />
+                                <label
+                                    *ngIf="!usuarioAdministrador.valid && (usuarioAdministrador.dirty || usuarioAdministrador.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDOADMINUSER' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION CLAVE ACTUAL -->
+                        <div class="col-md-6" *ngIf="modoEdicion">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CLAVEACTUAL' | translate
+                                    }}</label>
+                                <div class="input-group mb-4">
+                                    <input type="password" class="form-control form-input" name="claveActual"
+                                        placeholder="{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.PLACEHOLDERCLAVEACTUAL' | translate }}"
+                                        #claveActual="ngModel" [(ngModel)]="FormRegistro.claveActual"
+                                        [ngClass]="{ 'is-valid': isClaveValida, 'is-invalid': isSubmit && !isClaveValida && modoEdicion }" />
+                                    <button type="button" id="validarClave"
+                                        class="btn btn-primary btn-NuevoRegistroGroup" [disabled]="isClaveValida"
+                                        (click)="validarClaveActual(FormRegistro.claveActual)">
+                                        <i class="feather" [ngClass]="isClaveValida ? 'icon-check' : 'icon-lock'"></i>
+                                        {{ (isClaveValida ? 'PLATAFORMA.VALIDADA' : 'PLATAFORMA.VALIDARPASSWORD') |
+                                        translate }}
+                                    </button>
+                                </div>
+                                <small class="text-success" *ngIf="isClaveValida">
+                                    {{ 'PLATAFORMA.PASSWORD_VERIFIED' | translate }}
+                                </small>
+                            </div>
+                        </div>
+                        <!-- SECTION CLAVE NUEVA -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CLAVENEW' | translate
+                                    }}</label>
+                                <input type="password" class="form-control form-input" name="claveNew"
+                                    [disabled]="modoEdicion && isClaveActual" placeholder="********" #claveNew="ngModel"
+                                    [required]="!modoEdicion" [(ngModel)]="FormRegistro.claveNew" />
+                            </div>
+                        </div>
+                        <!-- SECTION CONFIRMAR CLAVE -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.CLAVECONFIRM' | translate
+                                    }}</label>
+                                <input type="password" class="form-control form-input" name="claveConfirm"
+                                    [disabled]="modoEdicion && isClaveActual"
+                                    [ngClass]="{ 'is-invalid': !clavesCoinciden && claveConfirm.touched }"
+                                    placeholder="********" #claveConfirm="ngModel" [required]="!modoEdicion"
+                                    [(ngModel)]="FormRegistro.claveConfirm" />
+                                <label *ngIf="!clavesCoinciden && claveConfirm.touched"
+                                    class="error small form-text invalid-feedback">
+                                    {{ 'PLATAFORMA.PASSWORDNOTMATCH' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION DESCRIPCION -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.DESCRIPTION' | translate
+                                    }}</label>
+                                <app-text-editor [toolbarType]="tipoEditorTexto"
+                                    [contentHtml]="FormRegistro.descripcionSuscriptor ?? ''"
+                                    (contentHtmlChange)="actualizarDescripcionSuscriptor($event)"
+                                    name="descripcionSuscriptor" [(ngModel)]="FormRegistro.descripcionSuscriptor"
+                                    [ngClass]="{
                     'is-invalid': !descripcionSuscriptor.valid && (descripcionSuscriptor.dirty || descripcionSuscriptor.touched || isSubmit)
-                  }"
-                  #descripcionSuscriptor="ngModel"
-                  required
-                  rows="5"
-                >
-                </app-text-editor>
-                <label
-                  *ngIf="!descripcionSuscriptor.valid && (descripcionSuscriptor.dirty || descripcionSuscriptor.touched || isSubmit)"
-                  class="error jquery-validation-error small form-text invalid-feedback"
-                >
-                  {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDODESCRIPCION' | translate }}
-                </label>
-              </div>
-            </div>
-            <!-- SECTION LOGO -->
-            <div class="col-md-12">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.LOGO' | translate }}</label>
-                <img
-                  [src]="selectedFileUrl || FormRegistro.logoSuscriptor"
-                  *ngIf="selectedFileUrl || FormRegistro.logoSuscriptor"
-                  class="image-preview"
-                  style="max-width: 200px; margin-bottom: 10px"
-                />
+                  }" #descripcionSuscriptor="ngModel" required rows="5">
+                                </app-text-editor>
+                                <label
+                                    *ngIf="!descripcionSuscriptor.valid && (descripcionSuscriptor.dirty || descripcionSuscriptor.touched || isSubmit)"
+                                    class="error jquery-validation-error small form-text invalid-feedback">
+                                    {{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.REQUERIDODESCRIPCION' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- SECTION LOGO -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.LOGO' | translate
+                                    }}</label>
+                                <img [src]="selectedFileUrl || FormRegistro.logoSuscriptor"
+                                    *ngIf="selectedFileUrl || FormRegistro.logoSuscriptor" class="image-preview"
+                                    style="max-width: 200px; margin-bottom: 10px" />
 
-                <div class="file-input-wrapper">
-                  <label for="fileUploadInput" class="btn btn-primary">
-                    {{ 'PLATAFORMA.SELECT_FILE' | translate }}
-                  </label>
-                  <input
-                    type="file"
-                    (change)="onFileSelectedClick($event)"
-                    accept="image/*"
-                    id="fileUploadInput"
-                    class="d-none"
-                    name="logoSuscriptor"
-                  />
-                </div>
-              </div>
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary">
+                                        {{ 'PLATAFORMA.SELECT_FILE' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="d-none" name="logoSuscriptor" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SECTION ENVIAR MAILS -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.SENDMAILS' | translate
+                                    }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="envioCorreosSuscriptor" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.envioCorreosSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="envioCorreosSuscriptor" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.envioCorreosSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SECTION ENVIAR MENSAJES -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.SENDMESSAGES' | translate
+                                    }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="envioMensajesSuscriptor" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.envioMensajesSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="envioMensajesSuscriptor" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.envioMensajesSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SECTION ENVIAR PUBLICIDAD -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.SENDPUBLICITY' | translate
+                                    }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="envioPublicidadSuscriptor" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.envioPublicidadSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="envioPublicidadSuscriptor" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.envioPublicidadSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SECTION ESTADO -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.STATUS' | translate
+                                    }}</label>
+                                <div class="radio-buttons">
+                                    <label class="radio-button">
+                                        <input name="estadoSuscriptor" type="radio" [value]="true"
+                                            [(ngModel)]="FormRegistro.estadoSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
+                                    </label>
+                                    <label class="radio-button">
+                                        <input name="estadoSuscriptor" type="radio" [value]="false"
+                                            [(ngModel)]="FormRegistro.estadoSuscriptor" />
+                                        <div class="radio-circle"></div>
+                                        <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <!-- SECTION ENVIAR MAILS -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.SENDMAILS' | translate }}</label>
-                <div class="radio-buttons">
-                  <label class="radio-button">
-                    <input name="envioCorreosSuscriptor" type="radio" [value]="true" [(ngModel)]="FormRegistro.envioCorreosSuscriptor" />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
-                  </label>
-                  <label class="radio-button">
-                    <input name="envioCorreosSuscriptor" type="radio" [value]="false" [(ngModel)]="FormRegistro.envioCorreosSuscriptor" />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <!-- SECTION ENVIAR MENSAJES -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.SENDMESSAGES' | translate }}</label>
-                <div class="radio-buttons">
-                  <label class="radio-button">
-                    <input name="envioMensajesSuscriptor" type="radio" [value]="true" [(ngModel)]="FormRegistro.envioMensajesSuscriptor" />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
-                  </label>
-                  <label class="radio-button">
-                    <input name="envioMensajesSuscriptor" type="radio" [value]="false" [(ngModel)]="FormRegistro.envioMensajesSuscriptor" />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <!-- SECTION ENVIAR PUBLICIDAD -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.SENDPUBLICITY' | translate }}</label>
-                <div class="radio-buttons">
-                  <label class="radio-button">
-                    <input
-                      name="envioPublicidadSuscriptor"
-                      type="radio"
-                      [value]="true"
-                      [(ngModel)]="FormRegistro.envioPublicidadSuscriptor"
-                    />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
-                  </label>
-                  <label class="radio-button">
-                    <input
-                      name="envioPublicidadSuscriptor"
-                      type="radio"
-                      [value]="false"
-                      [(ngModel)]="FormRegistro.envioPublicidadSuscriptor"
-                    />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <!-- SECTION ESTADO -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="form-label">{{ 'SUSCRIPTOR.SUSCRIPTORES.GESTION.STATUS' | translate }}</label>
-                <div class="radio-buttons">
-                  <label class="radio-button">
-                    <input name="estadoSuscriptor" type="radio" [value]="true" [(ngModel)]="FormRegistro.estadoSuscriptor" />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.ACTIVE' | translate }}</label>
-                  </label>
-                  <label class="radio-button">
-                    <input name="estadoSuscriptor" type="radio" [value]="false" [(ngModel)]="FormRegistro.estadoSuscriptor" />
-                    <div class="radio-circle"></div>
-                    <label class="radio-label">{{ 'PLATAFORMA.INACTIVE' | translate }}</label>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>

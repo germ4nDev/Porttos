@@ -181,6 +181,10 @@
                                                         <img [src]="row[detailColumn.name]" [alt]="'Image'"
                                                             class="image-table" />
                                                     </ng-container>
+                                                    <ng-container *ngSwitchCase="'logo'">
+                                                        <img [src]="row[detailColumn.name]" [alt]="'Image'"
+                                                            class="logo-table" />
+                                                    </ng-container>
                                                     <ng-container *ngSwitchCase="'capture'">
                                                         <ng-container [ngSwitch]="row.tipo">
                                                             <img *ngSwitchCase="'capture'" [src]="row.capture"

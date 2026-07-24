@@ -37,7 +37,7 @@ export class SuscriptoresComponent implements OnInit, OnDestroy {
     registrosTransformadas$: Observable<PTLSuscriptorModel[]> = of([]);
     registrosFiltrados$: Observable<PTLSuscriptorModel[]> = of([]);
     registros: PTLSuscriptorModel[] = [];
-
+    suscriptor: string = ''
     lang: string = localStorage.getItem('lang') || '';
     tituloPagina: string = '';
     gradientConfig;
@@ -62,6 +62,7 @@ export class SuscriptoresComponent implements OnInit, OnDestroy {
         private _swalService: SwalAlertService
     ) {
         this.gradientConfig = GradientConfig;
+        this.suscriptor = this._localStorageService.getSuscriptorPlataformaLocalStorage()
     }
 
     ngOnInit() {
@@ -92,15 +93,19 @@ export class SuscriptoresComponent implements OnInit, OnDestroy {
 
                 return regs.map((reg: any) => {
                     const newReg = { ...reg };
-                    newReg.nomEstado = newReg.estadoSuscriptor ? 'Activo' : 'Inactivo';
+                    console.log('datos suscriptor', newReg);
 
-                    if (codigoSuscriptor) {
-                        newReg.logoSuscriptor = this._uploadService.getFilePath(
-                            codigoSuscriptor,
-                            'suscriptores',
-                            newReg.logoSuscriptor || 'no-imagen.png'
-                        );
-                    }
+                    newReg.nomEstado = newReg.estadoSuscriptor ? 'Activo' : 'Inactivo';
+                    newReg.logoSuscriptor = this._uploadService.getFilePath(this.suscriptor, 'suscriptores', newReg.logoSuscriptor)
+                    newReg.capture = newReg.logoSuscriptor
+                    newReg.tipo = 'capture'
+                    // if (codigoSuscriptor) {
+                    //     newReg.logoSuscriptor = this._uploadService.getFilePath(
+                    //         codigoSuscriptor,
+                    //         'suscriptores',
+                    //         newReg.logoSuscriptor || 'no-imagen.png'
+                    //     );
+                    // }
                     return newReg as PTLSuscriptorModel;
                 });
             }),
@@ -131,62 +136,6 @@ export class SuscriptoresComponent implements OnInit, OnDestroy {
             console.warn('Advertencia: No hay código de suscriptor en LocalStorage. Los logos podrían no cargar correctamente.');
         }
     }
-
-    //   setupRegistrosStream(): void {
-    //     const suscriptor = this._localStorageService.getSuscriptorLocalStorage();
-    //     if (!suscriptor || !suscriptor.codigoSuscriptor) {
-    //       console.error('Error: No se pudo obtener el suscriptor o su código. Operación de carga de registros abortada.');
-    //       return;
-    //     }
-    //     const codigoSuscriptor = suscriptor.codigoSuscriptor;
-    //     this.registrosTransformadas$ = this._suscriptoresService.suscriptores$.pipe(
-    //       switchMap((regs: PTLSuscriptorModel[]) => {
-    //         if (!regs) return of([]);
-    //         const transformedRegs = regs.map((reg: any) => {
-    //           // CORRECCIÓN: Usar la propiedad correcta del suscriptor
-    //           reg.nomEstado = reg.estadoSuscriptor ? 'Activo' : 'Inactivo';
-
-    //           // Asegúrate de que logoSuscriptor no venga nulo para evitar errores en getFilePath
-    //           reg.logoSuscriptor = this._uploadService.getFilePath(codigoSuscriptor, 'suscriptores', reg.logoSuscriptor || 'default.png');
-    //           return reg as PTLSuscriptorModel;
-    //         });
-    //         this.registros = transformedRegs;
-    //         return of(transformedRegs);
-    //       }),
-    //       catchError((err) => {
-    //         console.error('Error en el stream de aplicaciones:', err);
-    //         return of([]);
-    //       })
-    //     );
-    //     this.registrosFiltrados$ = combineLatest([
-    //       this.registrosTransformadas$.pipe(startWith([])),
-    //       //   this.filtroCodigoSubject,
-    //       this.filtroNombreSubject,
-    //       this.filtroIdentificacionSubject,
-    //       this.filtroEstadoSubject
-    //     ]).pipe(
-    //       map(([regs, nombre, identificacion, estado]) => {
-    //         let filteredRegs = regs;
-    //         console.log('quien putas es estado', estado);
-    //         // if (codigo !== 'todos') {
-    //         //   filteredRegs = filteredRegs.filter((app) => app.codigoAplicacion === codigo);
-    //         // }
-    //         if (nombre) {
-    //           const textoFiltro = nombre.toLowerCase();
-    //           filteredRegs = filteredRegs.filter((reg) => (reg.nombreSuscriptor || '').toLowerCase().includes(textoFiltro));
-    //         }
-    //         if (identificacion) {
-    //           filteredRegs = filteredRegs.filter((reg) => (reg.identificacionSuscriptor || '').toLowerCase().includes(identificacion));
-    //         }
-    //         if (estado !== 'todos') {
-    //           const estadoBoolean = estado === 'true';
-    //           filteredRegs = filteredRegs.filter((app) => app.estadoSuscriptor === estadoBoolean);
-    //         }
-    //         console.log('filtrado2s', filteredRegs);
-    //         return filteredRegs;
-    //       })
-    //     );
-    //   }
 
     onFiltroNombreChangeClick(evento: any) {
         console.log('filtrar el NOMBRE ', evento.target.value);
@@ -234,29 +183,6 @@ export class SuscriptoresComponent implements OnInit, OnDestroy {
         }
     ];
 
-    //   columnasRegistros: ColumnMetadata[] = [
-    //     {
-    //       name: 'logoSuscriptor', // Debe coincidir con la propiedad del objeto
-    //       header: 'SUSCRIPTORES.LOGO', // Cambié el header para que sea coherente
-    //       type: 'image'
-    //     },
-    //     {
-    //       name: 'nombreSuscriptor',
-    //       header: 'SUSCRIPTORES.NAME',
-    //       type: 'text'
-    //     },
-    //     {
-    //       name: 'identificacionSuscriptor',
-    //       header: 'SUSCRIPTORES.IDENTIFICATION',
-    //       type: 'text'
-    //     },
-    //     {
-    //       name: 'nomEstado', // Esta es la propiedad que creamos en el paso anterior
-    //       header: 'SUSCRIPTORES.STATUS',
-    //       type: 'estado'
-    //     }
-    //   ];
-
     columnasDetailRegistros: ColumnMetadata[] = [
         {
             name: 'codigoSuscriptor',
@@ -292,6 +218,11 @@ export class SuscriptoresComponent implements OnInit, OnDestroy {
             name: 'descripcionSuscriptor',
             header: 'SUSCRIPTOR.SUSCRIPTORES.DESCRIPTION',
             type: 'text'
+        },
+        {
+            name: 'capture',
+            header: 'SUSCRIPTOR.SUSCRIPTORES.LOGO',
+            type: 'capture'
         }
     ];
 

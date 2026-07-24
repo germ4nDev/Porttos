@@ -48,6 +48,10 @@ export class PTLUsuariosService {
         return this._registros.asObservable()
     }
 
+    getUsuariosActuales(): PTLUsuarioModel[] {
+        return this._registros.getValue()
+    }
+
     cargarRegistros() {
         console.log('Consultando y ordenando usuarios del servidor...')
         const url = `${base_url}/usuarios`

@@ -977,9 +977,18 @@ body.gradient-dark {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.logo-table {
+    width: 300px;
+    object-fit: cover;
+    margin-bottom: 16px;
+    border: 1px solid #363636;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
 .capture-table {
     width: 500px;
     object-fit: cover;
+    margin-bottom: 16px;
     border: 1px solid #363636;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
@@ -1032,6 +1041,13 @@ body.gradient-dark {
 }
 
 .image-preview {
+    display: block;
+    width: 300px;
+    margin: 1rem;
+    // object-fit: contain;
+}
+
+.image-preview-ui {
     display: block;
     width: 200px;
     margin: 1rem;

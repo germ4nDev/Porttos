@@ -163,9 +163,9 @@ export class SuitesComponent implements OnInit, OnDestroy {
                     reg.nomEstado = reg.estadoModulo ? 'Activo' : 'Inactivo'
                     reg.nomAplicacion = this.aplicaciones.filter(x => x.codigoAplicacion == reg.codigoAplicacion)[0].nombreAplicacion
                     reg.imagenInicio = this._uploadService.getFilePath(this.suscriptor, 'suites', reg.imagenInicio)
-                    reg.capture = this._uploadService.getFilePath(this.suscriptor, 'suites', reg.imagenInicio)
+                    reg.capture = reg.imagenInicio
+                    reg.tipo = 'capture'
                     console.log('))))))))))) suite', reg);
-
                     return reg as PTLSuiteAPModel
                 })
                 this.suites = transformedSuites
@@ -257,7 +257,7 @@ export class SuitesComponent implements OnInit, OnDestroy {
             type: 'text'
         },
         {
-            name: 'imagenInicio',
+            name: 'capture',
             header: 'SUITE.STATUS',
             type: 'capture'
         }

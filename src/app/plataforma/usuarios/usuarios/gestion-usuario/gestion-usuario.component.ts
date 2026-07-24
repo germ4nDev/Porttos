@@ -200,17 +200,17 @@ export class GestionUsuarioComponent implements OnInit, OnDestroy {
         // console.log('validar el usuario', userName, claveActual);
         // console.log('data el usuario', this.FormRegistro);
         this._authService.verificarClaveActual(userName, claveActual).subscribe((data: any) => {
-            //   console.log('data', data);
-            if (data.ok == true) {
-                if (this.FormRegistro.usuarioId === data.usuario.usuarioId) {
-                    this.isClaveActual = false
-                    //   console.log('respuesta perfil', data);
-                }
-            } else {
-                this.FormRegistro.claveNew = ''
-                this.FormRegistro.claveConfirm = ''
-                this.isClaveActual = true
-            }
+            console.log('data', data);
+            // if (data.ok == true) {
+            //     if (this.FormRegistro.usuarioId === data.usuario.usuarioId) {
+            //         this.isClaveActual = false
+            //         //   console.log('respuesta perfil', data);
+            //     }
+            // } else {
+            //     this.FormRegistro.claveNew = ''
+            //     this.FormRegistro.claveConfirm = ''
+            //     this.isClaveActual = true
+            // }
         })
     }
 

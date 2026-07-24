@@ -129,11 +129,13 @@ export class AplicacionesComponent implements OnInit, OnDestroy {
                     if (this.tipoMedia == 'video') {
                         app.capture = this._uploadService.getFilePath(this.suscriptor, 'aplicaciones', app.imagenInicio)
                         app.imagenInicio = this._uploadService.getFilePath(this.suscriptor, 'galeria', 'video_pyr.png')
+                        app.imagenUI = this._uploadService.getFilePath(this.suscriptor, 'aplicaciones', app.imagenUI)
                         app.tipo = 'video'
                         console.log('app captura', app.capture)
                     } else if (this.tipoMedia == 'capture') {
                         app.capture = this._uploadService.getFilePath(this.suscriptor, 'aplicaciones', app.imagenInicio)
                         app.imagenInicio = this._uploadService.getFilePath(this.suscriptor, 'aplicaciones', app.imagenInicio)
+                        app.imagenUI = this._uploadService.getFilePath(this.suscriptor, 'aplicaciones', app.imagenUI)
                         app.tipo = 'capture'
                         console.log('app captura', app.capture)
                     }
@@ -233,6 +235,11 @@ export class AplicacionesComponent implements OnInit, OnDestroy {
             name: 'descripcionAplicacion',
             header: 'APLICACIONES.DESCRIPTION',
             type: 'text'
+        },
+        {
+            name: 'imagenUI',
+            header: 'APLICACIONES.IMAGENUI',
+            type: 'logo'
         },
         {
             name: 'capture',

@@ -91,10 +91,14 @@ export class RolesUsuariosComponent implements OnInit {
         this._navigationService.getNavigationItems()
         this.menuItems$ = this._navigationService.menuItems$
         this.hasFiltersSlot = true
-        this.consultarAplicaciones()
-        this.consultarSuites()
-        this.consultarUsuarios()
-        this.consultarRoles()
+        this.roles = this._rolesAPService.getRolesActuales()
+        this.usuarios = this._usuariosService.getUsuariosActuales()
+        this.aplicaciones = this._aplicacionesService.getBAplicacionesActuales()
+        this.suites = this._suitesService.getSuitesActuales()
+        console.log('roles actuales', this.roles);
+        console.log('usuarios actuales', this.usuarios);
+        console.log('aplicaciones actuales', this.aplicaciones);
+        console.log('suites actuales', this.suites);
         setTimeout(() => {
             this.setupRolesStream()
         }, 100)
@@ -108,54 +112,6 @@ export class RolesUsuariosComponent implements OnInit {
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe()
-    }
-
-    consultarUsuarios() {
-        this.subscriptions.add(
-            this._usuariosService.getUsuarios().subscribe((resp: any) => {
-                if (resp.ok) {
-                    this.usuarios = resp.usuarios
-                    //   console.log('Todos las usuarios', this.usuarios);
-                    return
-                }
-            })
-        )
-    }
-
-    consultarAplicaciones() {
-        this.subscriptions.add(
-            this._aplicacionesService.getAplicaciones().subscribe((resp: any) => {
-                if (resp.ok) {
-                    this.aplicaciones = resp.aplicaciones
-                    //   console.log('Todos las aplicaciones', this.aplicaciones);
-                    return
-                }
-            })
-        )
-    }
-
-    consultarSuites() {
-        this.subscriptions.add(
-            this._suitesService.geSuitesAP().subscribe((resp: any) => {
-                if (resp.ok) {
-                    this.suites = resp.suites
-                    // console.log('Todos los suite', this.suites);
-                    return
-                }
-            })
-        )
-    }
-
-    consultarRoles() {
-        this.subscriptions.add(
-            this._rolesAPService.getRoles().subscribe((resp: any) => {
-                if (resp.ok) {
-                    this.roles = resp.roles
-                    //    console.log('Todos los roles', this.roles);
-                    return
-                }
-            })
-        )
     }
 
     columnasRegistros: ColumnMetadata[] = [

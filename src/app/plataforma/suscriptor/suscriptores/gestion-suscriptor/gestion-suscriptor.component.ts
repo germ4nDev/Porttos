@@ -47,6 +47,7 @@ export class GestionSuscriptorComponent {
     windowWidth: number = 0;
     form: undefined;
     isSubmit: boolean;
+    usuarios: PTLUsuarioModel[] = [];
     modoEdicion: boolean = false;
     isClaveActual: boolean = true;
     verificarHabilitado: boolean = true;
@@ -88,6 +89,7 @@ export class GestionSuscriptorComponent {
                 this._suscriptoresService.getSuscriptorById(id).subscribe({
                     next: (resp: any) => {
                         this.FormRegistro = resp.suscriptor;
+                        this.userPhotoUrl = resp.suscriptor.logoSuscriptor;
                         console.log('respuesta componente', this.FormRegistro);
                     },
                     error: () => {
@@ -130,6 +132,7 @@ export class GestionSuscriptorComponent {
             this.FormRegistro = form;
             this._localStorageService.removeFormRegistro();
         }
+        this.usuarios = this._usuariosService.getUsuariosActuales();
         const togglePassword = document.querySelector('#togglePassword');
         const password = document.querySelector('#claveAdministrador');
         togglePassword?.addEventListener('click', () => {
@@ -186,8 +189,9 @@ export class GestionSuscriptorComponent {
 
     onFileSelectedClick(event: any) {
         const file: File = event.target.files[0];
+        this.FormRegistro.logoSuscriptor = '';
         const objUpload = {
-            susc: this.FormRegistro.codigoSuscriptor || '',
+            susc: this.suscriptor,
             tipo: 'suscriptores'
         };
         if (file) {
@@ -195,12 +199,11 @@ export class GestionSuscriptorComponent {
             reader.onload = (e: any) => {
                 this.selectedFileUrl = e.target.result;
             };
-            this.FormRegistro.logoSuscriptor = '';
             reader.readAsDataURL(file);
             this._uploadService.uploadUserPhoto(file, objUpload).subscribe({
                 next: (path: any) => {
-                    this.userPhotoUrl = path.nombreArchivo;
-                    this.FormRegistro.logoSuscriptor = path.nombreArchivo;
+                    this.userPhotoUrl = path.data.respuesta.fileName;
+                    this.FormRegistro.logoSuscriptor = path.data.respuesta.fileName;
                 },
                 error: () => {
                     this._swalAlertService.getAlertError(this.translate.instant('PLATAFORMA.UPLOADPHOTOERROR'));
@@ -215,58 +218,58 @@ export class GestionSuscriptorComponent {
     btnGestionarRegistroClick(form: any) {
         this.isSubmit = true;
         if (!form.valid) return;
-        const rawData = { ...this.FormRegistro };
-        const idSuscriptor = rawData.codigoSuscriptor;
-        const idUsuarioAdmin = uuidv4();
-        const usuarioLogueado = this._localStorageService.getUsuarioLocalStorage();
-
-        const registroParaEnvio = {
-            codigoSuscriptor: rawData.codigoSuscriptor,
-            identificacionSuscriptor: rawData.identificacionSuscriptor,
-            nombreSuscriptor: rawData.nombreSuscriptor,
-            correoSuscriptor: rawData.correoSuscriptor,
-            direccionSuscriptor: rawData.direccionSuscriptor,
-            telefonoContacto: rawData.telefonoContacto,
-            numeroEmpresas: rawData.numeroEmpresas,
-            numeroUsuarios: rawData.numeroUsuarios,
-            usuarioAdministrador: rawData.usuarioAdministrador,
-            logoSuscriptor: this.userPhotoUrl != '' ? this.userPhotoUrl : 'no-imagen.png',
-            descripcionSuscriptor: rawData.descripcionSuscriptor,
-            envioCorreosSuscriptor: rawData.envioCorreosSuscriptor,
-            envioMensajesSuscriptor: rawData.envioMensajesSuscriptor,
-            envioPublicidadSuscriptor: rawData.envioPublicidadSuscriptor,
-            estadoSuscriptor: rawData.estadoSuscriptor,
-            claveUsuario: rawData.claveNew
-        };
-        console.log('QUE ME TRAE registroParaEnvio++++++++++++++++++', registroParaEnvio);
+        this.FormRegistro = form.value as PTLSuscriptorModel
+        const registroData = new PTLSuscriptorModel()
+        registroData.identificacionSuscriptor = this.FormRegistro.identificacionSuscriptor
+        registroData.nombreSuscriptor = this.FormRegistro.nombreSuscriptor
+        registroData.correoSuscriptor = this.FormRegistro.correoSuscriptor
+        registroData.direccionSuscriptor = this.FormRegistro.direccionSuscriptor
+        registroData.telefonoContacto = this.FormRegistro.telefonoContacto
+        registroData.logoSuscriptor = this.userPhotoUrl != '' ? this.userPhotoUrl : 'no-imagen.png'
+        registroData.numeroEmpresas = this.FormRegistro.numeroEmpresas
+        registroData.numeroUsuarios = this.FormRegistro.numeroUsuarios
+        registroData.codigoAdministrador = this.FormRegistro.codigoAdministrador || ''
+        registroData.usuarioAdministrador = this.FormRegistro.usuarioAdministrador
+        registroData.usuarioAdministrador = this.FormRegistro.usuarioAdministrador
+        registroData.descripcionSuscriptor = this.FormRegistro.descripcionSuscriptor
+        registroData.envioCorreosSuscriptor = this.FormRegistro.envioCorreosSuscriptor
+        registroData.envioMensajesSuscriptor = this.FormRegistro.envioMensajesSuscriptor
+        registroData.envioPublicidadSuscriptor = this.FormRegistro.envioPublicidadSuscriptor
+        registroData.estadoSuscriptor = this.FormRegistro.estadoSuscriptor
+        console.log('nueva suscriptor', registroData);
         if (this.modoEdicion) {
-            const dataUpdate = {
-                ...registroParaEnvio,
-                suscriptorId: rawData.suscriptorId,
-                codigoUsuarioModificacion: usuarioLogueado.codigoUsuario,
-                fechaModificacion: new Date().toISOString()
-            };
-
-            this._suscriptoresService.actualizarSuscriptor(dataUpdate as any).subscribe({
-                next: (resp: any) => {
-                    this._swalAlertService.getAlertSuccess(this.translate.instant('PLATAFORMA.MODIFICAR'));
-                    this.router.navigate(['/suscriptor/suscriptores']);
-                },
-                error: (err) => console.error(err)
-            });
-        } else {
-            const dataCreate = {
-                ...registroParaEnvio,
-                codigoAdministrador: idUsuarioAdmin,
-                codigoUsuarioCreacion: usuarioLogueado.codigoUsuario,
-                fechaCreacion: new Date().toISOString()
-            };
-
-            // CREAR SUSCRIPTOR
-            this._suscriptoresService.crearSuscriptor(dataCreate).subscribe({
+            registroData.codigoSuscriptor = this.FormRegistro.codigoSuscriptor
+            registroData.codigoUsuarioModificacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario
+            registroData.fechaModificacion = new Date().toISOString()
+            this._suscriptoresService.actualizarSuscriptor(registroData).subscribe({
                 next: (resp: any) => {
                     if (resp.ok) {
-                        this.CrearUsuarioYUsuarioSC(rawData, idUsuarioAdmin, idSuscriptor!, usuarioLogueado, dataCreate);
+                        this.GestionarUsuarioUsuarioSC(registroData);
+                        this._swalAlertService.getAlertSuccess(this.translate.instant('APLICACIONES.UPDATESUCCSESSFULLY'))
+                        form.resetForm()
+                    }
+                },
+                error: (err: any) => {
+                    console.error(err)
+                    const logData = {
+                        codigoTipoLog: '',
+                        codigoRespuesta: '501',
+                        descripcionLog: this.translate.instant('APLICACIONES.CREATESUCCSESSFULLY')
+                    }
+                    this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
+                    this._swalAlertService.getAlertError('No se pudo actualizar la Aplicación')
+                }
+            });
+        } else {
+            registroData.codigoSuscriptor = uuidv4()
+            registroData.codigoUsuarioCreacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario || ''
+            registroData.fechaCreacion = new Date().toISOString()
+            this._suscriptoresService.crearSuscriptor(registroData).subscribe({
+                next: (resp: any) => {
+                    if (resp.ok) {
+                        this.GestionarUsuarioUsuarioSC(registroData);
+                        this._swalAlertService.getAlertSuccess(this.translate.instant('APLICACIONES.CREATESUCCSESSFULLY'))
+                        form.resetForm()
                     }
                 },
                 error: (err) => {
@@ -278,9 +281,8 @@ export class GestionSuscriptorComponent {
         }
     }
 
-    private CrearUsuarioYUsuarioSC(rawData: any, idUsuarioAdmin: string, idSuscriptor: string, usuarioLogueado: any, dataCreate: any) {
+    private GestionarUsuarioUsuarioSC(rawData: any) {
         const usuarioAdministrador: PTLUsuarioModel = {
-            codigoUsuario: idUsuarioAdmin,
             identificacionUsuario: rawData.identificacionSuscriptor,
             nombreUsuario: 'Administrador ' + rawData.nombreSuscriptor,
             correoUsuario: rawData.correoSuscriptor,
@@ -290,34 +292,39 @@ export class GestionSuscriptorComponent {
             fotoUsuario: 'no-imagen.png',
             usuarioAdministrador: true,
             estadoUsuario: true,
-            codigoUsuarioCreacion: usuarioLogueado.codigoUsuario,
+            codigoUsuarioCreacion: rawData.codigoUsuarioCreacion,
             fechaCreacion: new Date().toISOString()
         };
-        this._usuariosService.postCrearUsuario(usuarioAdministrador).subscribe({
-            next: () => this.crearUsuarioSC(idUsuarioAdmin, idSuscriptor, usuarioLogueado, dataCreate),
-            error: (err) => {
-                const error = err.error?.msg || 'Error al validar datos'
-                let idARelacionar = idUsuarioAdmin;
-                if (err.error?.usuario) {
-                    idARelacionar = err.error.usuario.codigoUsuario;
-                    console.log('ID Usuario existente:', idARelacionar);
-                }
-                const rutaTraduccion = `USUARIOS.USUARIOS.GESTION.${error}`;
-                this._swalAlertService.getAlertConfirmWarning(this.translate.instant(rutaTraduccion))
-                // .then(() => {
-                //     this.crearUsuarioSC(idARelacionar, idSuscriptor, usuarioLogueado, dataCreate);
-                // });
-            }
-        });
+        console.log('usuario administrador', usuarioAdministrador);
+
+        // const indexExiste = this.usuarios.findIndex(x => x.userNameUsuario?.trim().toLocaleLowerCase() == rawData.usuarioAdministrador.trim().toLocaleLowerCase());
+        // if (indexExiste == -1) {
+        //     usuarioAdministrador.codigoUsuario = uuidv4()
+        //     this._usuariosService.postCrearUsuario(usuarioAdministrador).subscribe({
+        //         next: (data: any) => this.crearUsuarioSC(rawData.codigoSuscriptor, data.usuario.codigoUsuario),
+        //         error: (err) => {
+        //             const rutaTraduccion = `USUARIOS.USUARIOS.GESTION.${err}`;
+        //         }
+        //     });
+        // } else {
+        //     const usuario = this.usuarios[indexExiste];
+        //     usuarioAdministrador.codigoUsuario = usuario.codigoUsuario,
+        //         this._usuariosService.actualizarUsuario(usuarioAdministrador).subscribe({
+        //             next: (data: any) => this.crearUsuarioSC(rawData.codigoSuscriptor, usuario.codigoUsuario),
+        //             error: (err) => {
+        //                 const rutaTraduccion = `USUARIOS.USUARIOS.GESTION.${err}`;
+        //             }
+        //         });
+        // }
     }
 
-    private crearUsuarioSC(idUsuarioAdmin: string, idSuscriptor: string, usuarioLogueado: any, dataCreate: any) {
+    private crearUsuarioSC(codigoSuscriptor: string, codigoUsuario: any) {
         const usuarioSC: PTLUsuarioSCModel = {
             codigoUsuarioSC: uuidv4(),
-            codigoUsuario: idUsuarioAdmin,
-            codigoSuscriptor: idSuscriptor,
+            codigoUsuario: codigoUsuario,
+            codigoSuscriptor: codigoSuscriptor,
             estadoUsuarioSC: true,
-            codigoUsuarioCreacion: usuarioLogueado.codigoUsuario,
+            codigoUsuarioCreacion: this._localStorageService.getUsuarioLocalStorage().codigoUsuario,
             fechaCreacion: new Date().toISOString(),
             codigoUsuarioModificacion: '',
             fechaModificacion: ''
@@ -325,11 +332,11 @@ export class GestionSuscriptorComponent {
 
         // CREAR USUARIOSC
         this._usuariosSCService.postCrearUsuario(usuarioSC).subscribe({
-            next: () => this.finalizarRegistro(dataCreate.codigoSuscriptor),
+            next: () => this.finalizarRegistro(codigoSuscriptor),
             error: (err) => {
                 const error = err.error?.msg || 'Error al validar datos'
                 console.log('Error: ', error);
-                this.finalizarRegistro(dataCreate.codigoSuscriptor);
+                this.finalizarRegistro(codigoSuscriptor);
             }
         });
     }

@@ -63,7 +63,7 @@
     <div class="content-area">
         <div class="card card-table content-scroll-wrapper">
             <div class="card-body">
-                <ng-container *ngIf="aplicacionesFiltradas$ | async as dataFiltrada; else loading">
+                <ng-container *ngIf="aplicacionesFiltradas$ | async as dataFiltrada;">
                     <app-data-table [data]="dataFiltrada" [idField]="'codigoAplicacion'"
                         [tableTitle]="'APLICACIONES.TITLE' | translate" [metadataColumns]="columnasAplicaciopnes"
                         [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="true"
@@ -74,14 +74,14 @@
                         (deleteRecord)="OnEliminarAplicaicionClick($event)">
                     </app-data-table>
                 </ng-container>
-                <ng-template #loading>
+                <!-- <ng-template #loading>
                     <app-data-loader [isLoading]="true" message="Cargando aplicaciones ..."> </app-data-loader>
                 </ng-template>
 
                 <h3>Importar Usuarios Masivos</h3>
                 <app-excel-uploader [apiUrl]="urlSubidaUsuarios" [columnsMap]="mapeoColumnasExcel"
                     [extraData]="datosAdicionales">
-                </app-excel-uploader>
+                </app-excel-uploader> -->
             </div>
         </div>
     </div>

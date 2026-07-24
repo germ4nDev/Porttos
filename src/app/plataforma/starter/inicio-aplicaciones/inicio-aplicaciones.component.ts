@@ -57,6 +57,7 @@ export class InicioAplicacionesComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('ingresa a la plataforma')
+        this._localStorageService.removeObject('navsettings');
         setTimeout(() => {
             this.consultarAplicaciones()
         }, 500)
@@ -71,10 +72,10 @@ export class InicioAplicacionesComponent implements OnInit, OnDestroy {
             this._aplicacionesService.getAplicaciones().subscribe((resp: any) => {
                 if (resp.ok) {
                     console.log('***********************las aplicaciones', resp);
-
                     resp.aplicaciones.forEach((app: any) => {
                         // app.imagenInicio = this._uploadService.getFilePath('aplicaciones', app.imagenInicio);
                         app.imagenInicio = `${base_url}/upload/${this.suscriptor}/aplicaciones/${app.imagenInicio}`;
+                        app.imagenUI = `${base_url}/upload/${this.suscriptor}/aplicaciones/${app.imagenUI}`;
                     });
                     this.aplicaciones = resp.aplicaciones;
                     console.log('Todos las aplicaciones', this.aplicaciones);

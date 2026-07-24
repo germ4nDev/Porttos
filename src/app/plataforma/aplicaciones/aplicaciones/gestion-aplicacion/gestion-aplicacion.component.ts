@@ -48,6 +48,13 @@ export class GestionAplicacionComponent implements OnInit {
     fileName: string | null = null
     selectedFileUrl: string | null = null
 
+    selectedFileUI: File | null = null
+    previewUrlUI: string | ArrayBuffer | null = null
+    userPhotoUrlUI: string = ''
+    fileNameUI: string | null = null
+    selectedFileUrlUI: string | null = null
+
+
     form: undefined
     isSubmit: boolean = false
     modoEdicion: boolean = false
@@ -85,6 +92,7 @@ export class GestionAplicacionComponent implements OnInit {
                     this.FormRegistro = resp.aplicacion
                     this.codeAplicacion = resp.aplicacion.codigoAplicacion
                     this.selectedFileUrl = this._uploadService.getFilePath(this.suscriptor, 'aplicaciones', resp.aplicacion.imagenInicio)
+                    this.selectedFileUrlUI = this._uploadService.getFilePath(this.suscriptor, 'aplicaciones', resp.aplicacion.imagenUI)
                 },
                 error: () => {
                     Swal.fire('Error', 'No se pudo obtener la Aplicación', 'error')
@@ -153,12 +161,44 @@ export class GestionAplicacionComponent implements OnInit {
         }
     }
 
+    onFileSelectedUIClick(event: any) {
+        const file: File = event.target.files[0]
+        const objUpload = {
+            susc: this.suscriptor,
+            tipo: 'aplicaciones'
+        }
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = (e: any) => {
+                this.selectedFileUrlUI = e.target.result
+            }
+            reader.readAsDataURL(file)
+            this._uploadService.uploadUserPhoto(file, objUpload).subscribe({
+                next: (path: any) => {
+                    const resp = path.data.respuesta
+                    this.FormRegistro.imagenUI = resp.fileName
+                    this.userPhotoUrlUI = resp.fileName
+                },
+                error: () => {
+                    this._swalService.getAlertError(this._translate.instant('PLATAFORMA.UPLOADPHOTOERROR'))
+                }
+            })
+        } else {
+            this.selectedFileUrl = null
+            this.userPhotoUrl = ''
+        }
+    }
+
     btnGestionarAplicacionClick(form: any) {
         // this.isSubmit = true;
+        const registroData = form.value as PTLAplicacionModel
+
         if (this.modoEdicion) {
-            this.FormRegistro.codigoUsuarioModificacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario
-            this.FormRegistro.fechaModificacion = new Date().toISOString()
-            this._aplicacionesService.actualizarAplicacion(this.FormRegistro).subscribe({
+            registroData.imagenInicio = this.FormRegistro.imagenInicio
+            registroData.imagenUI = this.FormRegistro.imagenUI
+            registroData.codigoUsuarioModificacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario
+            registroData.fechaModificacion = new Date().toISOString()
+            this._aplicacionesService.actualizarAplicacion(registroData).subscribe({
                 next: (resp: any) => {
                     if (resp.ok) {
                         const logData = {
@@ -186,42 +226,42 @@ export class GestionAplicacionComponent implements OnInit {
             })
         } else {
             form.aplicacionId = 0
-            const registroData = form.value as PTLAplicacionModel
             registroData.codigoAplicacion = uuidv4()
             registroData.imagenInicio = this.FormRegistro.imagenInicio
+            registroData.imagenUI = this.FormRegistro.imagenUI
             registroData.codigoUsuarioCreacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario || ''
             registroData.fechaCreacion = new Date().toISOString()
             registroData.codigoUsuarioModificacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario || ''
             registroData.fechaModificacion = new Date().toISOString()
             console.log('nueva aplicacion', registroData);
 
-            // this._aplicacionesService.crearAplicacion(registroData).subscribe({
-            //     next: (resp: any) => {
-            //         console.log('resp', resp)
-            //         if (resp.ok) {
-            //             const logData = {
-            //                 codigoTipoLog: '',
-            //                 codigoRespuesta: '201',
-            //                 descripcionLog: this.translate.instant('APLICACIONES.ELIMINAREXITOSA')
-            //             }
-            //             this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
-            //             this._swalService.getAlertSuccess(this.translate.instant('APLICACIONES.UPDATESUCCSESSFULLY'))
-            //             form.resetForm()
-            //             // this.isSubmit = false;
-            //             this.router.navigate(['/aplicaciones/aplicaciones'])
-            //         }
-            //     },
-            //     error: (err: any) => {
-            //         console.error(err)
-            //         const logData = {
-            //             codigoTipoLog: '',
-            //             codigoRespuesta: '500',
-            //             descripcionLog: this.translate.instant('APLICACIONES.ELIMINAREXITOSA')
-            //         }
-            //         this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
-            //         this._swalService.getAlertError('No se pudo crear la Aplicación')
-            //     }
-            // })
+            this._aplicacionesService.crearAplicacion(registroData).subscribe({
+                next: (resp: any) => {
+                    console.log('resp', resp)
+                    if (resp.ok) {
+                        const logData = {
+                            codigoTipoLog: '',
+                            codigoRespuesta: '201',
+                            descripcionLog: this.translate.instant('APLICACIONES.ELIMINAREXITOSA')
+                        }
+                        this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
+                        this._swalService.getAlertSuccess(this.translate.instant('APLICACIONES.UPDATESUCCSESSFULLY'))
+                        form.resetForm()
+                        // this.isSubmit = false;
+                        this.router.navigate(['/aplicaciones/aplicaciones'])
+                    }
+                },
+                error: (err: any) => {
+                    console.error(err)
+                    const logData = {
+                        codigoTipoLog: '',
+                        codigoRespuesta: '500',
+                        descripcionLog: this.translate.instant('APLICACIONES.ELIMINAREXITOSA')
+                    }
+                    this._logActividadesService.postCrearRegistro(logData).subscribe(() => console.log('log creado exitosamente'))
+                    this._swalService.getAlertError('No se pudo crear la Aplicación')
+                }
+            })
         }
     }
 

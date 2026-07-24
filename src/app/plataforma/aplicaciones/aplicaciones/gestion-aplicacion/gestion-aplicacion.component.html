@@ -103,7 +103,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">{{ 'APLICACIONES.GESTION.FOTO' | translate }}</label>
                                 <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview" />
@@ -114,9 +114,20 @@
                                     <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
                                         id="fileUploadInput" class="form-control form-input d-none"
                                         name="fotoUsuario" />
-                                    <span class="file-name" [ngClass]="{ 'has-file': fileName }">
-                                        <!-- {{ fileName || ('APLICACIONES.GESTION.FOTOHOLDER' | translate) }} -->
-                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'APLICACIONES.GESTION.FOTOUI' | translate }}</label>
+                                <img *ngIf="selectedFileUrlUI" [src]="selectedFileUrlUI" class="image-preview-ui" />
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedUIClick($event)" accept="image/*"
+                                        id="fileUploadInputUI" class="form-control form-input d-none"
+                                        name="imagenAplicacionUI" />
                                 </div>
                             </div>
                         </div>
