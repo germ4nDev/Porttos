@@ -26,11 +26,12 @@ import { Puerto } from 'src/app/theme/shared/_helpers/models/tablero-control/pue
 import { PuertosService } from 'src/app/theme/shared/service/tablero-control/puertos.service'
 import { Terminal } from 'src/app/theme/shared/_helpers/models/tablero-control/terminal.model'
 import { TerminalesService } from 'src/app/theme/shared/service/tablero-control/terminales.service'
+import { ColorSelectorComponent } from "src/app/theme/shared/components/color-selector/color-selector.component";
 
 @Component({
     selector: 'app-gestion-muelle-panel',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent],
+    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent, ColorSelectorComponent],
     templateUrl: './gestion-muelle-panel.component.html',
     styleUrl: './gestion-muelle-panel.component.scss'
 })
@@ -65,6 +66,7 @@ export class GestionMuellePanelComponent implements OnInit {
     suscriptor: string = ''
     modoMapa: 'punto' | 'bbox' = 'punto';
     public nombreDuplicado: boolean = false;
+    textoColor: string = 'id_color'
 
     constructor(
         private router: Router,
@@ -218,6 +220,11 @@ export class GestionMuellePanelComponent implements OnInit {
         } else {
             console.error("❌ [Padre] El dato recibido no es una FeatureCollection válida:", data);
         }
+    }
+
+    OnColorSelectedClick(evento: any) {
+        console.log('evento', evento);
+        this.FormRegistro.color_ui = evento.color;
     }
 
     btnGestionarRegistroClick(form: any) {

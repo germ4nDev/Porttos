@@ -89,7 +89,7 @@ export class GestionTipoInfraestructuraComponent implements OnInit {
         if (regId !== 'nuevo') {
             this.modoEdicion = true
             console.log('id TipoInfraestructura', regId);
-            this._tiposInfraService.getTipoInfraestructuraByCode(regId).subscribe({
+            this._tiposInfraService.getTipoInfraestructuraByCode(Number(regId)).subscribe({
                 next: (resp: any) => {
                     console.log('data TipoInfraestructura', resp.data);
                     this.tipoInfraestructura = resp.data

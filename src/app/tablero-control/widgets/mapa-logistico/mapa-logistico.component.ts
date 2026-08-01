@@ -161,6 +161,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
 
         this.iniciarAlertasTerrestres();
         this.iniciarCapaMaritima();
+        this.cargarEventosViales();
     }
 
     ngAfterViewInit(): void {
@@ -193,6 +194,20 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         if (this.maritimoSub) {
             this.maritimoSub.unsubscribe();
         }
+    }
+
+    cargarEventosViales() {
+        this._mapaService.obtenerAccidentesYBloqueosViales().subscribe({
+            next: (geoJsonRespuesta) => {
+                console.log("✅ GeoJSON listo para el mapa:", geoJsonRespuesta);
+
+                // Aquí es donde en el siguiente paso agregaremos la fuente de datos a Mapbox/MapLibre
+                // Ej: this.mapa.getSource('eventos').setData(geoJsonRespuesta);
+            },
+            error: (error) => {
+                console.error("❌ Error al traer los datos del mapa:", error);
+            }
+        });
     }
 
     // ==========================================
@@ -312,7 +327,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
     }
 
     private cargarFaros(): void {
-        this._farosService.cargarFaros().subscribe({
+        this._farosService.getAllFaros().subscribe({
             next: (faros: FaroModel[]) => {
                 console.log('Faros recibidos desde Node.js:', faros);
 

@@ -29,6 +29,8 @@ import { MuellesService } from './theme/shared/service/tablero-control/muelles.s
 import { WidgetsService } from './theme/shared/service/tablero-control/widgets.service'
 import { LayoutService } from './theme/shared/service/tablero-control/layout.service'
 import { FarosService } from './theme/shared/service/tablero-control/faros.service'
+import { TiposTipoInfraestructuraService } from './theme/shared/service/tablero-control/tipos-infraestructura.service'
+import { CronMonitorService } from './theme/shared/service/tablero-control/cron-monitor.service'
 
 @Component({
     selector: 'app-root',
@@ -65,6 +67,8 @@ export class AppComponent implements OnInit {
         private _rolesAPService: PTLRolesAPService,
         private _widgetsService: WidgetsService,
         private _farosService: FarosService,
+        private _tiposInfraestructuraService: TiposTipoInfraestructuraService,
+        private _cronMonitorService: CronMonitorService,
         private _layoutService: LayoutService
     ) { }
 
@@ -185,9 +189,17 @@ export class AppComponent implements OnInit {
             () => console.log('** layouts cargados y guardados en el servicio'),
             err => console.error('Error al cargar layouts:', err)
         )
-        this._farosService.cargarFaros().subscribe(
+        this._farosService.getAllFaros().subscribe(
             () => console.log('** faros cargados y guardados en el servicio'),
             err => console.error('Error al cargar faros:', err)
+        )
+        this._tiposInfraestructuraService.cargarTipoInfraestructuras().subscribe(
+            () => console.log('** tipos infraestructura cargados y guardados en el servicio'),
+            err => console.error('Error al cargar tipos infraestructura:', err)
+        )
+        this._cronMonitorService.obtenerHistorial().subscribe(
+            () => console.log('** ETL Cron Manager cargados y guardados en el servicio'),
+            err => console.error('Error al cargar Cron Manager:', err)
         )
     }
 }

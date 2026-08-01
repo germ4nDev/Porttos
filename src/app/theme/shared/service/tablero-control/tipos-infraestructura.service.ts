@@ -59,7 +59,7 @@ export class TiposTipoInfraestructuraService {
         return this.http.get(`${base_url}/tipos-infraestructura`);
     }
 
-    getTipoInfraestructuraByCode(id: string): Observable<any> {
+    getTipoInfraestructuraByCode(id: number): Observable<any> {
         return this.http.get(`${base_url}/tipos-infraestructura/${id}`); // Ojo al plural /tiposInfra/
     }
 
@@ -76,6 +76,8 @@ export class TiposTipoInfraestructuraService {
     }
 
     updateTipoInfraestructura(tipo: TipoInfraestructura): Observable<any> {
+        console.log('update tipo', tipo);
+
         const url = `${base_url}/tipos-infraestructura/${tipo.id_tipo}`
         return this.http.put(url, tipo).pipe(
             map((resp: any) => {

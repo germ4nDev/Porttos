@@ -16,6 +16,7 @@ import { NavContentComponent } from 'src/app/theme/layout/admin/navigation/nav-c
 import { PTLSliderInicioModel } from 'src/app/theme/shared/_helpers/models/PTLSliderInicio.model'
 import { LayoutInitializerService } from 'src/app/theme/shared/service/layout-initializer.service'
 import { Observable, Subscription } from 'rxjs'
+import { v4 as uuidv4 } from 'uuid'
 
 @Component({
     selector: 'app-gestion-slider',
@@ -50,6 +51,8 @@ export class GestionSliderComponent implements OnInit {
     lockScreenSubscription: Subscription | undefined
     isLocked: boolean = false
     lockMessage: string = ''
+    suscriptor: string = ''
+
     // constructor
     constructor(
         private router: Router,
@@ -65,6 +68,7 @@ export class GestionSliderComponent implements OnInit {
     ) {
         this.isSubmit = false
         GradientConfig.header_fixed_layout = true
+        this.suscriptor = this._localStorageService.getSuscriptorPlataformaLocalStorage()
         this.gradientConfig = GradientConfig
         this.navCollapsed = this.windowWidth >= 992 ? GradientConfig.isCollapse_menu : false
         this.suscPlataforma = this._localStorageService.getSuscriptorPlataformaLocalStorage()
@@ -74,7 +78,9 @@ export class GestionSliderComponent implements OnInit {
             this.modoEdicion = true
             this._registrosService.getRegistroById(this.sliderId).subscribe({
                 next: (resp: any) => {
-                    this.selectedFileUrl = this.FormRegistro = resp.sliderInicio
+                    console.log('respuesta', resp);
+                    this.FormRegistro = resp.sliderInicio
+                    this.selectedFileUrl = this._uploadService.getFilePath(this.suscriptor, 'sliders', resp.sliderInicio.urlSlider)
                 },
                 error: err => {
                     this._swalAlertService.getAlertError('No se pudo obtener el slider por ' + err)
@@ -127,7 +133,7 @@ export class GestionSliderComponent implements OnInit {
             this._uploadService.uploadUserPhoto(file, objUpload).subscribe({
                 next: (path: any) => {
                     console.log('resultado', path)
-                    this.FormRegistro.urlSlider = path.nombreArchivo
+                    this.FormRegistro.urlSlider = path.fileName
                 },
                 error: () => {
                     this._swalService.getAlertError(this.translate.instant('PLATAFORMA.UPLOADPHOTOERROR'))
@@ -144,8 +150,15 @@ export class GestionSliderComponent implements OnInit {
         if (!form.valid) {
             return
         }
+        const registroData = form.value as PTLSliderInicioModel
+
         if (this.modoEdicion) {
-            this._registrosService.putModificarRegistro(this.FormRegistro, this.sliderId).subscribe({
+            registroData.codigoSlider = this.FormRegistro.codigoSlider
+            registroData.urlSlider = this.FormRegistro.urlSlider
+            registroData.codigoUsuarioModificacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario
+            registroData.fechaModificacion = new Date().toISOString()
+            console.log('modificacion', registroData);
+            this._registrosService.putModificarRegistro(registroData, registroData.codigoSlider || '').subscribe({
                 next: (resp: any) => {
                     if (resp.ok) {
                         this._swalAlertService.getAlertSuccess(this.translate.instant('PLATAFORMA.MODIFICAR'))
@@ -160,7 +173,12 @@ export class GestionSliderComponent implements OnInit {
                 }
             })
         } else {
-            this._registrosService.postCrearRegistro(this.FormRegistro).subscribe({
+            console.log('creacion');
+            registroData.codigoSlider = uuidv4()
+            registroData.urlSlider = this.FormRegistro.urlSlider
+            registroData.codigoUsuarioModificacion = this._localStorageService.getUsuarioLocalStorage().codigoUsuario || ''
+            registroData.fechaModificacion = new Date().toISOString()
+            this._registrosService.postCrearRegistro(registroData).subscribe({
                 next: (resp: any) => {
                     if (resp.ok) {
                         this._swalAlertService.getAlertSuccess(this.translate.instant('PLATAFORMA.INSERTAR'))

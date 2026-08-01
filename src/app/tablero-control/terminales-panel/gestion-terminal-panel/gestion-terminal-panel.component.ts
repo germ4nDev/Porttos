@@ -26,6 +26,7 @@ import { MapaSelectorComponent } from 'src/app/theme/shared/components/tablero-c
 import { Terminal } from 'src/app/theme/shared/_helpers/models/tablero-control/terminal.model'
 import { Puerto } from 'src/app/theme/shared/_helpers/models/tablero-control/puerto.model'
 import { PuertosService } from 'src/app/theme/shared/service/tablero-control/puertos.service'
+import { ColorSelectorComponent } from "src/app/theme/shared/components/color-selector/color-selector.component";
 
 // import { BaseSessionModel } from 'src/app/theme/shared/_helpers/models/BaseSession.model';
 // import { PTLLogActividadAPModel } from 'src/app/theme/shared/_helpers/models/PTLlogActividadAP.model';
@@ -33,7 +34,7 @@ import { PuertosService } from 'src/app/theme/shared/service/tablero-control/pue
 @Component({
     selector: 'app-gestion-terminal-panel',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent],
+    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent, ColorSelectorComponent],
     templateUrl: './gestion-terminal-panel.component.html',
     styleUrl: './gestion-terminal-panel.component.scss'
 })
@@ -63,7 +64,7 @@ export class GestionTerminalPanelComponent implements OnInit {
     lockMessage: string = ''
     suscriptor: string = ''
     modoMapa: 'punto' | 'bbox' = 'punto';
-
+    textoColor: string = 'id_color'
 
     constructor(
         private router: Router,
@@ -178,6 +179,11 @@ export class GestionTerminalPanelComponent implements OnInit {
         } else {
             console.error("❌ [Padre] El dato recibido no es una FeatureCollection válida:", data);
         }
+    }
+
+    OnColorSelectedClick(evento: any) {
+        console.log('evento', evento);
+        this.FormRegistro.color_ui = evento.color;
     }
 
     btnGestionarRegistroClick(form: any) {

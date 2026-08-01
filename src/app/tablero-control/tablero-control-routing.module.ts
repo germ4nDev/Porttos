@@ -113,6 +113,11 @@ const routes: Routes = [
                     .then(c => c.TiposInfraestructuraPanelComponent)
             },
             {
+                path: 'cron-monitor',
+                loadComponent: () => import('./cron-monitor/cron-monitor.component')
+                    .then(c => c.CronMonitorComponent)
+            },
+            {
                 path: 'gestion-tipo-infraestructura',
                 loadComponent: () => import('./tipos-infraestructura-panel/gestion-tipo-infraestructura/gestion-tipo-infraestructura.component')
                     .then(c => c.GestionTipoInfraestructuraComponent)

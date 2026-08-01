@@ -37,30 +37,69 @@ export class FullScreenSliderComponent implements OnInit, OnDestroy {
         this.suscriptor = this._localStorageService.getSuscriptorPlataformaLocalStorage()
     }
 
+    // ngOnInit(): void {
+    //     if (this.tipoSlider == 1) {
+    //         this.images = this._sliderService.getSlidersActuales();
+    //         console.log('slides', this.images);
+    //         this._sliderService.slider$.subscribe(data => {
+    //             data.forEach((slider: any) => {
+    //                 slider.imageSlider = this._uploadService.getFilePath(this.suscriptor, 'sliders', slider.urlSlider);
+    //                 console.log('slides', slider.imageSlider);
+    //             });
+    //             this.images = data;
+    //             console.log('Slides actualizados reactivamente:', this.slides);
+    //         });
+    //         this._sliderService.cargarSliders().subscribe();
+    //         // this.consultarRegistros();
+    //     } else if (this.tipoSlider == 2) {
+    //         const newImage = {
+    //             nombreslider: 'Ner Image',
+    //             urlSlider: 'imagen-inicio.png',
+    //             imageSlider: this._uploadService.getFilePath(this.suscriptor, 'sliders', 'imagen-inicio.png')
+    //         };
+    //         console.log('que me trae el color', newImage);
+    //         this.images.push(newImage);
+    //     } else if (this.tipoSlider == 3) {
+    //         console.log('slides', this.slides);
+    //         this.slides.forEach((image: any) => {
+    //             const newImage = {
+    //                 nombreslider: '',
+    //                 urlSlider: '',
+    //                 imageSlider: image
+    //             };
+    //             this.images.push(newImage);
+    //         });
+    //     }
+    // }
     ngOnInit(): void {
         if (this.tipoSlider == 1) {
             this.images = this._sliderService.getSlidersActuales();
             console.log('slides', this.images);
+
             this._sliderService.slider$.subscribe(data => {
                 data.forEach((slider: any) => {
                     slider.imageSlider = this._uploadService.getFilePath(this.suscriptor, 'sliders', slider.urlSlider);
                     console.log('slides', slider.imageSlider);
                 });
+
                 this.images = data;
                 console.log('Slides actualizados reactivamente:', this.slides);
+
+                // AQUÍ ESTÁ LA SOLUCIÓN: Iniciar el slider después de recibir los datos
+                this.startAutoSlide();
             });
+
             this._sliderService.cargarSliders().subscribe();
-            // this.consultarRegistros();
+
         } else if (this.tipoSlider == 2) {
             const newImage = {
-                nombreslider: 'Ner Image',
+                nombreslider: 'New Image', // Corregí un pequeño typo de 'Ner Image'
                 urlSlider: 'imagen-inicio.png',
                 imageSlider: this._uploadService.getFilePath(this.suscriptor, 'sliders', 'imagen-inicio.png')
             };
-            console.log('que me trae el color', newImage);
             this.images.push(newImage);
+
         } else if (this.tipoSlider == 3) {
-            console.log('slides', this.slides);
             this.slides.forEach((image: any) => {
                 const newImage = {
                     nombreslider: '',
@@ -69,6 +108,8 @@ export class FullScreenSliderComponent implements OnInit, OnDestroy {
                 };
                 this.images.push(newImage);
             });
+            // Si el slider tipo 3 también debe ser automático, agrega esto aquí:
+            // this.startAutoSlide();
         }
     }
 

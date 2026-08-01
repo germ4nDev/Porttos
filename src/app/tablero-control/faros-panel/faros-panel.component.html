@@ -58,13 +58,13 @@
         <div class="card card-table content-scroll-wrapper">
             <div class="card-body">
                 <ng-container *ngIf="farosFiltradas$ | async as dataFiltrada; else loading">
-                    <app-data-table [data]="dataFiltrada" [idField]="'codigo_tipo'"
-                        [tableTitle]="'FAROS.TITLE' | translate" [metadataColumns]="columnasAplicaciopnes"
-                        [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="true"
-                        [showNewButton]="true" [showViewButton]="false" [showEditButton]="true"
-                        [showDeleteButton]="true" [showSearchBox]="false" [newButtonLabel]="'FAROS.NEW' | translate"
-                        [exportLabel]="'PLATAFORMA.EXCEL' | translate" (newRecord)="OnNuevaRegistroClick()"
-                        (editRecord)="OnEditarRegistroClick($event)" (deleteRecord)="OnEliminarRegistroClick($event)">
+                    <app-data-table [data]="dataFiltrada" [idField]="'id_faro'" [tableTitle]="'FAROS.TITLE' | translate"
+                        [metadataColumns]="columnasAplicaciopnes" [metadataDetailColumns]="columnasDetailRegistros"
+                        [showDetail]="true" [showActions]="true" [showNewButton]="true" [showViewButton]="false"
+                        [showEditButton]="true" [showDeleteButton]="true" [showSearchBox]="false"
+                        [newButtonLabel]="'FAROS.NEW' | translate" [exportLabel]="'PLATAFORMA.EXCEL' | translate"
+                        (newRecord)="OnNuevaRegistroClick()" (editRecord)="OnEditarRegistroClick($event)"
+                        (deleteRecord)="OnEliminarRegistroClick($event)">
                     </app-data-table>
                 </ng-container>
                 <ng-template #loading>

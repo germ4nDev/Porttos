@@ -18,15 +18,15 @@ export class FarosService {
 
     constructor(
         private http: HttpClient,
-        private socketService: SocketService,
+        private _socketService: SocketService,
         private _localstorageService: LocalStorageService
     ) {
         // CORRECCIÓN 1: 'faros-actualizados' (Igual que en el backend)
-        this.socketService.listen('faros-actualizados').subscribe({
+        this._socketService.listen('faros-actualizados').subscribe({
             next: payload => {
-                console.log('faros-actializados', payload.msg);
+                console.log('faros-actializados', payload);
                 this._farosChange.next(payload);
-                this.cargarFaros().subscribe(); // Recarga reactiva
+                this.getAllFaros().subscribe(); // Recarga reactiva
             },
             error: err => console.error('Error en la escucha de sockets:', err)
         });
@@ -40,8 +40,7 @@ export class FarosService {
         return this._faros.getValue();
     }
 
-    cargarFaros() {
-        console.log('Consultando y ordenando faros del servidor...');
+    getAllFaros(): Observable<any> {
         const url = `${base_url}/faros`;
         return this.http.get(url).pipe(
             map((resp: any) => resp.data as FaroModel[]),
@@ -53,10 +52,6 @@ export class FarosService {
                 this._faros.next(farosOrdenadas);
             })
         );
-    }
-
-    getAllFaros(): Observable<any> {
-        return this.http.get(`${base_url}/faros`);
     }
 
     getFaroById(id: any): Observable<any> {

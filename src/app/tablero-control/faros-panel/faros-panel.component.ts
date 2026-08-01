@@ -96,17 +96,13 @@ export class FarosPanelComponent implements OnInit, OnDestroy {
         this.menuItems$ = this._navigationService.menuItems$;
         this.hasFiltersSlot = true;
 
-        // this.cargarDataPuertos();
-        // Dejamos listo el canal de escucha (las tuberías)
-        this.setupfarosStream();
-
-        // 🟢 CORRECCIÓN: Llamamos a cargarfaros(), que hace el HTTP y actualiza el BehaviorSubject
         this.subscriptions.add(
             this._farosService.getAllFaros().subscribe({
                 next: () => console.log('✅ faros cargados y transmitidos exitosamente'),
                 error: (err) => console.error('❌ Error al cargar faros:', err)
             })
         );
+        this.setupfarosStream();
     }
 
     ngOnDestroy(): void {
@@ -138,6 +134,8 @@ export class FarosPanelComponent implements OnInit, OnDestroy {
                     fr.nomEstado = fr.estado ? 'Activo' : 'Inactivo'
                     fr.nomAlerta = fr.genera_alerta_toast ? 'Con Alerta' : 'Sin Alerta'
                     fr.nomTipo = this.ETIPOS_FARO.filter(x => x.id == fr.tipo_faro)[0].label
+                    fr.punto = fr.ubicacion_geo.features[0].geometry.coordinates;
+                    fr.coordenadas = fr.geocerca_geo.features[0].geometry.coordinates[0];
                     return fr as FaroModel
                 })
                 this.faros = transformedFaros
@@ -155,8 +153,8 @@ export class FarosPanelComponent implements OnInit, OnDestroy {
             this.filtroNombreSubject,
             this.filtroDescripcionSubject
         ]).pipe(
-            map(([mlls, nombre, descripcion]) => {
-                let filteredfaros = mlls
+            map(([frs, nombre, descripcion]) => {
+                let filteredfaros = frs
 
                 if (nombre !== 'todos') {
                     filteredfaros = filteredfaros.filter(mll => mll.nombre_faro === nombre)
@@ -200,14 +198,14 @@ export class FarosPanelComponent implements OnInit, OnDestroy {
             type: 'estado'
         },
         {
-            name: 'color_ui',
-            header: 'FAROS.COLOR',
-            type: 'color_chip'
-        },
-        {
             name: 'nomEstado',
             header: 'FAROS.ESTADO',
             type: 'estado'
+        },
+        {
+            name: 'color_ui',
+            header: 'FAROS.COLOR',
+            type: 'color_chip'
         }
     ]
 
@@ -221,6 +219,16 @@ export class FarosPanelComponent implements OnInit, OnDestroy {
             name: 'descripcion',
             header: 'FAROS.DESCRIPTION',
             type: 'text'
+        },
+        {
+            name: 'punto',
+            header: 'FAROS.DESCRIPTION',
+            type: 'array_list'
+        },
+        {
+            name: 'coordenadas',
+            header: 'FAROS.DESCRIPTION',
+            type: 'array_list'
         }
     ]
 

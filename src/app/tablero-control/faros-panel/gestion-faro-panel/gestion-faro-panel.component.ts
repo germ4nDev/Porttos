@@ -120,7 +120,7 @@ export class GestionFaroPanelComponent implements OnInit {
         }
         console.log('--------- modoEdicion', this.modoEdicion)
         if (this.modoEdicion == false) {
-            // this.FormRegistro.id_interno = '';
+            this.FormRegistro.tipo_faro = '';
             // this.FormRegistro.id_terminal = '';
             console.log('FormRegistro loading', this.FormRegistro)
         }
@@ -202,18 +202,24 @@ export class GestionFaroPanelComponent implements OnInit {
     btnGestionarRegistroClick(form: any) {
         const payload = { ...this.FormRegistro };
         payload.geocerca_geo = this.FormRegistro.geocerca_geo ? this.FormRegistro.geocerca_geo : this.faro.geocerca_geo
-        payload.geocerca_geo = this.FormRegistro.geocerca_geo?.geocerca ? {
-            type: 'FeatureCollection',
-            features: [{
-                type: 'Feature',
-                geometry: this.FormRegistro.geocerca_geo.geocerca,
-                properties: {}
-            }]
-        } : null;
+        // payload.geocerca_geo = this.FormRegistro.geocerca_geo?.geocerca ? {
+        //     type: 'FeatureCollection',
+        //     features: [{
+        //         type: 'Feature',
+        //         geometry: this.FormRegistro.geocerca_geo.geocerca,
+        //         properties: {}
+        //     }]
+        // } : null;
         payload.usuario_cargue = this._localStorageService.getUsuarioLocalStorage().codigoUsuario;
         payload.fecha_cargue = new Date().toISOString();
         console.log('payload', payload);
         if (this.modoEdicion) {
+            const metadata = {
+                datos: {
+                    value: ''
+                }
+            }
+            payload.metadata_extra = metadata
             this._farosService.updateFaro(payload).subscribe({
                 next: (resp: any) => {
                     if (resp.ok) {
@@ -235,6 +241,12 @@ export class GestionFaroPanelComponent implements OnInit {
                 }
             })
         } else {
+            const metadata = {
+                datos: {
+                    value: ''
+                }
+            }
+            payload.metadata_extra = metadata
             console.log('CREAR FaroModel', payload);
             this._farosService.saveFaro(payload).subscribe({
                 next: (resp: any) => {

@@ -78,7 +78,7 @@ export class PuertosPanelComponent implements OnInit, OnDestroy {
         private _uploadService: UploadFilesService
     ) {
         this.gradientConfig = GradientConfig
-        this.suscriptor = this._localStorageService.getSuscriptorPlataformaLocalStorage()
+        this.suscriptor = 'torre-control'
     }
 
     ngOnInit(): void {
@@ -102,19 +102,14 @@ export class PuertosPanelComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe()
     }
 
-    getFileType(url: string): 'capture' | 'video' | 'documento' | 'desconocido' {
+    getFileType(url: string): 'capture' | 'desconocido' {
         if (!url) return 'desconocido'
 
         const cleanUrl = url.split(/[#?]/)[0]
         const extension = cleanUrl.split('.').pop()?.toLowerCase() || ''
-
         const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp']
-        // const videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']
-        // const docExts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt']
 
         if (imageExts.includes(extension)) return 'capture'
-        // if (videoExts.includes(extension)) return 'video'
-        // if (docExts.includes(extension)) return 'documento'
 
         return 'desconocido'
     }
@@ -125,6 +120,12 @@ export class PuertosPanelComponent implements OnInit, OnDestroy {
                 if (!puets) return of([])
                 const transformedApps = puets.map((pts: any) => {
                     pts.nomEstado = pts.estado ? 'Activo' : 'Inactivo'
+                    pts.capture = this._uploadService.getFilePath(this.suscriptor, 'puertos', pts.imagen_url)
+                    pts.imagen_url = this._uploadService.getFilePath(this.suscriptor, 'puertos', pts.imagen_url)
+                    pts.punto = pts.ubicacion_geo.features[0].geometry.coordinates;
+                    pts.coordenadas = pts.geocerca_geo.features[0].geometry.coordinates[0];
+
+                    pts.tipo = 'capture'
                     console.log('pts captura', pts.capture)
                     return pts as Puerto
                 })
@@ -212,6 +213,11 @@ export class PuertosPanelComponent implements OnInit, OnDestroy {
             name: 'nomEstado',
             header: 'PUERTOS.STATUS',
             type: 'estado'
+        },
+        {
+            name: 'color_ui',
+            header: 'FAROS.COLOR',
+            type: 'color_chip'
         }
     ]
 
@@ -222,23 +228,23 @@ export class PuertosPanelComponent implements OnInit, OnDestroy {
             type: 'text'
         },
         {
-            name: 'bbox_lat_sur',
+            name: 'descripcion',
             header: 'PUERTOS.BBOX_SUR',
-            type: 'capture'
+            type: 'text'
         },
         {
-            name: 'bbox_lon_oeste',
+            name: 'punto',
+            header: 'PUERTOS.BBOX_SUR',
+            type: 'array_list'
+        },
+        {
+            name: 'coordenadas',
+            header: 'PUERTOS.BBOX_SUR',
+            type: 'array_list'
+        },
+        {
+            name: 'capture',
             header: 'PUERTOS.BBOX_OESTE',
-            type: 'capture'
-        },
-        {
-            name: 'bbox_lat_norte',
-            header: 'PUERTOS.BBOX_NORTE',
-            type: 'capture'
-        },
-        {
-            name: 'bbox_lon_este',
-            header: 'PUERTOS.BBOX_ESTE',
             type: 'capture'
         }
     ]

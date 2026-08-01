@@ -16,6 +16,7 @@ export class Terminal {
         public capacidad_reefer?: string,
         public geocerca_geo?: any,
         public terminal_geocerca_wkt?: string,
+        public color_ui?: string,
 
         public nomEstado?: string,
         public estado?: boolean,

@@ -135,9 +135,11 @@ export class TerminalesPanelComponent implements OnInit, OnDestroy {
                 if (!trmls) return of([])
                 const transformedApps = trmls.map((trml: any) => {
                     trml.puerto = this.puertos.filter(x => x.id_puerto == trml.id_puerto)[0].id_puerto
+                    // trml.coordenadas = trml.geocerca_geo.features[0].geometry.coordinates[0];
                     console.log('trml captura', trml.id_puerto)
                     return trml as Terminal
                 })
+
                 this.terminales = transformedApps
                 console.log('****** todos los terminales', this.terminales)
                 return of(transformedApps)
@@ -196,6 +198,11 @@ export class TerminalesPanelComponent implements OnInit, OnDestroy {
             name: 'subtitulo',
             header: 'TERMINALES.SUBTITULO',
             type: 'text'
+        },
+        {
+            name: 'color_ui',
+            header: 'FAROS.COLOR',
+            type: 'color_chip'
         }
     ]
 
@@ -214,6 +221,11 @@ export class TerminalesPanelComponent implements OnInit, OnDestroy {
             name: 'capacidad_reefer',
             header: 'TERMINALES.CAPACIDAD',
             type: 'text'
+        },
+        {
+            name: 'coordenadas',
+            header: 'MUELLES.REEFER',
+            type: 'array_list'
         }
     ]
 

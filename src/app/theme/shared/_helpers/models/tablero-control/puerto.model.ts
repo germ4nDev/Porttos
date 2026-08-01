@@ -14,6 +14,8 @@ export class Puerto {
         public puerto_geocerca_wkt?: string,
         public nomEstado?: string,
         public activo?: boolean,
+        public color_ui?: string,
+        public imagen_url?: string,
 
         public usuario_cargue?: string,
         public fecha_cargue?: string

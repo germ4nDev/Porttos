@@ -1,0 +1,104 @@
+<!-- <app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'filters'">
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <ng-container *ngIf="cronsFiltradas$ | async as dataFiltrada; else loading">
+                    <app-data-table [data]="dataFiltrada" [idField]="'id'"
+                        [tableTitle]="'Torre de Control ETL' | translate" [metadataColumns]="columnasCrons"
+                        [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="false"
+                        [showNewButton]="false" [showViewButton]="true" [showEditButton]="false"
+                        [showDeleteButton]="false" [showSearchBox]="false"
+                        [exportLabel]="'PLATAFORMA.EXCEL' | translate">
+                    </app-data-table>
+                </ng-container>
+                <ng-template #loading>
+                    <app-data-loader [isLoading]="true" message="Cargando aplicaciones ..."> </app-data-loader>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div> -->
+<app-nav-bar (toggleSidebar)="toggleNav()"></app-nav-bar>
+<div class="layout-wrapper">
+    <aside class="aside-left">
+        <div class="card">
+            <div class="nav-tabs-custom">
+                <button [class.active]="activeTab === 'menu'" (click)="activeTab = 'menu'">
+                    {{ 'PLATAFORMA.MENU' | translate }}
+                </button>
+                <!-- Botón de filtros descomentado y activado -->
+                <button [class.active]="activeTab === 'filters'" (click)="activeTab = 'filters'" *ngIf="hasFiltersSlot">
+                    {{ 'PLATAFORMA.FILTERS' | translate }}
+                </button>
+            </div>
+
+            <ng-container *ngIf="activeTab === 'menu'">
+                <app-nav-content [navigationItems]="menuItems$ | async"></app-nav-content>
+            </ng-container>
+
+            <ng-container *ngIf="activeTab === 'filters'">
+                <div class="p-3 filtros-scroll-wrapper">
+                    <h6 class="filtros-title">Filtros de Torre de Control</h6>
+
+                    <div class="filtro">
+                        <small>Proceso / Túnel</small>
+                        <select (change)="onFiltroProcesoChangeClick($event)" class="form-control form-select">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <!-- Lista renderizada dinámicamente -->
+                            <option [value]="proceso" *ngFor="let proceso of listaNombresCrons">
+                                {{ proceso }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="filtro">
+                        <small>Estado del Proceso</small>
+                        <select (change)="onFiltroEstadoChangeClick($event)" class="form-control form-select">
+                            <option value="todos">{{ 'PLATAFORMA.FILTROTODOS' | translate }}</option>
+                            <option value="EXITO">Éxito</option>
+                            <option value="FALLIDO">Fallido</option>
+                            <option value="ERROR">Error</option>
+                        </select>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </aside>
+
+    <div class="content-area">
+        <div class="card card-table content-scroll-wrapper">
+            <div class="card-body">
+                <ng-container *ngIf="cronsFiltradas$ | async as dataFiltrada; else loading">
+                    <app-data-table [data]="dataFiltrada" [idField]="'id'"
+                        [tableTitle]="'Torre de Control ETL' | translate" [metadataColumns]="columnasCrons"
+                        [metadataDetailColumns]="columnasDetailRegistros" [showDetail]="true" [showActions]="false"
+                        [showNewButton]="false" [showViewButton]="true" [showEditButton]="false"
+                        [showDeleteButton]="false" [showSearchBox]="false"
+                        [exportLabel]="'PLATAFORMA.EXCEL' | translate">
+                    </app-data-table>
+                </ng-container>
+                <ng-template #loading>
+                    <app-data-loader [isLoading]="true" message="Cargando procesos ETL..."></app-data-loader>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

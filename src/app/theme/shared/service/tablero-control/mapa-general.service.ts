@@ -196,7 +196,7 @@ export class MapaGeneralService {
     }
 
     public cargarEventosVialesActivos(): void {
-        const endpoint = `${base_url}/eventos-viales/activos`;
+        const endpoint = `${base_url}/eventos-viales/eventos`;
         this.http.get<any>(endpoint).subscribe({
             next: (geoJsonData) => {
                 this.accidentesSubject.next(geoJsonData);
@@ -218,25 +218,166 @@ export class MapaGeneralService {
         });
     }
 
+    // public obtenerAccidentesYBloqueosViales(): Observable<any> {
+    //     const urlSocrata = 'https://www.datos.gov.co/resource/7i66-rps2.json?$limit=500';
+    //     const peticionLimpia = fetch(urlSocrata).then(response => {
+    //         if (!response.ok) throw new Error('Error conectando con el INVIAS');
+    //         return response.json();
+    //     });
+    //     return from(peticionLimpia).pipe(
+    //         map((datos: any[]) => {
+    //             const features = datos
+    //                 .filter(incidente => incidente.latitud && incidente.longitud)
+    //                 .map(incidente => ({
+    //                     type: 'Feature',
+    //                     geometry: { type: 'Point', coordinates: [parseFloat(incidente.longitud), parseFloat(incidente.latitud)] },
+    //                     properties: {
+    //                         estado: incidente.estado_via || 'RESTRINGIDO',
+    //                         descripcion: incidente.corredor_vial_via_que_conduce || 'Reporte vial',
+    //                         jurisdiccion: incidente.jurisdiccion_ditra || 'N/A'
+    //                     }
+    //                 }));
+    //             return { type: 'FeatureCollection', features };
+    //         })
+    //     );
+    // }
+    // public obtenerAccidentesYBloqueosViales(): Observable<any> {
+    //     const urlSocrata = 'https://www.datos.gov.co/resource/7i66-rps2.json?$limit=500';
+
+    //     // 1. Obtenemos la fecha de hoy en formato YYYY-MM-DD
+    //     const hoy = new Date().toLocaleDateString('en-CA');
+
+    //     const peticionLimpia = fetch(urlSocrata).then(response => {
+    //         if (!response.ok) throw new Error('Error conectando con el INVIAS');
+    //         return response.json();
+    //     });
+
+    //     return from(peticionLimpia).pipe(
+    //         map((datos: any[]) => {
+
+    //             // 🕵️‍♂️ EL LOG PARA INSPECCIONAR
+    //             console.log("--- RESPUESTA INVIAS (PRIMER REGISTRO) ---");
+    //             console.log(datos[0]);
+    //             console.log("------------------------------------------");
+
+    //             const features = datos
+    //                 // Filtramos que tengan coordenadas válidas
+    //                 .filter(incidente => incidente.latitud && incidente.longitud)
+
+    //                 // 2. NUEVO: Filtramos que la fecha del incidente coincida con "hoy"
+    //                 .filter(incidente => {
+    //                     // ⚠️ OJO: 'fecha_reporte' es un ejemplo. Debes poner el nombre real del campo de fecha que arroje el JSON
+    //                     if (!incidente.fecha_reporte) return false;
+
+    //                     // Extraemos solo la fecha (ignorando la hora que venga en la T)
+    //                     const fechaIncidente = incidente.fecha_reporte.split('T')[0];
+    //                     return fechaIncidente === hoy;
+    //                 })
+
+    //                 // Mapeamos a GeoJSON
+    //                 .map(incidente => ({
+    //                     type: 'Feature',
+    //                     geometry: { type: 'Point', coordinates: [parseFloat(incidente.longitud), parseFloat(incidente.latitud)] },
+    //                     properties: {
+    //                         estado: incidente.estado_via || 'RESTRINGIDO',
+    //                         descripcion: incidente.corredor_vial_via_que_conduce || 'Reporte vial',
+    //                         jurisdiccion: incidente.jurisdiccion_ditra || 'N/A'
+    //                     }
+    //                 }));
+
+    //             return { type: 'FeatureCollection', features };
+    //         })
+    //     );
+    // }
+
+    // public obtenerAccidentesYBloqueosViales(): Observable<any> {
+    //     // 💡 TRUCO PRO: Añadimos "$order=fecha DESC" para que el INVIAS nos envíe siempre lo más reciente primero
+    //     const urlSocrata = 'https://www.datos.gov.co/resource/7i66-rps2.json?$order=fecha DESC&$limit=500';
+
+    //     // Obtenemos la fecha de hoy en formato YYYY-MM-DD
+    //     const hoy = new Date().toLocaleDateString('en-CA');
+
+    //     const peticionLimpia = fetch(urlSocrata).then(response => {
+    //         if (!response.ok) throw new Error('Error conectando con el INVIAS');
+    //         return response.json();
+    //     });
+
+    //     return from(peticionLimpia).pipe(
+    //         map((datos: any[]) => {
+    //             // 🕵️‍♂️ EL LOG PARA INSPECCIONAR
+    //             console.log("--- RESPUESTA INVIAS (PRIMER REGISTRO) ---");
+    //             console.log(datos[0]);
+    //             console.log("------------------------------------------");
+
+    //             const features = datos
+    //                 // 1. Descartamos los que no tengan coordenadas
+    //                 .filter(incidente => incidente.latitud && incidente.longitud)
+
+    //                 // 2. Filtramos para que SOLO pasen los de hoy
+    //                 .filter(incidente => {
+    //                     if (!incidente.fecha) return false;
+
+    //                     // Extraemos la fecha cortando en la 'T' (ej: '2026-01-16T19:07...' -> '2026-01-16')
+    //                     const fechaIncidente = incidente.fecha.split('T')[0];
+    //                     return fechaIncidente === hoy;
+    //                 })
+
+    //                 // 3. Mapeamos a GeoJSON usando las propiedades reales de tu imagen
+    //                 .map(incidente => ({
+    //                     type: 'Feature',
+    //                     geometry: { type: 'Point', coordinates: [parseFloat(incidente.longitud), parseFloat(incidente.latitud)] },
+    //                     properties: {
+    //                         estado: incidente.estado_de_reporte || 'RESTRINGIDO',
+    //                         evento: incidente.evento_presentado || 'N/A',
+    //                         motivo: incidente.motivo_de_la_afectaci_n_vial || 'N/A',
+    //                         descripcion: incidente.corredor_vial_via_que_conduce || 'Reporte vial',
+    //                         departamento: incidente.departamento || '',
+    //                         municipio: incidente.municipio || '',
+    //                         fecha: incidente.fecha
+    //                     }
+    //                 }));
+
+    //             return { type: 'FeatureCollection', features };
+    //         })
+    //     );
+    // }
     public obtenerAccidentesYBloqueosViales(): Observable<any> {
-        const urlSocrata = 'https://www.datos.gov.co/resource/7i66-rps2.json?$limit=500';
+        const urlSocrata = 'https://www.datos.gov.co/resource/7i66-rps2.json?$order=fecha DESC&$limit=500';
+
         const peticionLimpia = fetch(urlSocrata).then(response => {
             if (!response.ok) throw new Error('Error conectando con el INVIAS');
             return response.json();
         });
+
         return from(peticionLimpia).pipe(
             map((datos: any[]) => {
+                // 🕵️‍♂️ EL LOG PARA INSPECCIONAR
+                // console.log("--- RESPUESTA INVIAS (PRIMER REGISTRO) ---");
+                // console.log(datos[0]);
+                // console.log("------------------------------------------");
+
                 const features = datos
+                    // 1. Descartamos los que no tengan coordenadas
                     .filter(incidente => incidente.latitud && incidente.longitud)
+
+                    // 2. 🟢 NUEVA ESTRATEGIA: Filtramos SOLO los que sigan vigentes, sin importar la fecha
+                    .filter(incidente => incidente.estado_de_reporte === 'VIGENTE')
+
+                    // 3. Mapeamos a GeoJSON
                     .map(incidente => ({
                         type: 'Feature',
                         geometry: { type: 'Point', coordinates: [parseFloat(incidente.longitud), parseFloat(incidente.latitud)] },
                         properties: {
-                            estado: incidente.estado_via || 'RESTRINGIDO',
+                            estado: incidente.estado_de_reporte,
+                            evento: incidente.evento_presentado || 'N/A',
+                            motivo: incidente.motivo_de_la_afectaci_n_vial || 'N/A',
                             descripcion: incidente.corredor_vial_via_que_conduce || 'Reporte vial',
-                            jurisdiccion: incidente.jurisdiccion_ditra || 'N/A'
+                            departamento: incidente.departamento || '',
+                            municipio: incidente.municipio || '',
+                            fecha: incidente.fecha // Dejamos la fecha original para que el usuario sepa desde cuándo está el bloqueo
                         }
                     }));
+
                 return { type: 'FeatureCollection', features };
             })
         );

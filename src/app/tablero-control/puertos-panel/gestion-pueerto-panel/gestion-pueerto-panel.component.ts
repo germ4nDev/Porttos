@@ -24,6 +24,7 @@ import Swal from 'sweetalert2'
 import { PuertosService } from 'src/app/theme/shared/service/tablero-control/puertos.service'
 import { Puerto } from 'src/app/theme/shared/_helpers/models/tablero-control/puerto.model'
 import { MapaSelectorComponent } from 'src/app/theme/shared/components/tablero-control/mapa-selector/mapa-selector.component'
+import { ColorSelectorComponent } from "src/app/theme/shared/components/color-selector/color-selector.component";
 
 // import { BaseSessionModel } from 'src/app/theme/shared/_helpers/models/BaseSession.model';
 // import { PTLLogActividadAPModel } from 'src/app/theme/shared/_helpers/models/PTLlogActividadAP.model';
@@ -31,7 +32,7 @@ import { MapaSelectorComponent } from 'src/app/theme/shared/components/tablero-c
 @Component({
     selector: 'app-gestion-aplicacion',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent],
+    imports: [CommonModule, SharedModule, TranslateModule, NavBarComponent, NavContentComponent, TextEditorComponent, MapaSelectorComponent, ColorSelectorComponent],
     templateUrl: './gestion-pueerto-panel.component.html',
     styleUrl: './gestion-pueerto-panel.component.scss'
 })
@@ -50,6 +51,7 @@ export class GestionPueertoPanelComponent implements OnInit {
     userPhotoUrl: string = ''
     fileName: string | null = null
     selectedFileUrl: string | null = null
+    selectedImagen: string | null = null
     // public datosGuardados: any = null;
     form: undefined
     isSubmit: boolean = false
@@ -60,6 +62,7 @@ export class GestionPueertoPanelComponent implements OnInit {
     lockMessage: string = ''
     suscriptor: string = ''
     modoMapa: 'punto' | 'bbox' = 'punto';
+    textoColor: string = 'id_color'
 
     constructor(
         private router: Router,
@@ -87,8 +90,13 @@ export class GestionPueertoPanelComponent implements OnInit {
                 next: (resp: any) => {
                     this.puerto = resp.data
                     this.FormRegistro = resp.data
+                    this.selectedImagen = resp.data.imagen_url
                     this.FormRegistro.ubicacion_geo = resp.data.ubicacion_geo
                     this.FormRegistro.geocerca_geo = resp.data.geocerca_geo
+                    this.selectedFileUrl = this._uploadService.getFilePath(this.suscriptor, 'puertos', resp.data.imagen_url)
+                    this.FormRegistro.imagen_url = this._uploadService.getFilePath(this.suscriptor, 'puertos', resp.data.imagen_url)
+
+                    console.log('datos del puerto', this.puerto);
                     console.log('data registro', this.FormRegistro);
                     // this.selectedFileUrl = this._uploadService.getFilePath(this.suscriptor, 'widgets', resp.aplicacion.imagenInicio)
                 },
@@ -134,7 +142,7 @@ export class GestionPueertoPanelComponent implements OnInit {
         const file: File = event.target.files[0]
         const objUpload = {
             susc: this.suscriptor,
-            tipo: 'widgets'
+            tipo: 'puertos'
         }
         if (file) {
             const reader = new FileReader()
@@ -145,7 +153,8 @@ export class GestionPueertoPanelComponent implements OnInit {
             this._uploadService.uploadUserPhoto(file, objUpload).subscribe({
                 next: (path: any) => {
                     const resp = path.data.respuesta
-                    // this.FormRegistro.thumbnail_url = resp.fileName
+                    this.selectedImagen = resp.fileName
+                    this.FormRegistro.imagen_url = resp.fileName
                     this.userPhotoUrl = resp.fileName
                 },
                 error: () => {
@@ -185,22 +194,20 @@ export class GestionPueertoPanelComponent implements OnInit {
         }
     }
 
+    OnColorSelectedClick(evento: any) {
+        console.log('evento', evento);
+        this.FormRegistro.color_ui = evento.color;
+    }
+
     btnGestionarRegistroClick(form: any) {
         const payload = { ...this.FormRegistro };
+        console.log('payload PUERTO', payload);
 
         payload.ubicacion_geo = this.FormRegistro.ubicacion_geo ? this.FormRegistro.ubicacion_geo : this.puerto.ubicacion_geo
         payload.geocerca_geo = this.FormRegistro.geocerca_geo ? this.FormRegistro.geocerca_geo : this.puerto.geocerca_geo
-        payload.geocerca_geo = this.FormRegistro.geocerca_geo?.geocerca ? {
-            type: 'FeatureCollection',
-            features: [{
-                type: 'Feature',
-                geometry: this.FormRegistro.geocerca_geo.geocerca,
-                properties: {}
-            }]
-        } : null;
-
         payload.usuario_cargue = this._localStorageService.getUsuarioLocalStorage().codigoUsuario;
         payload.fecha_cargue = new Date().toISOString();
+        payload.imagen_url = this.selectedImagen || "no-imagen.png"
 
         if (this.modoEdicion) {
             console.log('MODIFICAR PUERTO', payload);

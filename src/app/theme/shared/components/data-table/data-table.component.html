@@ -231,6 +231,26 @@
                                                             {{ row[detailColumn.name] }}
                                                         </ng-container>
                                                     </ng-container>
+                                                    <ng-container *ngSwitchCase="'array_list'">
+                                                        <ul *ngIf="isArray(row[detailColumn.name])"
+                                                            style="list-style-type: disc; margin-left: 1.5rem; margin-bottom: 0; padding-left: 0;">
+                                                            <li *ngFor="let item of row[detailColumn.name]">
+                                                                <!-- Validamos si el item interno es un array (ej: [longitud, latitud]) -->
+                                                                <ng-container *ngIf="isArray(item); else simpleText">
+                                                                    [ {{ item.join(', ') }} ]
+                                                                </ng-container>
+                                                                <!-- Si no es un array, simplemente imprimimos el valor -->
+                                                                <ng-template #simpleText>
+                                                                    {{ item }}
+                                                                </ng-template>
+                                                            </li>
+                                                        </ul>
+
+                                                        <!-- Fallback por si el dato llega vacío o como texto plano -->
+                                                        <ng-container *ngIf="!isArray(row[detailColumn.name])">
+                                                            {{ row[detailColumn.name] }}
+                                                        </ng-container>
+                                                    </ng-container>
                                                     <ng-container *ngSwitchCase="'color_chip'">
                                                         <div class="color-chip"
                                                             [style.backgroundColor]="row[detailColumn.name]"

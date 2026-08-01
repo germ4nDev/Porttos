@@ -59,15 +59,33 @@ export class InfraestructuraPortuariaService {
         return this.http.get(`${base_url}/infraestructura`);
     }
 
-    getInfraestructuraByCode(id: string): Observable<any> {
-        return this.http.get(`${base_url}/infraestructura/${id}`); // Ojo al plural /infraestructuras/
+    getInfraestructuraByCode(id: number): Observable<any> {
+        return this.http.get(`${base_url}/infraestructura/${id}`);
     }
 
     saveInfraestructura(infra: Infraestructura): Observable<any> {
-        // CORRECCIÓN 4: Arreglado el typo $${base_url} y usamos el id_infra para el endpoint
-        return infra.id_infraestructura
-            ? this.http.put(`${base_url}/infraestructura/${infra.id_infraestructura}`, infra)
-            : this.http.post(`${base_url}/infraestructuras`, infra);
+        const url = `${base_url}/infraestructura`
+        return this.http.post(url, infra).pipe(
+            map((resp: any) => {
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
+    }
+
+    updateInfraestructura(infra: Infraestructura): Observable<any> {
+        const url = `${base_url}/infraestructura/${infra.id_infraestructura}`
+        return this.http.put(url, infra).pipe(
+            map((resp: any) => {
+                console.log('data de infraestructura modificacda', resp)
+                return {
+                    ok: true,
+                    data: resp.data
+                }
+            })
+        )
     }
 
     deleteInfraestructura(id_infraestructura: string): Observable<any> {

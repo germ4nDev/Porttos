@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core'
 import { TranslateService } from '@ngx-translate/core'
 import { PTLUsuarioModel } from 'src/app/theme/shared/_helpers/models/PTLUsuario.model'
 import { LanguageService } from 'src/app/theme/shared/service/lenguage.service'
-import { catchError, Observable, tap } from 'rxjs'
+import { BehaviorSubject, catchError, combineLatest, map, Observable, startWith, switchMap, tap } from 'rxjs'
 import { NavBarComponent } from 'src/app/theme/layout/admin/nav-bar/nav-bar.component'
 import { NavContentComponent } from 'src/app/theme/layout/admin/navigation/nav-content/nav-content.component'
 import { NavigationService } from 'src/app/theme/shared/service/navigation.service'
@@ -38,6 +38,14 @@ const base_url = environment.apiUrl
 export class SliderInicioComponent implements OnInit {
     //#region VARIABLES
     @Output() toggleSidebar = new EventEmitter<void>()
+    slidersTransformadas$: Observable<PTLSliderInicioModel[]> = of([])
+    slidersFiltradas$: Observable<PTLSliderInicioModel[]> = of([])
+    sliders: PTLSliderInicioModel[] = []
+    subscriptions = new Subscription()
+
+    filtroNombreSubject = new BehaviorSubject<string>('todos')
+    filtroDescripcionSubject = new BehaviorSubject<string>('')
+    filtroEstadoSubject = new BehaviorSubject<string>('todos')
     activeTab: 'menu' | 'filters' | 'main' = 'menu'
     menuItems!: Observable<NavigationItem[]>
     registrosSub?: Subscription
@@ -47,6 +55,7 @@ export class SliderInicioComponent implements OnInit {
     tituloPagina: string = ''
     //#endregion VARIABLES
     suscPlataforma: string = ''
+
     constructor(
         private router: Router,
         private translate: TranslateService,
@@ -64,12 +73,35 @@ export class SliderInicioComponent implements OnInit {
         this._navigationService.getNavigationItems()
         this.menuItems = this._navigationService.menuItems$
         console.log('elementos menu componente', this.menuItems)
-        this.consultarRegistros()
+        this.setupSlidersStream()
+        this.subscriptions.add(
+            this._registrosService.cargarSliders().subscribe(
+                () => console.log('Sliders cargadas y guardadas en el servicio'),
+                err => console.error('Error al cargar sliders:', err)
+            )
+        )
     }
 
     ngOnDestroy(): void {
         console.log('entrando a componente usuarios')
         this.registrosSub?.unsubscribe()
+    }
+
+    getFileType(url: string): 'capture' | 'video' | 'documento' | 'desconocido' {
+        if (!url) return 'desconocido'
+
+        const cleanUrl = url.split(/[#?]/)[0]
+        const extension = cleanUrl.split('.').pop()?.toLowerCase() || ''
+
+        const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp']
+        const videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']
+        const docExts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt']
+
+        if (imageExts.includes(extension)) return 'capture'
+        if (videoExts.includes(extension)) return 'video'
+        if (docExts.includes(extension)) return 'documento'
+
+        return 'desconocido'
     }
 
     consultarRegistros() {
@@ -78,15 +110,9 @@ export class SliderInicioComponent implements OnInit {
             .pipe(
                 tap((resp: any) => {
                     if (resp.ok) {
-                        resp.slidersInicio.forEach((slider: any) => {
-                            slider.nomEstado = slider.estadoSlider == true ? 'Activo' : 'Inactivo'
-                            slider.urlSlider = this._uploadService.getFilePath(this.suscPlataforma, 'sliders', slider.urlSlider)
-
-                            //   slider.urlSlider = `${base_url}/upload/sliders/${slider.urlSlider}`;
-                        })
                         this.registros = resp.slidersInicio
                         this.registrosFiltrado = resp.slidersInicio
-                        console.log('Todos las usuarios', this.registros)
+                        console.log('Todos las sliders', this.registros)
                         return
                     }
                 }),
@@ -96,6 +122,61 @@ export class SliderInicioComponent implements OnInit {
                 })
             )
             .subscribe()
+    }
+
+    setupSlidersStream(): void {
+        this.slidersTransformadas$ = this._registrosService.slider$.pipe(
+            switchMap((slids: PTLSliderInicioModel[]) => {
+                if (!slids) return of([])
+                const transformedSliders = slids.map((slider: any) => {
+                    console.log('data slider', slider)
+                    slider.nomEstado = slider.estadoSlider == true ? 'Activo' : 'Inactivo'
+                    const tipoMedia = this.getFileType(this._uploadService.getFilePath(this.suscPlataforma, 'sliders', slider.urlSlider))
+                    if (tipoMedia == 'capture') {
+                        slider.urlSlider = this._uploadService.getFilePath(this.suscPlataforma, 'sliders', slider.urlSlider)
+                        slider.capture = slider.urlSlider
+                        slider.tipo = 'capture'
+                    }
+                    console.log('tipo media', tipoMedia)
+                    return slider as PTLSliderInicioModel
+                })
+                this.registros = transformedSliders
+                console.log('todas las sliders', this.registros)
+                return of(transformedSliders)
+            }),
+            catchError(err => {
+                console.error('Error en el stream de sliders:', err)
+                return of([])
+            })
+        )
+
+        this.slidersFiltradas$ = combineLatest([
+            this.slidersTransformadas$.pipe(startWith([])), // Usa la fuente de datos transformada
+            this.filtroNombreSubject,
+            this.filtroDescripcionSubject,
+            this.filtroEstadoSubject
+        ]).pipe(
+            map(([slids, nombre, descripcion, estado]) => {
+                let filteredSliders = slids
+
+                if (nombre !== 'todos') {
+                    filteredSliders = filteredSliders.filter(app => app.nombreSlider === nombre)
+                }
+
+                if (estado !== 'todos') {
+                    const estadoBoolean = estado === 'true'
+                    filteredSliders = filteredSliders.filter(app => app.estadoSlider === estadoBoolean)
+                }
+
+                if (descripcion) {
+                    const textoFiltro = descripcion.toLowerCase()
+                    filteredSliders = filteredSliders.filter(app => (app.descripcionSlider || '').toLowerCase().includes(textoFiltro))
+                }
+                console.log('**************data de las sliders', filteredSliders)
+
+                return filteredSliders
+            })
+        )
     }
 
     columnasRegistros: ColumnMetadata[] = [
@@ -123,7 +204,7 @@ export class SliderInicioComponent implements OnInit {
             type: 'text'
         },
         {
-            name: 'urlSlider',
+            name: 'capture',
             header: 'SLIDER.DESCRIPCION',
             type: 'capture'
         }

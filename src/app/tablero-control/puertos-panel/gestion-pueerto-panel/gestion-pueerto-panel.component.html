@@ -160,6 +160,14 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">{{ 'PLATAFORMA.COLORS.COLORTEXT' | translate
+                                    }}</label>
+                                <app-color-selector [initialColor]="FormRegistro.color_ui" [id]="textoColor"
+                                    (colorSelected)="OnColorSelectedClick($event)"></app-color-selector>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">{{ 'PUERTOS.DESCRIPTION' | translate }}</label>
@@ -177,36 +185,20 @@
                                 </label>
                             </div>
                         </div>
-                        <!-- <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">{{ 'PUERTOS.UBICACION' | translate }}</label>
-
-                                <div class="btn-group mb-3" role="group">
-                                    <button type="button" class="btn" [class.btn-primary]="modoMapa === 'punto'"
-                                        (click)="modoMapa = 'punto'">Punto Ubicación</button>
-                                    <button type="button" class="btn" [class.btn-primary]="modoMapa === 'bbox'"
-                                        (click)="modoMapa = 'bbox'">Definir BBox</button>
+                                <label class="form-label">{{ 'PUERTOS.GESTION.IMAGEN' | translate }}</label>
+                                <img *ngIf="selectedFileUrl" [src]="selectedFileUrl" class="image-preview" />
+                                <div class="file-input-wrapper">
+                                    <label for="fileUploadInput" class="btn btn-primary btn-NuevoRegistro">
+                                        {{ 'Seleccionar archivo' | translate }}
+                                    </label>
+                                    <input type="file" (change)="onFileSelectedClick($event)" accept="image/*"
+                                        id="fileUploadInput" class="form-control form-input d-none"
+                                        name="imagenPuerto" />
                                 </div>
-
-                                <div class="map-container-wrapper">
-                                    <app-mapa-selector [(ngModel)]="FormRegistro.ubicacion" name="ubicacion"
-                                        #ubicacion="ngModel" [readonly]="false">
-                                    </app-mapa-selector>
-                                </div>
-
-                                <label *ngIf="!ubicacion.valid && (ubicacion.dirty || ubicacion.touched || isSubmit)"
-                                    class="error jquery-validation-error small form-text invalid-feedback">
-                                    {{ 'PUERTOS.UBICACION_ERROR' | translate }}
-                                </label>
                             </div>
-                        </div> -->
-                        <!-- <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Ubicación Geográfica del Puerto</label>
-                                <app-mapa-selector [(ngModel)]="FormRegistro.ubicacion" name="ubicacion">
-                                </app-mapa-selector>
-                            </div>
-                        </div> -->
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">{{ 'PUERTOS.STATUS' | translate }}</label>

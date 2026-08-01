@@ -284,7 +284,7 @@ export class GestionSuscriptorComponent {
     private GestionarUsuarioUsuarioSC(rawData: any) {
         const usuarioAdministrador: PTLUsuarioModel = {
             identificacionUsuario: rawData.identificacionSuscriptor,
-            nombreUsuario: 'Administrador ' + rawData.nombreSuscriptor,
+            nombreUsuario: 'adm_' + rawData.nombreSuscriptor,
             correoUsuario: rawData.correoSuscriptor,
             userNameUsuario: rawData.usuarioAdministrador,
             claveUsuario: rawData.claveNew,

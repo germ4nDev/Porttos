@@ -15,6 +15,7 @@ export class Muelle {
         public capacidad_reefer?: string,
         public estado_mantenimiento?: boolean,
         public geocerca_geo?: any,
+        public color_ui?: string,
         public descripcion?: string,
         public activo?: boolean,
         public id_puerto?: string,

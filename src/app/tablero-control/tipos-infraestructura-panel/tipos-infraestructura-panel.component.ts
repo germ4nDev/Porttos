@@ -180,14 +180,14 @@ export class TiposInfraestructuraPanelComponent implements OnInit, OnDestroy {
             type: 'text'
         },
         {
-            name: 'color_ui',
-            header: 'FAROS.COLOR',
-            type: 'color_chip'
-        },
-        {
             name: 'nomEstado',
             header: 'TIPOSINFRA.ESTADO',
             type: 'estado'
+        },
+        {
+            name: 'color_ui',
+            header: 'FAROS.COLOR',
+            type: 'color_chip'
         }
     ]
 

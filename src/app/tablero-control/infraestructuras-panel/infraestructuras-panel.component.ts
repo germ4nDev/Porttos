@@ -27,6 +27,8 @@ import { VideoPlayerComponent } from 'src/app/theme/shared/components/video-play
 
 import Swal from 'sweetalert2'
 import { Terminal } from 'src/app/theme/shared/_helpers/models/tablero-control/terminal.model';
+import { TiposTipoInfraestructuraService } from 'src/app/theme/shared/service/tablero-control/tipos-infraestructura.service'
+import { TipoInfraestructura } from 'src/app/theme/shared/_helpers/models/tablero-control/tipo-infraestructura.model'
 
 @Component({
     selector: 'app-infraestructuras-panel',
@@ -53,6 +55,7 @@ export class InfraestructurasPanelComponent implements OnInit, OnDestroy {
     DataModel: BaseSessionModel = new BaseSessionModel()
     DataLogActividad: PTLLogActividadAPModel = new PTLLogActividadAPModel()
     terminales: Terminal[] = []
+    tiposInfra: TipoInfraestructura[] = [];
 
     moduloTituloExcel: string = ''
     gradientConfig
@@ -78,6 +81,7 @@ export class InfraestructurasPanelComponent implements OnInit, OnDestroy {
         private _logActividadesService: PtllogActividadesService,
         private _localStorageService: LocalStorageService,
         private _infraestructurasService: InfraestructuraPortuariaService,
+        private _tiposInfraestructuraService: TiposTipoInfraestructuraService,
         private _terminalesService: TerminalesService,
         private _uploadService: UploadFilesService
     ) {
@@ -94,6 +98,7 @@ export class InfraestructurasPanelComponent implements OnInit, OnDestroy {
         this.setupInfraestructurasStream();
         this.terminales = this._terminalesService.getTerminalsActuales();
         console.log('todos los terminales', this.terminales);
+        this.tiposInfra = this._tiposInfraestructuraService.getTipoInfraestructurasActuales();
 
         // 🟢 CORRECCIÓN: Llamamos a cargarInfraestructuras(), que hace el HTTP y actualiza el BehaviorSubject
         this.subscriptions.add(
@@ -130,7 +135,13 @@ export class InfraestructurasPanelComponent implements OnInit, OnDestroy {
             switchMap((infrs: Infraestructura[]) => {
                 if (!infrs) return of([])
                 const transformedApps = infrs.map((infr: any) => {
+                    const data = this.tiposInfra.filter(x => x.id_tipo == infr.id_tipo)[0];
+                    infr.tipo = data.nombre
                     infr.terminal = this.terminales.filter(x => x.id_terminal == infr.id_terminal)[0].id_terminal
+                    infr.nomEstado = infr.estado ? 'Activo' : 'Inactivo'
+                    infr.punto = infr.ubicacion_geo.features[0].geometry.coordinates;
+                    infr.coordenadas = infr.geocerca_geo.features[0].geometry.coordinates[0];
+
                     return infr as Infraestructura
                 })
                 this.infraestructuras = transformedApps
@@ -199,6 +210,16 @@ export class InfraestructurasPanelComponent implements OnInit, OnDestroy {
             name: 'nombre',
             header: 'INFRAESTRUCTURAS.NAME',
             type: 'text'
+        },
+        {
+            name: 'nomEstado',
+            header: 'FAROS.COLOR',
+            type: 'estado'
+        },
+        {
+            name: 'color_ui',
+            header: 'FAROS.COLOR',
+            type: 'color_chip'
         }
     ]
 
@@ -212,17 +233,27 @@ export class InfraestructurasPanelComponent implements OnInit, OnDestroy {
             name: 'longitud',
             header: 'INFRAESTRUCTURAS.LONGITUD',
             type: 'text'
+        },
+        {
+            name: 'punto',
+            header: 'FAROS.DESCRIPTION',
+            type: 'array_list'
+        },
+        {
+            name: 'coordenadas',
+            header: 'FAROS.DESCRIPTION',
+            type: 'array_list'
         }
     ]
 
     OnNuevaAplicaicionClick(): void {
         this._localStorageService.setObject('regId', 'nuevo')
-        this.router.navigate(['tablero-control/gestion-widget'])
+        this.router.navigate(['tablero-control/gestion-infraestructura'])
     }
 
     OnEditarAplicaicionClick(id: string): void {
         this._localStorageService.setObject('regId', id)
-        this.router.navigate(['tablero-control/gestion-widget'])
+        this.router.navigate(['tablero-control/gestion-infraestructura'])
     }
 
     OnEliminarAplicaicionClick(id: string): void {

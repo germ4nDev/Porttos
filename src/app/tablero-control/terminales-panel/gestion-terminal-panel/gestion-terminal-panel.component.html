@@ -151,6 +151,14 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">{{ 'PLATAFORMA.COLORS.COLORTEXT' | translate
+                                    }}</label>
+                                <app-color-selector [initialColor]="FormRegistro.color_ui" [id]="textoColor"
+                                    (colorSelected)="OnColorSelectedClick($event)"></app-color-selector>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">{{ 'TERMINALES.DESCRIPTION' | translate }}</label>

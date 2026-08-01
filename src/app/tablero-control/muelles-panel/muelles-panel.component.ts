@@ -449,6 +449,7 @@ export class MuellesPanelComponent implements OnInit, OnDestroy {
                     mll.terminal = dataTerminal.nombre
                     mll.puerto = dataPuerto.id_puerto
                     mll.nomEstado = mll.estado_mantenimiento ? 'Activo' : 'Inactivo'
+                    // mll.coordenadas = mll.geocerca_geo.features[0].geometry.coordinates[0];
                     console.log('mll captura', mll.id_interno)
                     return mll as Muelle
                 })
@@ -515,6 +516,11 @@ export class MuellesPanelComponent implements OnInit, OnDestroy {
             name: 'nomEstado',
             header: 'MUELLES.ESTADO',
             type: 'estado'
+        },
+        {
+            name: 'color_ui',
+            header: 'FAROS.COLOR',
+            type: 'color_chip'
         }
     ]
 
@@ -538,6 +544,11 @@ export class MuellesPanelComponent implements OnInit, OnDestroy {
             name: 'capacidad_reefer',
             header: 'MUELLES.REEFER',
             type: 'text'
+        },
+        {
+            name: 'coordenadas',
+            header: 'MUELLES.REEFER',
+            type: 'array_list'
         }
     ]
 
