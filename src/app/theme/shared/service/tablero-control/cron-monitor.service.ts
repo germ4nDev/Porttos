@@ -88,13 +88,11 @@ export class CronMonitorService {
     ) {
         this._socketService.listen('crons-actualizados').subscribe({
             next: (payload: any) => {
-                // Desempaquetando el payload para mejor lectura en consola
                 const nombreCron = payload?.id_cron || payload?.proceso || 'Desconocido';
                 const estadoCron = payload?.estado_monitoreo || payload?.estado || 'N/A';
 
                 console.log(`🔄 Sockets: El cron [${nombreCron}] finalizó con estado: ${estadoCron}`);
 
-                // Actualizamos el historial completo tras recibir el aviso
                 this.obtenerHistorial().subscribe();
             },
             error: err => console.error('❌ Error en la escucha de sockets:', err)
@@ -111,7 +109,6 @@ export class CronMonitorService {
         return this.http.get(url).pipe(
             map((resp: any) => resp.data as RegistroCron[]),
             tap(farosOrdenadas => {
-                // console.log('&&&&&&&&&&&&&& faros servicio', farosOrdenadas);
                 this._crons.next(farosOrdenadas);
             })
         );

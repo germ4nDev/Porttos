@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MapSocketService } from 'src/app/theme/shared/service/tablero-control/map-socket.service';
 import { FaroModel } from 'src/app/theme/shared/_helpers/models/tablero-control/faro.model';
 import { FarosService } from 'src/app/theme/shared/service/tablero-control/faros.service';
+import { AisRadarService } from 'src/app/theme/shared/service/tablero-control/ais-radar.service';
 
 const INFRA_THEME = {
     'puerto': { fill: '#cbd5e1', line: '#475569', circle: '#cbd5e1' },
@@ -110,6 +111,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         public _mapaService: MapaGeneralService,
         public _mapaSocketService: MapSocketService,
         public _farosService: FarosService,
+        private _radarAisService: AisRadarService,
         private _filtroTableroService: FiltroTableroService,
         private http: HttpClient,
         private toastr: ToastrService,
@@ -139,7 +141,16 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
             else if (ciudadEmitida?.id) idEsperado = ciudadEmitida.id;
             else if (ciudadEmitida?.target?.value) idEsperado = ciudadEmitida.target.value;
 
-            if (idEsperado) this.verificarCambioDeSessionYVolar(idEsperado, 0);
+            if (idEsperado) this.verificarCambioDeSession(idEsperado, 0);
+
+            this._radarAisService.cambiarFocoRadar(ciudadEmitida).subscribe({
+                next: (response) => {
+                    console.log('📡 Radar AIS actualizado en el servidor:', response);
+                },
+                error: (err) => {
+                    console.error('❌ Error al reorientar el radar AIS:', err);
+                }
+            });
         }));
 
         this.cargarPeajesEstaticos();
@@ -162,6 +173,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         this.iniciarAlertasTerrestres();
         this.iniciarCapaMaritima();
         this.cargarEventosViales();
+        this.cargarFaros();
     }
 
     ngAfterViewInit(): void {
@@ -346,7 +358,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         });
     }
 
-    private verificarCambioDeSessionYVolar(idEsperado: string, intento: number): void {
+    private verificarCambioDeSession(idEsperado: string, intento: number): void {
         if (!this.map || !this.map.isStyleLoaded()) return;
 
         if (!idEsperado || idEsperado === 'ALL') {
@@ -365,7 +377,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         if (currentGeocercaStr && currentGeocercaStr !== this.lastGeocercaStr && esPuertoCorrecto) {
             this.leerSessionYEnfocar(true);
         } else if (intento < 20) {
-            setTimeout(() => this.verificarCambioDeSessionYVolar(idEsperado, intento + 1), 250);
+            setTimeout(() => this.verificarCambioDeSession(idEsperado, intento + 1), 250);
         } else {
             this.leerSessionYEnfocar(true);
         }
@@ -407,7 +419,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
 
             if (!moverCamara) return;
 
-            const bounds = this.calcularBboxDesdeGeoJSON(dataToSet);
+            const bounds = this.calcularBboxGeoJSON(dataToSet);
             let centroExacto = null;
             if (puerto.ubicacion_geo) {
                 try {
@@ -438,7 +450,7 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
         this.map.flyTo({ center: [-73.5, 4.0], zoom: 5.5, duration: 2000 });
     }
 
-    private calcularBboxDesdeGeoJSON(geojson: any): maplibregl.LngLatBounds | null {
+    private calcularBboxGeoJSON(geojson: any): maplibregl.LngLatBounds | null {
         if (!geojson) return null;
         try {
             const bbox = turf.bbox(geojson);
@@ -679,13 +691,13 @@ export class MapaLogisticoComponent implements AfterViewInit, OnInit, OnDestroy,
 
     // 🟢 INICIO DE RADAR Y PETICIÓN AL SERVICIO
     private iniciarRadarGeocercas(): void {
-        this.consultarYPintarGeocercas();
+        this.consultarGeocercas();
         this.geocercasSubscription = interval(30000).subscribe(() => {
-            this.consultarYPintarGeocercas();
+            this.consultarGeocercas();
         });
     }
 
-    private consultarYPintarGeocercas(): void {
+    private consultarGeocercas(): void {
         this._mapaService.getGeocercasKPIs().subscribe({
             next: (res: any) => {
                 if (!res.data) return;

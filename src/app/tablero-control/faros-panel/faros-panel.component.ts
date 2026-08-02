@@ -130,14 +130,49 @@ export class FarosPanelComponent implements OnInit, OnDestroy {
         this.farosTransformados$ = this._farosService.faros$.pipe(
             switchMap((frs: FaroModel[]) => {
                 if (!frs) return of([])
+                // const transformedFaros = frs.map((fr: any) => {
+                //     fr.nomEstado = fr.estado ? 'Activo' : 'Inactivo'
+                //     fr.nomAlerta = fr.genera_alerta_toast ? 'Con Alerta' : 'Sin Alerta'
+                //     fr.nomTipo = this.ETIPOS_FARO.filter(x => x.id == fr.tipo_faro)[0].label
+                //     fr.punto = fr.ubicacion_geo.features[0].geometry.coordinates;
+                //     fr.coordenadas = fr.geocerca_geo.features[0].geometry.coordinates[0];
+                //     return fr as FaroModel
+                // })
                 const transformedFaros = frs.map((fr: any) => {
-                    fr.nomEstado = fr.estado ? 'Activo' : 'Inactivo'
-                    fr.nomAlerta = fr.genera_alerta_toast ? 'Con Alerta' : 'Sin Alerta'
-                    fr.nomTipo = this.ETIPOS_FARO.filter(x => x.id == fr.tipo_faro)[0].label
-                    fr.punto = fr.ubicacion_geo.features[0].geometry.coordinates;
-                    fr.coordenadas = fr.geocerca_geo.features[0].geometry.coordinates[0];
-                    return fr as FaroModel
-                })
+                    fr.nomEstado = fr.estado ? 'Activo' : 'Inactivo';
+                    fr.nomAlerta = fr.genera_alerta_toast ? 'Con Alerta' : 'Sin Alerta';
+
+                    // Evitar errores si this.ETIPOS_FARO no encuentra coincidencia
+                    const tipoFaro = this.ETIPOS_FARO.find(x => x.id == fr.tipo_faro);
+                    fr.nomTipo = tipoFaro ? tipoFaro.label : 'Desconocido';
+
+                    // 1. Manejo seguro de ubicacion_geo (El marcador/punto central)
+                    const geoUbicacion = fr.ubicacion_geo?.features?.[0]?.geometry;
+
+                    if (geoUbicacion?.type === 'Point') {
+                        fr.punto = geoUbicacion.coordinates;
+                    } else if (geoUbicacion?.type === 'Polygon') {
+                        // Si por error o diseño viene un polígono, puedes extraer el primer punto para usarlo como ancla del marcador
+                        fr.punto = geoUbicacion.coordinates[0][0];
+                    } else {
+                        fr.punto = null; // Manejo por defecto si no hay geometría válida
+                    }
+
+                    // 2. Manejo seguro de geocerca_geo (El área/polígono)
+                    const geoGeocerca = fr.geocerca_geo?.features?.[0]?.geometry;
+
+                    if (geoGeocerca?.type === 'Polygon') {
+                        // Extraemos el primer anillo del polígono
+                        fr.coordenadas = geoGeocerca.coordinates[0];
+                    } else if (geoGeocerca?.type === 'Point') {
+                        // Si la geocerca es solo un punto, la asignamos sin intentar extraer sub-arreglos
+                        fr.coordenadas = geoGeocerca.coordinates;
+                    } else {
+                        fr.coordenadas = null;
+                    }
+
+                    return fr as FaroModel;
+                });
                 this.faros = transformedFaros
                 console.log('****** todos los faros', this.faros)
                 return of(transformedFaros)
