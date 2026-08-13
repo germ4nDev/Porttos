@@ -469,7 +469,7 @@ export class LocalStorageService {
 
 
     // ====================================================================
-    // #region GETTERS Y SETTERS TRADICIONALES QPLUS
+    // #region GETTERS Y SETTERS TRADICIONALES PORTTOS
     // ====================================================================
 
     getCurrentUserLocalStorage(): any {
@@ -657,7 +657,7 @@ export class LocalStorageService {
 
 /*
     Author: German Valencia
-    Patrón: QPLUS Orchestrator Service - Sincronizado y Persistente
+    Patrón: PORTTOS Orchestrator Service - Sincronizado y Persistente
 */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { Injectable } from '@angular/core';
@@ -818,7 +818,7 @@ export class LocalStorageService {
 //     // #endregion
 
 //     // ====================================================================
-//     // #region GETTERS QPLUS
+//     // #region GETTERS PORTTOS
 //     // ====================================================================
 //     getCurrentUserLocalStorage(): any { return this.getObject<any>('currentUser'); }
 
@@ -910,7 +910,7 @@ export class LocalStorageService {
 //     // #endregion
 
 //     // ====================================================================
-//     // #region SETTERS QPLUS
+//     // #region SETTERS PORTTOS
 //     // ====================================================================
 //     setNavSettingsLocalStorage(navsettings: NavSettings) {
 //         this.setObject('navsettings', navsettings);

@@ -1,6 +1,6 @@
 /*
     Author: German Valencia
-    Refactored for: QPLUS Architecture, Dashboard Operations & State Management
+    Refactored for: PORTTOS Architecture, Dashboard Operations & State Management
 */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';

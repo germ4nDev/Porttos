@@ -17,7 +17,7 @@
 // export class MezclaCargaComponent implements OnInit, AfterViewInit, OnChanges {
 //     @Input() data: any;
 
-//     // 🔥 Agrega estas dos líneas para satisfacer al motor dinámico de QPLUS
+//     // 🔥 Agrega estas dos líneas para satisfacer al motor dinámico de PORTTOS
 //     @Input() widgetId?: string;
 //     @Input() config?: any;
 

@@ -1,5 +1,5 @@
-<div class="qplus-auth-screen">
-    <app-full-screen-slider [tipoSlider]="1" class="qplus-auth-bg"></app-full-screen-slider>
+<div class="PORTTOS-auth-screen">
+    <app-full-screen-slider [tipoSlider]="1" class="PORTTOS-auth-bg"></app-full-screen-slider>
     <nav class="navbar fixed-top navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"></a>
@@ -9,9 +9,9 @@
         </div>
     </nav>
 
-    <div class="qplus-auth-card card-body login-overlay">
+    <div class="PORTTOS-auth-card card-body login-overlay">
         <form [formGroup]="loginForm" (ngSubmit)="onLoginUserClick()">
-            <div class="qplus-auth-header text-center">
+            <div class="PORTTOS-auth-header text-center">
                 <!-- <h3 class="auth-title">{{ 'AUTENTICACION.LOGIN.TITLE' | translate }}</h3> -->
                 <h2 class="auth-title">Porttos</h2>
                 <p class="auth-subtitle">Acceso a Usuarios</p>
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="d-grid">
-                <button class="btn qplus-auth-btn" type="submit" [disabled]="!loginForm.valid || loading">
+                <button class="btn PORTTOS-auth-btn" type="submit" [disabled]="!loginForm.valid || loading">
                     <span *ngIf="!loading">{{ 'AUTENTICACION.LOGIN.ACCESS' | translate }}</span>
                     <span *ngIf="loading">
                         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

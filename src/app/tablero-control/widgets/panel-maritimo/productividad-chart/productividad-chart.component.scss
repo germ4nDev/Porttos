@@ -1,7 +1,7 @@
 // /* Aseguramos que el componente ocupe todo el espacio de su contenedor padre (Gridster) */
 // /* chart-toneladas.component.scss, terminal-summary.scss, etc. */
-// @use 'src/app/theme/shared/styles/components' as qplus;
-// @include qplus.widget-header;
+// @use 'src/app/theme/shared/styles/components' as PORTTOS;
+// @include PORTTOS.widget-header;
 
 // :host {
 //     display: block;
@@ -9,7 +9,7 @@
 //     height: 100%;
 // }
 
-// .qplus-widget.productividad-chart {
+// .PORTTOS-widget.productividad-chart {
 //     display: flex;
 //     flex-direction: column;
 //     height: 100%;
@@ -46,7 +46,7 @@
 // }
 
 // .panel-header {
-//     .qplus-widget-title {
+//     .PORTTOS-widget-title {
 //         font-size: 0.9rem;
 //         font-weight: 700;
 //         color: #e2e8f0;
@@ -63,8 +63,8 @@
 //     height: 100%;
 // }
 
-@use 'src/app/theme/shared/styles/components' as qplus;
-@include qplus.widget-header;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
+@include PORTTOS.widget-header;
 
 :host {
     display: block;
@@ -75,7 +75,7 @@
     container-name: tarjeta-terminal;
 }
 
-.qplus-widget.productividad-chart {
+.PORTTOS-widget.productividad-chart {
     display: flex;
     flex-direction: column;
     height: 100%;

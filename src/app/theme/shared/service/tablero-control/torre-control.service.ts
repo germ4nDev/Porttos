@@ -1,6 +1,6 @@
 /*
     Author: German Valencia
-    Pattern: QPLUS Frontend Service - Conexión API KPIs
+    Pattern: PORTTOS Frontend Service - Conexión API KPIs
     Update: Soporte para multi-puerto y unificación de datos
 */
 import { Injectable } from '@angular/core';

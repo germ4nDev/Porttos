@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* 1. CONTENEDOR PRINCIPAL (Centra la tarjeta en la pantalla) */
-.qplus-auth-screen {
+.PORTTOS-auth-screen {
     position: relative;
     width: 100vw;
     height: 100vh;
@@ -15,7 +15,7 @@
 }
 
 /* 2. FONDO ANIMADO (Se posiciona detrás de todo) */
-.qplus-auth-bg {
+.PORTTOS-auth-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -34,7 +34,7 @@
 }
 
 /* 3. LA TARJETA DE LOGIN (Vidrio Dinámico) */
-.qplus-auth-card {
+.PORTTOS-auth-card {
     position: relative;
     width: 100%;
     max-width: 420px;
@@ -117,7 +117,7 @@
     }
 
     /* Botón principal respetando la marca */
-    .qplus-auth-btn {
+    .PORTTOS-auth-btn {
         height: 2.9em;
         border-radius: 8px;
         font-weight: 600;

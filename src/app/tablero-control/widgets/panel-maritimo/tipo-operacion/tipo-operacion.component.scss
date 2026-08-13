@@ -86,8 +86,8 @@
 //     }
 // }
 
-@use 'src/app/theme/shared/styles/components' as qplus;
-@include qplus.widget-header;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
+@include PORTTOS.widget-header;
 
 :host {
     display: block;
@@ -99,7 +99,7 @@
     container-name: tarjeta-terminal;
 }
 
-.qplus-widget.widget-toneladas {
+.PORTTOS-widget.widget-toneladas {
     display: flex;
     flex-direction: column;
     height: 100%;

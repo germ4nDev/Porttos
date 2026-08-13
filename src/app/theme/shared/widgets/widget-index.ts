@@ -18,3 +18,19 @@ export * from 'src/app/tablero-control/widgets/panel-maritimo/matriz-carga/matri
 export * from 'src/app/tablero-control/widgets/panel-maritimo/historico-anual/historico-anual.component';
 export * from 'src/app/tablero-control/widgets/panel-maritimo/implicaciones-operativas/implicaciones-operativas.component';
 export * from 'src/app/tablero-control/widgets/mapa-logistico/mapa-logistico.component';
+
+export * from 'src/app/tablero-control/widgets/panel-contenedores/chart-bar-cont/chart-bar-cont.component';
+export * from 'src/app/tablero-control/widgets/panel-contenedores/chart-doughnut-cont/chart-doughnut-cont.component';
+export * from 'src/app/tablero-control/widgets/panel-contenedores/chart-stacked-bar-cont/chart-stacked-bar-cont.component';
+export * from 'src/app/tablero-control/widgets/panel-contenedores/cont-kpi-card/cont-kpi-card.component';
+export * from 'src/app/tablero-control/widgets/panel-contenedores/contenedores-patios/contenedores-patios.component';
+export * from 'src/app/tablero-control/widgets/panel-contenedores/table-contenedores/table-contenedores.component';
+
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/chart-doughnut/chart-doughnut.component';
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/chart-stacked-bar/chart-stacked-bar.component';
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/gate-alertas/gate-alertas.component';
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/gate-estado-citas/gate-estado-citas.component';
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/gate-kpi-card/gate-kpi-card.component';
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/gate-kpi-card/gate-kpi-card.component';
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/gate-validacion/gate-validacion.component';
+export * from 'src/app/tablero-control/widgets/panel-virtual-gate/table-cola-gate/table-cola-gate.component';

@@ -6,7 +6,7 @@
     height: 100%;
 }
 
-.qplus-widget.-logistico-panel {
+.PORTTOS-widget.-logistico-panel {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -251,11 +251,11 @@
    ========================================= */
 ::ng-deep {
 
-    .qplus-popup .custom-map-popup {
+    .PORTTOS-popup .custom-map-popup {
         padding: 4px;
     }
 
-    .qplus-popup .custom-map-popup h3 {
+    .PORTTOS-popup .custom-map-popup h3 {
         font-size: 1.1rem !important;
         font-weight: 600 !important;
         margin-top: 0 !important;
@@ -263,82 +263,82 @@
         line-height: 1.2 !important;
     }
 
-    .qplus-popup .custom-map-popup p {
+    .PORTTOS-popup .custom-map-popup p {
         font-size: 0.85rem !important;
         margin: 0 !important;
     }
 
-    .qplus-popup.popup-light .maplibregl-popup-content {
+    .PORTTOS-popup.popup-light .maplibregl-popup-content {
         background-color: #ffffff !important;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
         border-radius: 8px !important;
     }
 
-    .qplus-popup.popup-light .custom-map-popup h3 {
+    .PORTTOS-popup.popup-light .custom-map-popup h3 {
         color: #1e293b !important;
     }
 
-    .qplus-popup.popup-light .custom-map-popup p {
+    .PORTTOS-popup.popup-light .custom-map-popup p {
         color: #64748b !important;
     }
 
-    .qplus-popup.popup-light .maplibregl-popup-close-button {
+    .PORTTOS-popup.popup-light .maplibregl-popup-close-button {
         color: #64748b !important;
     }
 
-    .qplus-popup.popup-light.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-light.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
         border-top-color: #ffffff !important;
     }
 
-    .qplus-popup.popup-light.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-light.maplibregl-popup-anchor-top .maplibregl-popup-tip {
         border-bottom-color: #ffffff !important;
     }
 
-    .qplus-popup.popup-light.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-light.maplibregl-popup-anchor-left .maplibregl-popup-tip {
         border-right-color: #ffffff !important;
     }
 
-    .qplus-popup.popup-light.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-light.maplibregl-popup-anchor-right .maplibregl-popup-tip {
         border-left-color: #ffffff !important;
     }
 
     /* 3. TEMA OSCURO */
-    .qplus-popup.popup-dark .maplibregl-popup-content {
+    .PORTTOS-popup.popup-dark .maplibregl-popup-content {
         background-color: #1e293b !important;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
         border-radius: 8px !important;
     }
 
-    .qplus-popup.popup-dark .custom-map-popup h3 {
+    .PORTTOS-popup.popup-dark .custom-map-popup h3 {
         color: #ffffff !important;
     }
 
-    .qplus-popup.popup-dark .custom-map-popup p {
+    .PORTTOS-popup.popup-dark .custom-map-popup p {
         color: #cbd5e1 !important;
     }
 
-    .qplus-popup.popup-dark .maplibregl-popup-close-button {
+    .PORTTOS-popup.popup-dark .maplibregl-popup-close-button {
         color: #94a3b8 !important;
     }
 
-    .qplus-popup.popup-dark .maplibregl-popup-close-button:hover {
+    .PORTTOS-popup.popup-dark .maplibregl-popup-close-button:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
         color: #ffffff !important;
     }
 
-    .qplus-popup.popup-dark.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-dark.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
         border-top-color: #1e293b !important;
     }
 
-    .qplus-popup.popup-dark.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-dark.maplibregl-popup-anchor-top .maplibregl-popup-tip {
         border-bottom-color: #1e293b !important;
     }
 
-    .qplus-popup.popup-dark.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-dark.maplibregl-popup-anchor-left .maplibregl-popup-tip {
         border-right-color: #1e293b !important;
     }
 
-    .qplus-popup.popup-dark.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+    .PORTTOS-popup.popup-dark.maplibregl-popup-anchor-right .maplibregl-popup-tip {
         border-left-color: #1e293b !important;
     }
 }
@@ -799,7 +799,7 @@
 }
 
 // Sobreescritura estructural del Popup de MapLibre
-::ng-deep .qplus-popup {
+::ng-deep .PORTTOS-popup {
     z-index: 1000;
 
     // Contenedor principal de MapLibre
@@ -840,9 +840,9 @@
     }
 
     // ------------------------------------------------
-    // CLASES CENTRALIZADAS QPLUS PARA EL CONTENIDO
+    // CLASES CENTRALIZADAS PORTTOS PARA EL CONTENIDO
     // ------------------------------------------------
-    .qplus-popup-header {
+    .PORTTOS-popup-header {
         background-color: color-mix(in srgb, var(--widget-bg), transparent 40%);
         padding: 12px 35px 12px 14px; // 35px a la derecha para que no choque con la 'X'
         border-bottom: 1px solid var(--border-color);
@@ -861,53 +861,53 @@
         }
     }
 
-    .qplus-popup-body {
+    .PORTTOS-popup-body {
         padding: 14px;
         font-size: 12px;
         line-height: 1.5;
 
-        .qplus-row {
+        .PORTTOS-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
 
-            .qplus-label {
+            .PORTTOS-label {
                 color: var(--text-color);
                 font-weight: 500;
             }
 
-            .qplus-value {
+            .PORTTOS-value {
                 color: var(--text-color);
                 font-weight: 600;
                 text-align: right;
             }
         }
 
-        .qplus-col {
+        .PORTTOS-col {
             margin-bottom: 8px;
 
-            .qplus-label {
+            .PORTTOS-label {
                 color: var(--text-color);
                 font-weight: 500;
                 display: block;
                 margin-bottom: 2px;
             }
 
-            .qplus-value {
+            .PORTTOS-value {
                 color: var(--text-color);
                 font-weight: 500;
                 display: block;
             }
         }
 
-        .qplus-divider {
+        .PORTTOS-divider {
             margin-top: 12px;
             padding-top: 10px;
             border-top: 1px dashed var(--border-color);
             ;
         }
 
-        .qplus-alert-box {
+        .PORTTOS-alert-box {
             margin-top: 12px;
             background-color: rgba(220, 38, 38, 0.1);
             color: #ef4444;
@@ -921,7 +921,7 @@
     }
 
     // Estilos para los Badges (Estados)
-    .qplus-badge {
+    .PORTTOS-badge {
         font-size: 11px;
         font-weight: bold;
         background: rgba(0, 0, 0, 0.4);

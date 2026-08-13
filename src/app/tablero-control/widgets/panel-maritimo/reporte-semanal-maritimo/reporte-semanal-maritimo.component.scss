@@ -1,6 +1,6 @@
 /* chart-toneladas.component.scss, terminal-summary.scss, etc. */
-@use 'src/app/theme/shared/styles/components' as qplus;
-@include qplus.widget-header;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
+@include PORTTOS.widget-header;
 
 :host {
     display: block;
@@ -9,7 +9,7 @@
     /* 🚨 Deja que el padre (master-widget-grid) decida la altura. */
 }
 
-.qplus-widget.resumen-maritimo-panel {
+.PORTTOS-widget.resumen-maritimo-panel {
     display: flex;
     flex-direction: column;
     height: 100%;

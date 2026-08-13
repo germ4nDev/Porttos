@@ -1,5 +1,5 @@
-@use 'src/app/theme/shared/styles/components' as qplus;
-@include qplus.widget-header;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
+@include PORTTOS.widget-header;
 
 /* =======================================================
    1. DEFINICIÓN DEL CONTENEDOR MAESTRO
@@ -13,7 +13,7 @@
     container-name: widget-reportes;
 }
 
-.qplus-widget.reportes-operativos {
+.PORTTOS-widget.reportes-operativos {
     display: flex;
     flex-direction: column;
     height: 100%;

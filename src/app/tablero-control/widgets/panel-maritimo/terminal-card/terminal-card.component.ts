@@ -1,7 +1,7 @@
 /*
     Author: German Valencia
     Component: TerminalCardComponent
-    Pattern: QPLUS Standalone Widget - Centralized Theme Inheritance
+    Pattern: PORTTOS Standalone Widget - Centralized Theme Inheritance
 */
 import { Component, Input, OnInit } from '@angular/core'; // Importamos OnInit
 import { CommonModule } from '@angular/common';

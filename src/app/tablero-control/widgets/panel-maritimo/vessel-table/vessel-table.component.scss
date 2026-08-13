@@ -1,5 +1,5 @@
-@use 'src/app/theme/shared/styles/components' as qplus;
-@include qplus.widget-header;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
+@include PORTTOS.widget-header;
 
 /* ==========================================================================
    1. HOST Y TARJETA PRINCIPAL (El cascarón estricto)
@@ -12,7 +12,7 @@
     container-name: tarjeta-terminal;
 }
 
-.qplus-widget.vessel-table-panel {
+.PORTTOS-widget.vessel-table-panel {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -37,7 +37,7 @@
 }
 
 /* SCROLLBAR GENERAL DEL WIDGET */
-.qplus-widget {
+.PORTTOS-widget {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, .12) transparent;
 
@@ -116,7 +116,7 @@
 /* ==========================================================================
    3. ESTILOS DE LA TABLA (Los que se nos habían borrado)
    ========================================================================== */
-.qplus-table {
+.PORTTOS-table {
     width: 100%;
     min-width: 100%;
     border-collapse: collapse;

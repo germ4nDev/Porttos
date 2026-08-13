@@ -108,7 +108,7 @@ export class UsuariosComponent implements OnInit {
             role: 'ROLE_ADMINISTRADOR'
         },
         {
-            aplicacion: 'Qplus',
+            aplicacion: 'PORTTOS',
             suite: 'Sistemas de Gestion',
             role: 'ROLE_ADMINSOCUMENTOS'
         }

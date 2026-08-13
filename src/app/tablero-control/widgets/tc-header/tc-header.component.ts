@@ -36,6 +36,10 @@ export class TcHeaderComponent implements OnInit {
     public listaCiudadesPortuarias: any[] = [];
     public newPuerto: Puerto = new Puerto();
 
+    horaActual: string = '';
+    fechaActual: string = '';
+    private timer: any;
+
     constructor(
         private router: Router,
         private _dashboardService: DashboardService,
@@ -50,6 +54,30 @@ export class TcHeaderComponent implements OnInit {
         this.newPuerto = this.listaCiudadesPortuarias.filter(x => x.id_puerto == 'BUENAVENTURA')[0] as Puerto;
         this.nodoSeleccionado = this.newPuerto.id_puerto || 'BUENAVENTURA';
         this._localStorageService.setPuertoLocalStorage(this.nodoSeleccionado)
+
+        this.actualizarReloj();
+        // Disparador cada 1 segundo para mantener la hora viva
+        this.timer = setInterval(() => {
+            this.actualizarReloj();
+        }, 1000);
+    }
+
+    private actualizarReloj() {
+        const ahora = new Date();
+
+        // 1. Obtener la hora exacta HH:mm:ss
+        this.horaActual = ahora.toTimeString().split(' ')[0];
+
+        // 2. Arrays en español para asegurar la estructura exacta (DOMINGO, 09 DE AGOSTO DE 2026)
+        const dias = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+        const meses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+
+        const diaSemana = dias[ahora.getDay()];
+        const diaMes = String(ahora.getDate()).padStart(2, '0');
+        const mes = meses[ahora.getMonth()];
+        const anio = ahora.getFullYear();
+
+        this.fechaActual = `${diaSemana}, ${diaMes} DE ${mes} DE ${anio} · UTC-5`;
     }
 
     onCambioNodo(event: any) {

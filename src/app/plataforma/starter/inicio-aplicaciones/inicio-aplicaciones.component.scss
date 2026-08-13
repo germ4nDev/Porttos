@@ -7,7 +7,7 @@
 }
 
 /* CONTENEDOR PRINCIPAL Y FONDO */
-.qplus-list-screen {
+.PORTTOS-list-screen {
     position: relative;
     width: 100vw;
     height: 100vh;
@@ -15,7 +15,7 @@
     background-color: var(--background-color, #0b0c0e);
 }
 
-.qplus-list-bg {
+.PORTTOS-list-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -34,7 +34,7 @@
 }
 
 /* LAYOUT DE LA GRILLA */
-.qplus-apps-layout {
+.PORTTOS-apps-layout {
     position: relative;
     width: 100%;
     max-width: 1240px;
@@ -59,7 +59,7 @@
 }
 
 /* ENCABEZADOS Y TÍTULOS */
-.qplus-apps-header {
+.PORTTOS-apps-header {
     margin-bottom: 3rem;
 
     .apps-main-title {
@@ -88,7 +88,7 @@
 }
 
 /* RESPONSIVIDAD DE LA GRILLA */
-.qplus-apps-grid {
+.PORTTOS-apps-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2rem;
@@ -104,7 +104,7 @@
 }
 
 /* TARJETAS DE APLICACIÓN */
-.qplus-app-item-card {
+.PORTTOS-app-item-card {
     position: relative;
     height: 380px;
     border-radius: 16px;
@@ -125,7 +125,7 @@
             background: linear-gradient(to top, rgba(11, 12, 14, 0.95) 0%, rgba(11, 12, 14, 0.4) 60%, rgba(11, 12, 14, 0) 100%);
         }
 
-        .qplus-enter-btn {
+        .PORTTOS-enter-btn {
             background-color: var(--app-navbar-color, #007bff);
             border-color: var(--app-navbar-color, #007bff);
             color: #ffffff;
@@ -185,7 +185,7 @@
         width: 100%;
         text-align: right;
 
-        .qplus-enter-btn {
+        .PORTTOS-enter-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;

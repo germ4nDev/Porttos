@@ -1,0 +1,40 @@
+<div class="porttos-widget gate-validacion">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-wind"></i>{{ data.titulo || '🛡 Pre-Gate · Validación' }}
+            </h3>
+            <p class="subtitle">{{ data.subtitulo || 'Estado Camiones' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+
+        <div
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 16px;">
+            <div style="font-size: 48px; font-weight: bold; color: #38bdf8; line-height: 1;">
+                {{ data?.resumen?.validados || 0 }}
+            </div>
+            <div style="color: #94a3b8; font-size: 12px; text-transform: uppercase; margin-bottom: 20px;">
+                Camiones en flujo
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <span
+                    style="background: rgba(34,197,94,0.1); border: 1px solid #22c55e; color: #22c55e; padding: 4px 10px; border-radius: 4px; font-size: 11px;">
+                    ✓ {{ data?.resumen?.validados || 0 }} validados
+                </span>
+                <span
+                    style="background: rgba(245,158,11,0.1); border: 1px solid #f59e0b; color: #f59e0b; padding: 4px 10px; border-radius: 4px; font-size: 11px;">
+                    ⌛ {{ data?.resumen?.enCola || 0 }} en cola
+                </span>
+                <span
+                    style="background: rgba(239,68,68,0.1); border: 1px solid #ef4444; color: #ef4444; padding: 4px 10px; border-radius: 4px; font-size: 11px;">
+                    ⚠ {{ data?.resumen?.retenidos || 0 }} retenidos
+                </span>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,32 @@
+<div class="porttos-widget widget-contenedroes-patios">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-clock mr-1" *ngIf="!data?.icono"></i>
+                {{ data?.titulo || 'Saturación de Patios y Depots' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Saturación de Patios y Depots' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="patios-list">
+        <div *ngFor="let patio of listadoPatios" class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+                <span class="txt-nombre">{{ patio.nombre }}</span>
+                <span class="badge" [ngClass]="getEstadoBadge(patio.estado)">
+                    {{ patio.porcentaje }}% - {{ patio.estado }}
+                </span>
+            </div>
+            <div class="progress" style="height: 8px; background-color: #334155;">
+                <div class="progress-bar" role="progressbar" [style.width.%]="patio.porcentaje"
+                    [style.background-color]="getColorBarra(patio.porcentaje)" aria-valuenow="patio.porcentaje"
+                    aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
-@use 'src/app/theme/shared/styles/components' as qplus;
-@include qplus.widget-header;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
+@include PORTTOS.widget-header;
 
 /* ==========================================================================
    1. HOST Y TARJETA PRINCIPAL
@@ -14,7 +14,7 @@
     container-name: tarjeta-terminal;
 }
 
-.qplus-widget.widget-historico {
+.PORTTOS-widget.widget-historico {
     display: flex;
     flex-direction: column;
     height: 100%;

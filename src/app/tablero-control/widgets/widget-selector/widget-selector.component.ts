@@ -12,17 +12,18 @@ export class WidgetSelectorComponent implements OnInit {
     @Input() type: string = '';
     @Input() data: any = null;
 
-    // AÑADE ESTA VARIABLE PARA GUARDAR EL ESTADO
     public componenteVisual: any = null;
 
     ngOnInit() {
         console.log('🏗️ Selector intentando pintar:', this.type);
 
-        // Asigna el valor a la variable, no al getter
-        this.componenteVisual = WIDGET_MAP[this.type].componente;
+        const registro = WIDGET_MAP[this.type];
 
-        if (!this.componenteVisual) {
-            console.error(`❌ ERROR: No encontré componente para el tipo: "${this.type}"`);
+        if (registro && registro.componente) {
+            this.componenteVisual = registro.componente;
+        } else {
+            console.error(`❌ ERROR CRÍTICO: El widget "${this.type}" NO está registrado en WIDGET_MAP.`);
+            this.componenteVisual = null;
         }
     }
 }

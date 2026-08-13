@@ -10,7 +10,7 @@
 /* ========================================================
    2. TARJETA KPI (Estructura y Container Queries)
    ======================================================== */
-.qplus-widget.kpi-card {
+.PORTTOS-widget.kpi-card {
     display: flex;
     flex-direction: column;
     container-type: size;
@@ -38,7 +38,7 @@
     }
 
     /* --------------------------------------
-       PALETA DE COLORES QPLUS (Bordes)
+       PALETA DE COLORES PORTTOS (Bordes)
        -------------------------------------- */
     &.borde-cyan {
         border-left-color: #0dc8e9 !important;

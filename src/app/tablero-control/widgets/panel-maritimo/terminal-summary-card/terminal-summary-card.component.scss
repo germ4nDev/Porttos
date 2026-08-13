@@ -1,4 +1,4 @@
-@use 'src/app/theme/shared/styles/components' as qplus;
+@use 'src/app/theme/shared/styles/components' as porttos;
 
 /* =======================================
    1. CONTENEDOR PRINCIPAL Y HOST
@@ -11,7 +11,7 @@
     container-name: tarjetaTerminal;
 }
 
-.qplus-widget {
+.porttos-widget {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -55,7 +55,7 @@
     }
 }
 
-// @include qplus.widget-header;
+// @include PORTTOS.widget-header;
 
 /* =======================================
    2. CUERPO DEL PANEL (BODY)

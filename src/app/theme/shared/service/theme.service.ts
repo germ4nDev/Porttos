@@ -23,7 +23,7 @@ export class ThemeService implements OnDestroy {
     // 1. EL OBJETO INICIAL (La fuente de la verdad por defecto)
     private readonly DEFAULT_THEME_SETTINGS: ThemeSettings = {
         isDarkTheme: false,
-        navbarColor: '#007bff',       // Azul QPLUS
+        navbarColor: '#007bff',       // Azul PORTTOS
         iconosColor: '#464e57',       // Gris estándar
         buttonsHoverColor: '#b4b4b4'  // Gris claro
     };

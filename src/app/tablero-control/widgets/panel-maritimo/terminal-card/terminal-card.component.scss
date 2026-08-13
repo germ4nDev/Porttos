@@ -1,4 +1,4 @@
-@use 'src/app/theme/shared/styles/components' as qplus;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
 
 /* ==========================================================================
    1. CONFIGURACIÓN DEL HOST (El escudo protector)
@@ -13,7 +13,7 @@
 /* ==========================================================================
    2. TARJETA PRINCIPAL
    ========================================================================== */
-.qplus-widget.terminal-card-panel {
+.PORTTOS-widget.terminal-card-panel {
     flex: 1;
     /* Obliga a la tarjeta a llenar el :host */
     display: flex;
@@ -35,7 +35,7 @@
     }
 }
 
-@include qplus.widget-header;
+@include PORTTOS.widget-header;
 
 /* ==========================================================================
    4. CUERPO DE LA TARJETA

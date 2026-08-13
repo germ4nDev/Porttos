@@ -31,9 +31,9 @@
     </div>
 </div>Selecciona el ecosistema digital al que deseas ingresar -->
 
-<div class="qplus-list-screen">
+<div class="PORTTOS-list-screen">
 
-    <app-full-screen-slider [tipoSlider]="2" class="qplus-list-bg"></app-full-screen-slider>
+    <app-full-screen-slider [tipoSlider]="2" class="PORTTOS-list-bg"></app-full-screen-slider>
 
     <nav class="navbar fixed-top navbar-expand-lg">
         <div class="container-fluid panel-overlay">
@@ -44,15 +44,15 @@
         </div>
     </nav>
 
-    <div class="qplus-apps-layout">
+    <div class="PORTTOS-apps-layout">
 
-        <div class="qplus-apps-header text-center">
+        <div class="PORTTOS-apps-header text-center">
             <h2 class="apps-main-title">{{ 'PLATAFORMA.TITULO_GRID_SUITES' | translate }} {{ nomAplicacion }}</h2>
             <p class="apps-subtitle">{{ 'PLATAFORMA.SUBTITULO_GRID_SUITES' | translate }} {{ nomAplicacion }}</p>
         </div>
 
-        <div class="qplus-apps-grid">
-            <div class="qplus-app-item-card" *ngFor="let suite of suites"
+        <div class="PORTTOS-apps-grid">
+            <div class="PORTTOS-app-item-card" *ngFor="let suite of suites"
                 [style.backgroundImage]="'url(' + suite.imagenInicio + ')'">
 
                 <div class="app-card-overlay">
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="app-card-actions"><br>
-                        <button (click)="ingresaSuiteaplicacion(suite)" class="qplus-enter-btn">
+                        <button (click)="ingresaSuiteaplicacion(suite)" class="PORTTOS-enter-btn">
                             {{ 'PLATAFORMA.ENTRAR' | translate }} <i class="feather icon-arrow-right"></i>
                         </button>
                     </div>

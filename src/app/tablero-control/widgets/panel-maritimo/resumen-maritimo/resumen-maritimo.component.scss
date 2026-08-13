@@ -1,6 +1,6 @@
 /* chart-toneladas.component.scss, terminal-summary.scss, etc. */
-@use 'src/app/theme/shared/styles/components' as qplus;
-// @include qplus.widget-header;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
+// @include PORTTOS.widget-header;
 
 :host {
     display: block;
@@ -8,7 +8,7 @@
     height: 100%;
 }
 
-.qplus-widget.resumen-maritimo-panel {
+.PORTTOS-widget.resumen-maritimo-panel {
     display: flex;
     flex-direction: column;
     background-clip: padding-box;

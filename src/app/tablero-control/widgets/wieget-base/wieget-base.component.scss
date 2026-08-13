@@ -1,4 +1,4 @@
-@use 'src/app/theme/shared/styles/components' as qplus;
+@use 'src/app/theme/shared/styles/components' as PORTTOS;
 
 /* =======================================================
    1. HOST & RAÍZ RESPONSIVA (Container Queries)
@@ -16,7 +16,7 @@
 /* =======================================================
    2. EL CONTENEDOR PRINCIPAL
    ======================================================= */
-.qplus-widget {
+.PORTTOS-widget {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -38,7 +38,7 @@
     }
 }
 
-@include qplus.widget-header;
+@include PORTTOS.widget-header;
 
 /* =======================================================
    3. EL CUERPO DINÁMICO (Flexbox)

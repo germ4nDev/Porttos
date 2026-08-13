@@ -4,7 +4,7 @@
 // import { Chart, ChartOptions, registerables } from 'chart.js';
 // import { Subscription } from 'rxjs';
 
-// // Ajusta estas rutas a tu estructura QPLUS
+// // Ajusta estas rutas a tu estructura PORTTOS
 // import { DashboardService } from 'src/app/theme/shared/service/tablero-control/dashboard.service';
 // import { FiltroTableroService } from 'src/app/theme/shared/service/tablero-control/filtro-tablero.service';
 // import { ProductividadGraficaAdapter } from '../../../theme/shared/adapters/productividad.adapter';

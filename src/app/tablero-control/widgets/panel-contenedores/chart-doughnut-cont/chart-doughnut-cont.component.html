@@ -1,0 +1,31 @@
+<div class="porttos-widget widget-doughnut-cont">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3 class="porttos-widget-title">
+                <i class="feather icon-clock mr-1" *ngIf="!data?.icono"></i>
+                <i [class]="data?.icono" *ngIf="data?.icono" class="mr-1"></i>
+                {{ data?.titulo || 'DISTRIBUCIÓN FREE TIME' }}
+            </h3>
+            <p class="subtitle">{{ data?.subtitulo || 'Estado de contenedores en puerto' }}</p>
+        </div>
+
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body flex-grow-1" style="min-height: 250px; position: relative;">
+        <!-- Loader mientras responde el backend -->
+        <div *ngIf="cargando" class="d-flex justify-content-center align-items-center w-100 h-100"
+            style="position: absolute; top:0; left:0; z-index: 10;">
+            <span style="color: #64748b; font-size: 0.8rem;">Cargando gráfica...</span>
+        </div>
+
+        <!-- Gráfica Chart.js (Se oculta mientras carga) -->
+        <canvas *ngIf="!cargando" baseChart [data]="doughnutChartData" [options]="doughnutChartOptions"
+            [type]="'doughnut'">
+        </canvas>
+    </div>
+</div>

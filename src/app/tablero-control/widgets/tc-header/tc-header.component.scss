@@ -149,9 +149,43 @@
 }
 
 .tc-dropdown {
+    width: 250px !important;
     background-color: var(--widget-bg) !important;
     color: var(--text-color) !important;
     border-color: var(--border-color) !important;
     border-radius: 10px !important;
     padding: 8px;
+}
+
+.tc-filtro-puerto {
+    width: 250px !important;
+}
+
+.titulo-filtro {
+    color: var(--app-texto-color) !important;
+}
+
+.porttos-clock-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    user-select: none;
+}
+
+.reloj-style {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--app-texto-color) !important;
+    letter-spacing: 0.5px;
+    font-family: monospace;
+    line-height: 1.1;
+}
+
+.fecha-texto {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--app-texto-color) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
 }

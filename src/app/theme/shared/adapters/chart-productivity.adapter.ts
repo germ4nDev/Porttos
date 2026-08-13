@@ -28,7 +28,7 @@ export class ProductividadGraficaAdapter {
         // Las etiquetas que se pintarán en el eje X de la gráfica
         const etiquetasEjeX = ['06h', '08h', '10h', '12h', '14h', '16h', '18h', '20h'];
 
-        // Paleta de colores QPLUS con opacidad para el efecto sombreado inferior
+        // Paleta de colores PORTTOS con opacidad para el efecto sombreado inferior
         const paletaColores = [
             { border: '#0ea5e9', bg: 'rgba(14, 165, 233, 0.15)' }, // Cyan
             { border: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.15)' }, // Morado

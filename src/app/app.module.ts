@@ -38,7 +38,9 @@ import { NgChartsModule } from 'ng2-charts';
 const config: SocketIoConfig = {
     url: environment.sctUrl,
     options: {
-        transports: ['websocket', 'polling']
+        transports: ['polling'],
+        secure: true,
+        reconnection: true
     }
 };
 

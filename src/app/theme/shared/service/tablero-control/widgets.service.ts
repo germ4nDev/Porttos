@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, Subject, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { Widget } from '../../_helpers/models/tablero-control/widget.model';
 import { SocketService } from '../sockets.service';
 import { LocalStorageService } from '../local-storage.service';
+import { environment } from 'src/environments/environment';
 
 const base_url = environment.apiUrl;
 

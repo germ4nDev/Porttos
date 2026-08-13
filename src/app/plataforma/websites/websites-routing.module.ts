@@ -3,19 +3,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: '',
-    children: [
-      {
-        path: 'qplus',
-        loadComponent: () => import('./qplus/qplus.component').then(m => m.QplusComponent)
-      }
-    ]
-  }
+    {
+        path: '',
+        children: [
+            {
+                path: 'porttos',
+                loadComponent: () => import('./porttos/porttos.component').then(m => m.PorttosComponent)
+            }
+        ]
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
-export class WebsitesRoutingModule {}
+export class WebsitesRoutingModule { }

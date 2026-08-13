@@ -138,7 +138,7 @@
 
 /*
     Author: German Valencia
-    Component: Dashboard Service (Orquestador Central QPLUS)
+    Component: Dashboard Service (Orquestador Central PORTTOS)
 */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
@@ -365,7 +365,7 @@ export class DashboardService implements OnInit, OnDestroy {
         // AHORA: Apunta al mock que acabamos de construir
         return this.http.get<any>(`${base_url}/maritimo/lineup/${puerto}`).pipe(
             map(response => {
-                // Extraemos el array 'data' de la respuesta estándar del backend QPLUS
+                // Extraemos el array 'data' de la respuesta estándar del backend PORTTOS
                 if (response.success && response.data) {
                     return response.data;
                 }

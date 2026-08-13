@@ -22,7 +22,7 @@
 /* =========================================================
    2. ESTRUCTURA BASE DE LA TABLA (Módulos UI)
    ========================================================= */
-.qplus-table {
+.PORTTOS-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
@@ -117,7 +117,7 @@
 /* =========================================================
    4. VISTA COMPACTA (Por defecto - Tarjeta del Tablero)
    ========================================================= */
-.qplus-table {
+.PORTTOS-table {
 
     /* Ocultamos las columnas secundarias */
     .col-especialidad,
@@ -149,7 +149,7 @@
    ========================================================= */
 /* Cuando el contenedor de la tabla supera los 750px, reescribimos las reglas */
 @container widgetTable (min-width: 750px) {
-    .qplus-table {
+    .PORTTOS-table {
 
         /* Aparecen nuevamente la Especialidad y el Calado */
         .col-especialidad,

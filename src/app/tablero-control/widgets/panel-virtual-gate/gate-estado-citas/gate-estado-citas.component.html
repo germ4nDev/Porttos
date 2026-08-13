@@ -1,0 +1,103 @@
+<div class="porttos-widget terminal-card-panel w-100 h-100 d-flex flex-column">
+
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-wind"></i>{{ data.titulo || 'ESTADO DE CITAS' }}</h3>
+            <p class="subtitle">{{ data.subtitulo || 'Estado de Citas' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body terminal-body-layout">
+
+        <!-- SECCIÓN 1: Barras de Progreso -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Confirmadas -->
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+                <span style="color: #cbd5e1; width: 80px;">Confirmadas</span>
+                <div
+                    style="flex: 1; background: #1e293b; height: 8px; border-radius: 4px; margin: 0 10px; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; left: 0; top: 0; height: 100%; width: 68%; background: #22c55e; border-radius: 4px;">
+                    </div>
+                </div>
+                <span style="color: #f8fafc; font-weight: bold; width: 30px; text-align: right;">312</span>
+            </div>
+
+            <!-- En espera -->
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+                <span style="color: #cbd5e1; width: 80px;">En espera</span>
+                <div
+                    style="flex: 1; background: #1e293b; height: 8px; border-radius: 4px; margin: 0 10px; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; left: 0; top: 0; height: 100%; width: 22%; background: #38bdf8; border-radius: 4px;">
+                    </div>
+                </div>
+                <span style="color: #f8fafc; font-weight: bold; width: 30px; text-align: right;">98</span>
+            </div>
+
+            <!-- Reagendadas -->
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+                <span style="color: #cbd5e1; width: 80px;">Reagendadas</span>
+                <div
+                    style="flex: 1; background: #1e293b; height: 8px; border-radius: 4px; margin: 0 10px; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; left: 0; top: 0; height: 100%; width: 8%; background: #f59e0b; border-radius: 4px;">
+                    </div>
+                </div>
+                <span style="color: #f8fafc; font-weight: bold; width: 30px; text-align: right;">34</span>
+            </div>
+
+            <!-- Canceladas -->
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+                <span style="color: #cbd5e1; width: 80px;">Canceladas</span>
+                <div
+                    style="flex: 1; background: #1e293b; height: 8px; border-radius: 4px; margin: 0 10px; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; left: 0; top: 0; height: 100%; width: 3%; background: #ef4444; border-radius: 4px;">
+                    </div>
+                </div>
+                <span style="color: #f8fafc; font-weight: bold; width: 30px; text-align: right;">14</span>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <div class="kpi-titulo">
+                Tiempo Medio Espera Virtual
+            </div>
+            <div class="kpis-bottom-row">
+                <div class="kpi-item">
+                    <span class="kpi-val">{{ data?.resumen?.tiempoMedioSPRBUN || 0 }}m</span>
+                    <span class="kpi-lbl">SPRBUN</span>
+                </div>
+                <div class="kpi-item">
+                    <span class="kpi-val">{{ data?.resumen?.tiempoMedioTCBUEN || 0 }}m</span>
+                    <span class="kpi-lbl">TCBUEN</span>
+                </div>
+                <div class="kpi-item">
+                    <span class="kpi-val">{{ data?.resumen?.tiempoMedioAGUADULCE || 0 }}m</span>
+                    <span class="kpi-lbl">AGUADULCE</span>
+                </div>
+            </div>
+            <!-- <div style="display: flex; justify-content: space-between;">
+                <div style="text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #0ea5e9;">{{ data?.resumen?.tiempoMedioTCBUEN || 0 }}m</div>
+                    <div style="font-size: 9px; color: #64748b;">SPRBUN</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #f59e0b;">{{ data?.resumen?.tiempoMedioTCBUEN || 0 }}m</div>
+                    <div style="font-size: 9px; color: #64748b;">TCBUEN</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #14b8a6;">{{ data?.resumen?.tiempoMedioAGUADULCE || 0 }}m</div>
+                    <div style="font-size: 9px; color: #64748b;">AGUADULCE</div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+</div>

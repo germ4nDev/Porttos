@@ -1,0 +1,67 @@
+<div class="porttos-widget vessel-table-panel w-100 h-100 d-flex flex-column">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3 class="panel-titulo">
+                <i class="icon-ship mr-2" *ngIf="!data.icono"></i>
+                {{ data.titulo || 'Movimientos y Trazabilidad de Contenedores' }}
+            </h3>
+            <p class="subtitle">{{ data.subtitulo || 'Movimientos y Trazabilidad de Contenedores' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body flex-grow-1 d-flex flex-column min-h-0 p-3 pt-0">
+        <div class="table-responsive flex-grow-1 h-100" style="overflow-y: auto;">
+
+            <table class="porttos-table w-100">
+                <!-- <thead>
+                    <tr class="text-muted font-weight-bold" style="font-size: 0.8rem;">
+                        <th>CONTENEDOR</th>
+                        <th>TIPO</th>
+                        <th>NAVIERA</th>
+                        <th>OPERACIÓN</th>
+                        <th>RUTA</th>
+                        <th>CLIENTE</th>
+                        <th>FREE TIME</th>
+                        <th>ESTADO</th>
+                    </tr>
+                </thead> -->
+                <thead>
+                    <tr class="text-muted font-weight-bold" style="font-size: 0.8rem;">
+                        <th style="width: 14%;">CONTENEDOR</th>
+                        <th style="width: 8%;">TIPO</th>
+                        <th style="width: 12%;">NAVIERA</th>
+                        <th style="width: 15%;">OPERACIÓN</th>
+                        <th style="width: 18%;">RUTA</th>
+                        <th style="width: 12%;">CLIENTE</th>
+                        <th style="width: 9%;">FREE TIME</th>
+                        <th style="width: 12%; text-align: right;">ESTADO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let m of movimientos" style="font-size: 0.85rem;">
+                        <td class="font-weight-bold text-cyan">{{ m.contenedor }}</td>
+                        <td>{{ m.tipo }}</td>
+                        <td>{{ m.naviera }}</td>
+                        <td>{{ m.operacion }}</td>
+                        <td>{{ m.ruta ? m.ruta.replace('?', '→') : '-' }}</td>
+                        <td>{{ m.cliente }}</td>
+                        <td>{{ m.freeTime }}</td>
+                        <td>
+                            <span class="badge" [ngClass]="getEstadoClase(m.estado)">
+                                {{ m.estado }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!movimientos || movimientos.length === 0">
+                        <td colspan="8" class="text-center text-muted py-4">No hay movimientos registrados en la base de
+                            datos.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

@@ -336,7 +336,7 @@ export class IngestaPanelComponent implements OnInit {
     //                     continue;
     //                 }
 
-    //                 // Traductor de Estados QPLUS
+    //                 // Traductor de Estados PORTTOS
     //                 let rawStatus = String(rowNormalizado['STATUS'] || rowNormalizado['POSICION'] || rowNormalizado['ESTADO'] || '').toUpperCase().trim();
     //                 if (rawStatus.includes('BERTHED')) rawStatus = 'ATRACADO';
     //                 else if (rawStatus.includes('ANCHORED')) rawStatus = 'FONDEO';
@@ -480,7 +480,7 @@ export class IngestaPanelComponent implements OnInit {
                         continue;
                     }
 
-                    // Traductor de Estados QPLUS
+                    // Traductor de Estados PORTTOS
                     let rawStatus = String(rowNormalizado['STATUS'] || rowNormalizado['POSICION'] || rowNormalizado['ESTADO'] || '').toUpperCase().trim();
                     if (rawStatus.includes('BERTHED')) rawStatus = 'ATRACADO';
                     else if (rawStatus.includes('ANCHORED')) rawStatus = 'FONDEO';

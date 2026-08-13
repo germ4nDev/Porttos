@@ -3,10 +3,8 @@
     height: calc(100vh - 140px);
     /* O el alto que estés manejando */
     overflow: hidden !important;
-    /* 🔥 Pinta el fondo del mismo color oscuro de tu dashboard */
 }
 
-/* Opcional: Asegúrate de que el body global no tenga márgenes en tu styles.scss principal */
 body,
 html {
     background-color: var(--tablero-background) !important;
@@ -15,10 +13,8 @@ html {
 }
 
 .gridster {
-    background-color: var(--tablero-background) !important;
     height: 100% !important;
     margin-bottom: 0px !important;
-    /* Obliga a Gridster a respetar el límite del contenedor */
 }
 
 .tc-nav-tabs {
@@ -61,7 +57,6 @@ html {
     height: calc(100vh - 77px);
 }
 
-/* Bloqueamos el contenedor padre al tamaño exacto de la ventana */
 .tc-dashboard-container {
     background-color: var(--widget-background) !important;
     height: calc(100vh - var(--navbar-height));
@@ -149,7 +144,7 @@ html {
 }
 
 /* 2. Gridster se estira forzosamente al 100% del área disponible */
-.qplus-gridster-board {
+.PORTTOS-gridster-board {
     flex-grow: 1;
     height: 100% !important;
     /* 🚨 FORZAMOS EL ANCHO TOTAL */
@@ -161,7 +156,7 @@ html {
     /* Previene scroll horizontal fantasma */
 }
 
-/* 2. El gridster-item asume el rol de la tarjeta principal (.qplus-widget) */
+/* 2. El gridster-item asume el rol de la tarjeta principal (.PORTTOS-widget) */
 .gridster {
     background-color: var(--widget-background);
     padding: 0;
@@ -196,7 +191,7 @@ gridster-item {
 }
 
 /* La capa oscura que cubre toda la pantalla y difumina el fondo */
-.qplus-backdrop-blur {
+.PORTTOS-backdrop-blur {
     position: fixed;
     top: 0;
     left: 0;
@@ -216,7 +211,7 @@ gridster-item {
 }
 
 /* El panel gigante donde vive el widget */
-.qplus-modal-lg {
+.PORTTOS-modal-lg {
     width: 90%;
     height: 85vh;
     /* 🚨 Altura atada a la pantalla */
@@ -236,7 +231,7 @@ gridster-item {
 }
 
 /* 🚨 LA CURA DEL SCROLL: Forzamos al widget que se inyecta adentro a que se comporte como un bloque flex estricto */
-.qplus-modal-lg>* {
+.PORTTOS-modal-lg>* {
     flex: 1 1 0%;
     min-height: 0;
     width: 100%;
@@ -275,7 +270,7 @@ gridster-item {
     .cargador-contenido {
         text-align: center;
 
-        .spinner-qplus {
+        .spinner-PORTTOS {
             width: 40px;
             height: 40px;
             border: 4px solid rgba(6, 182, 212, 0.3);
@@ -287,7 +282,7 @@ gridster-item {
     }
 }
 
-.qplus-fantasma {
+.PORTTOS-fantasma {
     opacity: 0 !important;
     pointer-events: none !important;
     background: transparent !important;

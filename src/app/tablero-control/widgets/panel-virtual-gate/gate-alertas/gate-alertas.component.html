@@ -1,0 +1,43 @@
+<div class="porttos-widget reportes-operativos">
+    <div class="panel-header">
+        <div class="header-titles">
+            <h3><i class="feather icon-wind"></i>{{ data.titulo || '⚠ Alertas Operativas' }}
+            </h3>
+            <p class="subtitle">{{ data.subtitulo || 'Alertas Operativas' }}</p>
+        </div>
+        <div class="header-actions-container">
+            <button class="btn-maximizar" (click)="maximizar()" title="Ver en pantalla completa">
+                <i class="feather icon-maximize" data-feather="maximize"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+
+        <div class="reporte-item"
+            style="background-color: rgba(239,68,68,0.1); border-left: 3px solid #ef4444; padding: 10px; border-radius: 4px;">
+            <div style="color: #f8fafc; font-size: 12px; font-weight: bold;">🛑 Cola crítica gate TCBUEN</div>
+            <div style="color: #94a3b8; font-size: 11px; margin-top: 4px;">22 camiones esperando - ETA m/v EVERGREEN
+                HARMONY
+                +2h</div>
+        </div>
+
+        <div class="reporte-item"
+            style="background-color: rgba(245,158,11,0.1); border-left: 3px solid #f59e0b; padding: 10px; border-radius: 4px;">
+            <div style="color: #f8fafc; font-size: 12px; font-weight: bold;">⚠️ Camión LMR-013 retenido</div>
+            <div style="color: #94a3b8; font-size: 11px; margin-top: 4px;">SICE no validado - Naviera MSC - acción
+                manual
+            </div>
+        </div>
+
+        <div class="reporte-item"
+            style="background-color: rgba(56,189,248,0.1); border-left: 3px solid #38bdf8; padding: 10px; border-radius: 4px;">
+            <div style="color: #f8fafc; font-size: 12px; font-weight: bold;">ℹ️ Patio NORTE TCBUEN al 94%</div>
+            <div style="color: #94a3b8; font-size: 11px; margin-top: 4px;">Reasignando devoluciones MAERSK a BUEN-LOG
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

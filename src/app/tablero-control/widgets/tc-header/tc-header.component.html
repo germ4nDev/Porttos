@@ -1,4 +1,4 @@
-<div class="tc-header-layout">
+<!-- <div class="tc-header-layout">
     <div class="tc-title-section">
         <h1 class="tc-title">{{ titulo }}</h1>
         <p class="tc-subtitle">{{ subtitulo }}</p>
@@ -8,10 +8,75 @@
         <ul class="tc-toolbar-nav">
 
             <li class="nav-item select-item">
-                <div class="tc-nodo-box">
-                    <!-- <label>{{ 'TORRE_CONTROL.NODO_OPERATIVO' | translate }}</label> -->
+                <div class="tc-filtro-puerto">
+                    <small class="titulo-filtro">{{ 'TORRE_CONTROL.HEADER.FT_PUERTO' | translate }}</small>
                     <select class="tc-dropdown" [(ngModel)]="nodoSeleccionado" (change)="onCambioNodo($event)">
-                        <!-- <option value="">{{ 'TORRE_CONTROL.NODO_OPERATIVO' | translate }}</option> -->
+                        <option *ngFor="let nodo of listaCiudadesPortuarias" [value]="nodo.id_puerto">
+                            {{ nodo.id_puerto }}
+                        </option>
+                    </select>
+                </div>
+            </li>
+
+            <div class="porttos-clock-wrapper">
+
+            </div>
+
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="toolbar-btn" [hidden]="isOptionBloqueo" (click)="onBloqueoClick()"
+                    title="Bloqueo/Desbloqueo">
+                    <i class="feather" [ngClass]="isBloqueado ? 'icon-lock' : 'icon-unlock'"></i>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="toolbar-btn" (click)="goBack()" title="Menú Principal">
+                    <i class="feather icon-home"></i>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="toolbar-btn" (click)="abrirCatalogo.emit()"
+                    title="Catalogo Widgets">
+                    <i class="feather icon-layout"></i>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <app-language-selector></app-language-selector>
+            </li>
+
+            <li class="nav-item profile-wrapper">
+                <app-profile-drp></app-profile-drp>
+            </li>
+
+            <li class="porttos-clock-wrapper">
+                <div class="clock-time">
+                    {{ horaActual }}
+                </div>
+                <div class="clock-date">
+                    {{ fechaActual }}
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div> -->
+
+<!-- <div class="tc-header-layout">
+    <div class="tc-title-section">
+        <h1 class="tc-title">{{ titulo }}</h1>
+        <p class="tc-subtitle">{{ subtitulo }}</p>
+    </div>
+
+    <div class="tc-controls-section d-flex flex-column align-items-end">
+
+        <ul class="tc-toolbar-nav align-items-center mb-0">
+
+            <li class="nav-item select-item">
+                <div class="tc-filtro-puerto">
+                    <small class="titulo-filtro">{{ 'TORRE_CONTROL.HEADER.FT_PUERTO' | translate }}</small>
+                    <select class="tc-dropdown" [(ngModel)]="nodoSeleccionado" (change)="onCambioNodo($event)">
                         <option *ngFor="let nodo of listaCiudadesPortuarias" [value]="nodo.id_puerto">
                             {{ nodo.id_puerto }}
                         </option>
@@ -47,6 +112,227 @@
                 <app-profile-drp></app-profile-drp>
             </li>
 
+            <li class="nav-item px-3">
+                <div class="clock-time"
+                    style="font-size: 22px; font-weight: 800; color: #22d3ee; font-family: monospace; line-height: 1;">
+                    {{ horaActual }}
+                </div>
+            </li>
+
         </ul>
+
+        <div class="clock-date-full pr-3"
+            style="font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; white-space: nowrap;">
+            {{ fechaActual }}
+        </div>
+
+    </div>
+</div> -->
+
+<!-- <div class="tc-header-layout">
+    <div class="tc-title-section">
+        <h1 class="tc-title">{{ titulo }}</h1>
+        <p class="tc-subtitle">{{ subtitulo }}</p>
+    </div>
+
+    <div class="tc-controls-section d-flex align-items-center justify-content-between w-100">
+
+        <div class="tc-filtro-puerto-wrapper">
+            <div class="tc-filtro-puerto">
+                <small class="titulo-filtro">{{ 'TORRE_CONTROL.HEADER.FT_PUERTO' | translate }}</small>
+                <select class="tc-dropdown" [(ngModel)]="nodoSeleccionado" (change)="onCambioNodo($event)">
+                    <option *ngFor="let nodo of listaCiudadesPortuarias" [value]="nodo.id_puerto">
+                        {{ nodo.id_puerto }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column align-items-end ml-auto">
+
+            <ul class="tc-toolbar-nav align-items-center mb-0">
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="toolbar-btn" [hidden]="isOptionBloqueo"
+                        (click)="onBloqueoClick()" title="Bloqueo/Desbloqueo">
+                        <i class="feather" [ngClass]="isBloqueado ? 'icon-lock' : 'icon-unlock'"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="toolbar-btn" (click)="goBack()" title="Menú Principal">
+                        <i class="feather icon-home"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="toolbar-btn" (click)="abrirCatalogo.emit()"
+                        title="Catalogo Widgets">
+                        <i class="feather icon-layout"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <app-language-selector></app-language-selector>
+                </li>
+
+                <li class="nav-item profile-wrapper">
+                    <app-profile-drp></app-profile-drp>
+                </li>
+
+                <li class="nav-item px-3">
+                    <div class="clock-time"
+                        style="font-size: 22px; font-weight: 800; color: #22d3ee; font-family: monospace; line-height: 1;">
+                        {{ horaActual }}
+                    </div>
+                </li>
+            </ul>
+
+            <div class="clock-date-full pr-3"
+                style="font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; white-space: nowrap;">
+                {{ fechaActual }}
+            </div>
+
+        </div>
+
+    </div>
+</div> -->
+
+<!-- <div class="tc-header-layout d-flex align-items-center justify-content-between w-100">
+
+    <div class="tc-title-section">
+        <h1 class="tc-title">{{ titulo }}</h1>
+        <p class="tc-subtitle">{{ subtitulo }}</p>
+    </div>
+
+    <div class="tc-controls-section d-flex align-items-center">
+
+        <div class="tc-filtro-puerto-wrapper mr-4">
+            <div class="tc-filtro-puerto">
+                <small class="titulo-filtro">{{ 'TORRE_CONTROL.HEADER.FT_PUERTO' | translate }}</small>
+                <select class="tc-dropdown" [(ngModel)]="nodoSeleccionado" (change)="onCambioNodo($event)">
+                    <option *ngFor="let nodo of listaCiudadesPortuarias" [value]="nodo.id_puerto">
+                        {{ nodo.id_puerto }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column align-items-end">
+
+            <ul class="tc-toolbar-nav d-flex align-items-center mb-0 list-unstyled">
+                <li class="nav-item mr-2">
+                    <a href="javascript:void(0)" class="toolbar-btn" [hidden]="isOptionBloqueo"
+                        (click)="onBloqueoClick()" title="Bloqueo/Desbloqueo">
+                        <i class="feather" [ngClass]="isBloqueado ? 'icon-lock' : 'icon-unlock'"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item mr-2">
+                    <a href="javascript:void(0)" class="toolbar-btn" (click)="goBack()" title="Menú Principal">
+                        <i class="feather icon-home"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item mr-2">
+                    <a href="javascript:void(0)" class="toolbar-btn" (click)="abrirCatalogo.emit()"
+                        title="Catalogo Widgets">
+                        <i class="feather icon-layout"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item mr-2">
+                    <app-language-selector></app-language-selector>
+                </li>
+
+                <li class="nav-item profile-wrapper mr-3">
+                    <app-profile-drp></app-profile-drp>
+                </li>
+
+                <li class="nav-item">
+                    <div class="clock-time"
+                        style="font-size: 20px; font-weight: 800; color: #22d3ee; font-family: monospace; line-height: 1;">
+                        {{ horaActual }}
+                    </div>
+                </li>
+            </ul>
+
+            <div class="clock-date-full"
+                style="font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; white-space: nowrap;">
+                {{ fechaActual }}
+            </div>
+
+        </div>
+
+    </div>
+</div> -->
+
+<div class="tc-header-layout d-flex align-items-center justify-content-between w-100">
+
+    <!-- Título y Subtítulo a la izquierda -->
+    <div class="tc-title-section">
+        <h1 class="tc-title">{{ titulo }}</h1>
+        <p class="tc-subtitle">{{ subtitulo }}</p>
+    </div>
+
+    <!-- Contenedor derecho: Usamos align-items-start para alinear el filtro con la línea de los iconos -->
+    <div class="tc-controls-section d-flex align-items-start">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div class="tc-filtro-puerto-wrapper mr-4">
+                <div class="tc-filtro-puerto">
+                    <small class="titulo-filtro">{{ 'TORRE_CONTROL.HEADER.FT_PUERTO' | translate }}</small>
+                    <select class="tc-dropdown" [(ngModel)]="nodoSeleccionado" (change)="onCambioNodo($event)">
+                        <option *ngFor="let nodo of listaCiudadesPortuarias" [value]="nodo.id_puerto">
+                            {{ nodo.id_puerto }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column align-items-end">
+
+                <!-- Renglón Superior: Iconos, Herramientas, Idioma, Perfil y Reloj -->
+                <ul class="tc-toolbar-nav d-flex align-items-center mb-0 list-unstyled">
+                    <li class="nav-item mr-2">
+                        <a href="javascript:void(0)" class="toolbar-btn" [hidden]="isOptionBloqueo"
+                            (click)="onBloqueoClick()" title="Bloqueo/Desbloqueo">
+                            <i class="feather" [ngClass]="isBloqueado ? 'icon-lock' : 'icon-unlock'"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item mr-2">
+                        <a href="javascript:void(0)" class="toolbar-btn" (click)="goBack()" title="Menú Principal">
+                            <i class="feather icon-home"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item mr-2">
+                        <a href="javascript:void(0)" class="toolbar-btn" (click)="abrirCatalogo.emit()"
+                            title="Catalogo Widgets">
+                            <i class="feather icon-layout"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item mr-2">
+                        <app-language-selector></app-language-selector>
+                    </li>
+
+                    <li class="nav-item profile-wrapper mr-3">
+                        <app-profile-drp></app-profile-drp>
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="clock-time" class="reloj-style">
+                            {{ horaActual }}
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Renglón Inferior: La Fecha extendida debajo de los iconos y la hora -->
+                <div class="clock-date-full" class="fecha-texto">
+                    {{ fechaActual }}
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
